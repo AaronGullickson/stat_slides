@@ -12,7 +12,8 @@ packages = c("here","tidyverse", "broom",
              "sandwich","lmtest","survey","mice",
              "margins","logistf",
              "gapminder",
-             "texreg", "pander", "kableExtra")
+             "texreg", "pander", "kableExtra",
+             "latex2exp")
 
 package.check <- lapply(packages, FUN = function(x) {
   if (!require(x, character.only = TRUE)) {

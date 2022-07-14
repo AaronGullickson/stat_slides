@@ -1,0 +1,15 @@
+/*-- scss:defaults --*/
+
+$body-bg: #EAEBEE;
+$code-block-bg: #eaeef0;
+$body-color: #18273F;
+$link-color: #b8860b;
+
+.smalltexreg table
+{
+    font-size: 16pt;
+}
+
+.footer .footer-default {
+    color: grey;
+}
