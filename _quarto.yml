@@ -1,0 +1,6 @@
+project:
+  title: "Slides for Statistical Analysis in Sociology"
+  render:
+    - slides*.qmd
+  output-dir: _output
+
