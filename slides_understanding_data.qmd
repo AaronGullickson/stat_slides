@@ -1,49 +1,14 @@
 ---
 title: "Understanding Data"
-subtitle: "Sociology 312/512, University of Oregon"
-author: "Aaron Gullickson"
-execute:
-  eval: true
-  echo: false
-  warning: false
-  error: false
-  fig-height: 11
-format:
-  revealjs: 
-    theme: [default, custom.css]
-    chalkboard: true
-    preview-links: true
-    incremental: true
-    smaller: false
-    background-transition: concave
-    fig-align: center
-    highlight-style: arrow
-    code-line-numbers: false
-    footer: "Sociology 312/512, University of Oregon"
-editor: source
 ---
 
 ```{r}
 #| label: setup
 #| include: false
-source("scripts/check_packages.R")
-source("scripts/load_example_data.R")
-```
-
-```{r}
-#| label: custom-ggtheme
-#| include: false
-theme_myslides <- theme_bw()+
-  theme(axis.title = element_text(size=18),
-        axis.text = element_text(size=14),
-        plot.title = element_text(size=24),
-        plot.subtitle = element_text(size=16),
-        plot.caption = element_text(size=16),
-        plot.background = element_rect(fill = "#EAEBEE", 
-                                       color="#EAEBEE"),
-        panel.background = element_rect(fill = "#EAEBEE"),
-        legend.background = element_rect(fill = "#EAEBEE"))
-theme_set(theme_myslides)
+library(here)
+source(here("scripts","check_packages.R"))
+source(here("scripts","set_theme.R"))
+source(here("scripts","load_example_data.R"))
 ```
 
 # What Does Data Look Like? {.center background-color="black" background-image="images/markus-spiske-666905-unsplash.jpg"}
@@ -173,19 +138,27 @@ kbl(titanic[c(13, 1238, 2, 306),-1], row.names=FALSE,
   kable_classic()
 ```
 
+:::: {.columns}
+::: {.column width="50%"}
 - **survival:** survival is a nominal variable.
 - **sex:** sex is a nominal variable.
 - **age:** age is a continuous variable.
 - **agegroup:** age group is an ordinal variable.
+:::
+
+::: {.column width="50%"}
 - **pclass:** Passenger class is an ordinal variable.
 - **fare:** fare paid is a continuous variable (sort of). 
 - **family:** number of family members is a discrete variable.
+:::
+::::
 
-
+<!---
 ---
 
 <iframe src="https://aarongullickson.shinyapps.io/datasets/">
 </iframe>
+--->
 
 # What Can We Do With Data? {.center background-color="black" background-image="images/isaac-smith-1182057-unsplash.jpg}
 

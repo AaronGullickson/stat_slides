@@ -1,6 +1,30 @@
 project:
   title: "Slides for Statistical Analysis in Sociology"
+  pre-render:
+    - scripts/check_packages.R
   render:
     - slides*.qmd
-  output-dir: _output
+  output-dir: _slides
 
+subtitle: "Sociology 312/412/512, University of Oregon"
+author: "Aaron Gullickson"
+execute:
+  eval: true
+  echo: false
+  warning: false
+  error: false
+  fig-height: 11
+  freeze: auto
+format:
+  revealjs:
+    theme: [default, custom.css]
+    chalkboard: true
+    preview-links: true
+    incremental: true
+    smaller: false
+    background-transition: concave
+    fig-align: center
+    highlight-style: arrow
+    code-line-numbers: false
+    footer: "Sociology 312/412/512, University of Oregon"
+editor: source
