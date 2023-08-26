@@ -1,3 +1,5 @@
+/* Most of these are copied from Grant McDermott's Clean template */
+
 /*-- scss:defaults --*/
 
 // Custom colours and variables
@@ -8,10 +10,11 @@ $right-arrow: "\2192"; // Unicode character for right arrow
 
 // fonts
 @import url(https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,350,350i,400,400i);
+@import url(https://fonts.googleapis.com/css?family=Fjalla+One:200,200i,300,300i,350,350i,400,400i);
 $font-family-sans-serif: "Roboto", sans-serif !default;
 $presentation-font-size-root: 36px;
 
-$presentation-heading-font: "Roboto", sans-serif !default;
+$presentation-heading-font: "Fjalla One", sans-serif !default;
 $presentation-heading-color: $jet !default;
 $presentation-heading-font-weight: 200;
 //$presentation-heading-line-height: 2;
@@ -152,7 +155,7 @@ $selection-bg: #26351c !default;
 }
 
 // Move "hamburger" menu button to top right
-
+/*
 .reveal .slide-menu-button {
   position: fixed;
   top: 6px;
@@ -183,6 +186,7 @@ $selection-bg: #26351c !default;
 .reveal .slide-chalkboard-buttons > * {
   pointer-events: auto;
 }
+*/
 
 // Beamer-style button link environment
 

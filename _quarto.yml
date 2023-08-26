@@ -16,15 +16,15 @@ execute:
   fig-height: 11
   freeze: auto
 format:
-  clean-revealjs:
-    #theme: [default, custom.css]
+  revealjs:
+    theme: [default, custom.scss]
     chalkboard: true
     preview-links: true
     incremental: true
     smaller: false
     background-transition: concave
     fig-align: center
-    highlight-style: arrow
+    highlight-style: tango
     code-line-numbers: false
     footer: "Sociology 312/412/512, University of Oregon"
 revealjs-plugins:
