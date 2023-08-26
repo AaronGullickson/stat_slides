@@ -36,6 +36,7 @@ When we refer to the **distribution** of a variable, we are referring to how the
 
 - We can calculate summary measures of the **center** and **spread** of the distribution.
 - We an only calculate summary measures for quantitative variables.
+
 :::
 :::
 ::::
@@ -633,7 +634,6 @@ ggplot(movies, aes(x="", y=runtime))+
   labs(x=NULL, y="runtime in minutes")+
   theme_bw()
 ```
-]
 
 :::
 
