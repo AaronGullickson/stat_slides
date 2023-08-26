@@ -10,14 +10,14 @@ subtitle: "Sociology 312/412/512, University of Oregon"
 author: "Aaron Gullickson"
 execute:
   eval: true
-  echo: false
+  echo: true
   warning: false
   error: false
   fig-height: 11
   freeze: auto
 format:
-  revealjs:
-    theme: [default, custom.css]
+  clean-revealjs:
+    #theme: [default, custom.css]
     chalkboard: true
     preview-links: true
     incremental: true
@@ -27,4 +27,6 @@ format:
     highlight-style: arrow
     code-line-numbers: false
     footer: "Sociology 312/412/512, University of Oregon"
+revealjs-plugins:
+  - codefocus
 editor: source

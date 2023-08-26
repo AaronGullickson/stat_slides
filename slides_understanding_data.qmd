@@ -17,6 +17,7 @@ source(here("scripts","load_example_data.R"))
 
 ```{r}
 #| label: tbl_passengers
+#| echo: false
 kbl(titanic[c(13, 1238, 2, 306),-1], row.names=FALSE, 
              caption="Four passengers on the Titanic")  %>%
   kable_classic()
@@ -133,6 +134,7 @@ A nominal variable is a categorical variable whose values are unordered.
 
 ```{r}
 #| label: tbl_passengers-again
+#| echo: false
 kbl(titanic[c(13, 1238, 2, 306),-1], row.names=FALSE, 
              caption="Four passengers on the Titanic")  %>%
   kable_classic()
@@ -153,13 +155,6 @@ kbl(titanic[c(13, 1238, 2, 306),-1], row.names=FALSE,
 :::
 ::::
 
-<!---
----
-
-<iframe src="https://aarongullickson.shinyapps.io/datasets/">
-</iframe>
---->
-
 # What Can We Do With Data? {.center background-color="black" background-image="images/isaac-smith-1182057-unsplash.jpg}
 
 ## Look at the distribution of a variable
@@ -168,6 +163,7 @@ kbl(titanic[c(13, 1238, 2, 306),-1], row.names=FALSE,
 ::: {.column width="50%"}
 ```{r}
 #| label: dist-variable-quant
+#| echo: false
 ggplot(popularity, aes(x=nominations))+
   geom_histogram(col="grey20",fill="darkgreen")+
   labs(x="number of friend nominations received",
@@ -179,6 +175,7 @@ ggplot(popularity, aes(x=nominations))+
 ::: {.column width="50%"}
 ```{r}
 #| label: dist-variable-cat
+#| echo: false
 ggplot(subset(politics, president!="No Vote"), aes(x=president, y=..prop.., group=1))+
   geom_bar(fill="goldenrod")+
   scale_y_continuous(labels = scales::percent)+
@@ -196,6 +193,7 @@ ggplot(subset(politics, president!="No Vote"), aes(x=president, y=..prop.., grou
 ::: {.column width="50%"}
 ```{r}
 #| label: measure-assoc-quant
+#| echo: false
 ggplot(crimes, aes(x=poverty_rate/100, y=property_rate))+
   geom_point()+
   geom_smooth(method="lm", se=FALSE)+
@@ -210,6 +208,7 @@ ggplot(crimes, aes(x=poverty_rate/100, y=property_rate))+
 ::: {.column width="50%"}
 ```{r}
 #| label: measure-assoc-cat
+#| echo: false
 ggplot(subset(politics, gender!="Other" & president!="No Vote"), 
        aes(x=president, y=..prop.., group=1))+
   geom_bar(aes(fill=gender))+
@@ -229,6 +228,7 @@ ggplot(subset(politics, gender!="Other" & president!="No Vote"),
 ::: {.column width="50%"}
 ```{r}
 #| label: stat-infer-quant
+#| echo: false
 ggplot(crimes, aes(x=poverty_rate/100, y=property_rate))+
   geom_point()+
   geom_smooth(method="lm", se=TRUE)+
@@ -245,6 +245,7 @@ ggplot(crimes, aes(x=poverty_rate/100, y=property_rate))+
 ::: {.column width="50%"}
 ```{r}
 #| label: stat-infer-cat
+#| echo: false
 p <- prop.table(table(politics$president, politics$gender)[1:3,],2)["Trump",c("Male","Female")]
 n <- table(politics$gender)[c("Male","Female")]
 se <- sqrt(p*(1-p)/n)
@@ -277,6 +278,7 @@ ggplot(president, aes(x=gender, y=percent))+
 ```{r}
 #| label: build-models
 #| fig-width: 20
+#| echo: false
 model <- lm(property_rate~poverty_rate, data=crimes)
 df <- predict(model, newdata=data.frame(poverty_rate=c(15,20)))
 
@@ -322,6 +324,7 @@ Statistical models allow us to examine relationships between multiple variables 
 ::: {.column width="50%"}
 ```{r}
 #| label: confounders
+#| echo: false
 set.seed(7)
 x_group1 <- rnorm(200, 10, 4)
 x_group2 <- rnorm(200, 18, 4)
@@ -345,6 +348,7 @@ ggplot(df, aes(x=x, y=y))+
 ::: {.column width="50%"}
 ```{r}
 #| label: interactions
+#| echo: false
 x_group1 <- rnorm(200, 10, 4)
 x_group2 <- rnorm(200, 20, 4)
 #y=5+2*x+4*group2
