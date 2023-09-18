@@ -421,10 +421,15 @@ ggplot(data.frame(means5), aes(x=means5))+
 
 # Confidence Intervals {.center background-color="black" background-image="images/yogi-purnama-en7G3hTSjBQ-unsplash.jpg"}
 
-## Consider this statement
+## Consider this statement {.smaller}
 
-.pull-left[
-```{r echo=FALSE}
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: norm-confidence
+#| echo: false
 x <- seq(from=-5,to=5,by=0.1)
 y <- (1/(sqrt(2*pi)))*exp(-1*(x)^2/(2^2))
 par(mar=c(4,0.1,0.1,0.1))
@@ -437,11 +442,11 @@ axis(1, at=c(-2,0,2), cex=0.7,
 polygon(c(x[31],x[31:71],x[71]),c(0,y[31:71],0), col="grey")
 text(0, max(y)/3, "95% probability that I will\ndraw a sample mean\nthat is within two (1.96)\nstandard deviations of\nthe true population mean")
 ```
-]
 
---
+:::
 
-.pull-right[
+::: {.column .fragment}
+
 ### Reverse the Logic
 
 If I construct the following interval:
@@ -449,7 +454,12 @@ If I construct the following interval:
 $$\bar{x}\pm1.96*\sigma/\sqrt{n}$$
 95% of *all possible samples* that I could have drawn will contain the true population mean $\mu$ within this interval. 
 
-```{r echo=FALSE, fig.height=3}
+::: {.fragment}
+
+```{r}
+#| label: conf-bar
+#| echo: false
+#| fig-height: 5
 par(mar=c(0,0,0,0))
 plot(-2,-2, xlim=c(-1,20), ylim=c(-4,5.1), xaxt="n", yaxt="n", bty="n", xlab="", ylab="", cex.main=1.5)
 x <- rnorm(19,0,1)
@@ -466,38 +476,46 @@ points(1:20, x, pch=19, cex=1.2)
 text(0,0, expression(mu), col="blue", cex=2, pos=3)
 legend(0,5.1,legend=c("sample mean", "confidence interval"), pch=c(19,NA), lty=c(NA,1), bty="n")
 ```
-]
 
----
+:::
 
-## Confidence?
+:::
+
+::::
+
+## Confidence? {.smaller}
 
 We call the interval of $\bar{x}\pm1.96*\sigma/\sqrt{n}$ the **confidence interval**. What does it mean?
 
---
+:::: {.columns}
 
-.pull-left[
+::: {.column .fragment}
+
 ### Not a probability
+
 * It is tempting to claim that there is a 95% probability that the true population mean is in this interval, but according to classic views of probability this is INCORRECT. 
 * The true population mean does not vary. It just is what it is, even if it is unknown. Either your interval contains it or the interval does not contain it. There is no probability.
 * The correct interpretation is that "95% of all possible confidence intervals will contain the true population mean."
-]
 
---
+:::
 
-.pull-right[
-![super confused](images/super_confused.jpg)
-]
+::: {.column .fragment}
 
----
+![](images/super_confused.jpg)
 
-## Calculating the confidence interval
+If this seems confusing, you are normal.
+
+:::
+
+::::
+
+## {{< fa calculator >}} Calculating the confidence interval {.smaller}
 
 The confidence interval is given by $\bar{x}\pm1.96*\sigma/\sqrt{n}$.
 
 But we don't know $\sigma$ because this is the population standard deviation. What can we do?
 
---
+::: {.fragment}
 
 ### Substitute the sample standard deviation
 
@@ -505,7 +523,9 @@ We *can* calculate $\bar{x}\pm1.96*s/\sqrt{n}$.
 
 However, this equation is no longer correct because we need to adjust for the added uncertainty of using a sample statistic where we should use a population parameter.
 
---
+:::
+
+::: {.fragment}
 
 ### Use the t-statistic as a fudge factor
 
@@ -515,22 +535,16 @@ $$\bar{x} \pm t*s/\sqrt{n}$$
 
 where $t$ is the **t-statistic** and will be a number somewhat larger than 1.96.
 
+:::
 
----
-
-## {{< fa calculator >}} Calculating the t-statistic
+## {{< fa calculator >}} Calculating the t-statistic {.smaller}
 
 The t-statistic you get depends on two characteristics:
 
---
-
 * What level of confidence you want. We will always use 95% confidence intervals for this class.
-
---
-
 - The number of **degrees of freedom** for the statistic. This is largely a function of sample size. For the sample mean, the degrees of freedom are given by $n-1$. 
 
---
+::: {.fragment}
 
 In *R*, you can calculate the t-statistic with the `qt` command. Lets say we wanted the t-statistic for our crime data with 51 observations:
 
@@ -538,83 +552,112 @@ In *R*, you can calculate the t-statistic with the `qt` command. Lets say we wan
 qt(.975, 51-1)
 ```
 
+:::
+
 * Although we want the 95% confidence interval but we need to put in 0.975, because we are getting the upper tail of the distribution which has only 2.5% of the area above. 
 * The second argument is the degrees of freedom. 
 
----
 
 ## Example: Property crime rates
 
-.pull-left[
+:::: {.columns}
+
+::: {.column .fragment}
+
 First we need to calculate all the statistics we need:
+
 ```{r}
-mean(crimes$Property)
-sd(crimes$Property)
+mean(crimes$property_rate)
+sd(crimes$property_rate)
 nrow(crimes)
 ```
 
+::: {.fragment}
+
 Now we can calculate the t-statistic and standard error:
+
 ```{r}
 tstat <- qt(.975, 51-1)
-se <- 641.5/sqrt(51)
+se <- 656.6521/sqrt(51)
 ```
-]
 
---
+:::
 
-.pull-right[
+:::
+
+::: {.column .fragment}
+
+
 The upper limit is given by:
 ```{r}
-2894+tstat*se
+2462.758+tstat*se
 ```
 
 The lower limit is given by: 
 ```{r}
-2894-tstat*se
+2462.758-tstat*se
 ```
 
-We are 95% confident that the true mean property crime rate across states is between 2731.6 and 3074.4 crimes per 100,000. 
-]
+::: {.fragment}
 
----
+We are 95% confident that the true mean property crime rate across states is between 2278.1 and 2647.4 crimes per 100,000.
+
+:::
+
+:::
+
+::::
 
 ## `r emo::ji("thinking_face")` Wait, Does that even make sense?
 
-> We are 95% confident that the true mean property crime rate across states is between 2731.6 and 3074.4 crimes per 100,000. 
+> We are 95% confident that the true mean property crime rate across states is between 2278.1 and 2647.4 crimes per 100,000.
 
 We did the math right, but this statement is still nonsense. Why?
 
---
-
 * The crime data are **not a sample**.  
 * We have all fifty states plus the District of Columbia. So we have the entire population.
-* There is nothing to infer. The mean crime rate across states of 2824 per 100,000 is already the population mean. 
+* There is nothing to infer. The mean crime rate across states of 2824 per 100,000 is already the population mean.
 
---
+## Statistical inference only makes sense for samples
 
-### Statistical inference only makes sense for samples
+:::: {.columns}
 
-.pull-left[
+::: {.column .fragment}
+
 #### Proper sample
+
+::: {.nonincremental}
+
 * Popularity data (Add Health)
 * Politics data (ANES)
 * Sexual frequency data (GSS)
 * Earnings data (CPS)
 
-]
+:::
 
-.pull-right[
+:::
+
+::: {.column .fragment}
+
 #### Not a sample
+
+::: {.nonincremental}
+
 * Titanic
 * Crimes
 * Movies
-]
 
----
+:::
 
-## Example: Sexual frequency
+:::
 
-.pull-left[
+::::
+
+## Example: Sexual frequency {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
 Calculate numbers that we need for later:
 ```{r}
 xbar <- mean(sex$sexf)
@@ -624,29 +667,36 @@ se <- s/sqrt(n)
 t <- qt(.975, n-1)
 ```
 
-```{r echo=FALSE}
+```{r}
+#| echo: false
 results <- c(xbar, s, n, se, t)
 names(results) <- c("sample mean","sample standard deviation","sample size (n)","standard error","t-statistic")
 results <- round(results, 3)
 knitr::kable(as.data.frame(results))
 ```
-]
 
---
+:::
 
-.pull-right[
+::: {.column .fragment}
+
 Now calculate the interval:
+
 ```{r}
 xbar+t*se
 xbar-t*se
 ```
 
-I am 95% confident that the mean sexual frequency in the US is between 47.8 and 52.4 times per year.
-]
+::: {.fragment}
 
----
+I am 95% confident that the mean sexual frequency in the US is between 46.1 and 47.7 times per year.
 
-## General form of the confidence interval
+:::
+
+:::
+
+::::
+
+## General form of the confidence interval {.smaller}
 
 We can construct confidence intervals for any statistic whose sampling distribution is a normal distribution. This includes:
 
@@ -656,15 +706,17 @@ We can construct confidence intervals for any statistic whose sampling distribut
 * differences in proportions
 * correlation coefficient
 
+::: {.fragment}
+
 The general form of the confidence interval is given by:
 
 $$\texttt{(sample statistic)} \pm t*(\texttt{standard error})$$ 
 
 The only trick is knowing how to calculate the standard error and degrees of freedom for the t-statistic for each particular statistic.
 
----
+:::
 
-## Cheat sheet for SE and df
+## Cheat sheet for SE and df {.smaller}
 
 | Type                    | SE                                                                               | df for $t$              |
 | :---------------------- | :------------------------------------------------------------------------------- | :---------------------- |
@@ -674,21 +726,21 @@ The only trick is knowing how to calculate the standard error and degrees of fre
 | Proportion Difference   | $\sqrt{\frac{\hat{p}_1*(1-\hat{p}_1)}{n_1}+\frac{\hat{p}_2*(1-\hat{p}_2)}{n_2}}$ | min( $n_1-1$, $n_2-1$ ) |
 | Correlation Coefficient | $\sqrt{\frac{1-r^2}{n-2}}$                                                       | $n-2$                   |
 
-.center[### `r emo::ji("scream")` So many equations!?!
-Don't panic; we will go through examples.]
- 
----
-
 ## Proportion example
 
 What proportion of voters support removing birthright citizenship?
 
-.pull-left[
+:::: {.columns}
+
+::: {.column .fragment}
+
 Use `prop.table` to get the sample proportion:
 ```{r}
 prop.table(table(politics$brcitizen))
 p <- 0.3171307
 ```
+
+::: {.fragment}
 
 Calculate values:
 ```{r}
@@ -696,29 +748,45 @@ n <- nrow(politics)
 se <- sqrt(p*(1-p)/n)
 t <- qt(0.975, n-1)
 ```
-]
 
-.pull-right[
+:::
+
+:::
+
+::: {.column .fragment}
+
 Get confidence intervals:
 ```{r}
 p+t*se
 p-t*se
 ```
 
-I am 95% confident that the true proportion of American adults who support removing birthright citizenship is between 30.3% and 33.1%.
-]
 
----
+::: {.fragment}
+
+I am 95% confident that the true proportion of American adults who support removing birthright citizenship is between 30.3% and 33.1%.
+
+:::
+
+:::
+
+::::
  
-## Mean difference example
+## Mean difference example {.smaller}
 
 What is the difference in sexual frequency between married and never married individuals?
+
+::: {.fragment}
 
 Use `tapply` to get means by groups and then calculate the difference you want:
 ```{r}
 tapply(sex$sexf, sex$marital, mean)
 diff <- 56.094106-53.617704
 ```
+
+:::
+
+::: {.fragment}
 
 Use `tapply` again to calculate standard deviations by group for the SE calculation:
 ```{r}
@@ -728,9 +796,11 @@ sd1 <- 49.95361
 sd2 <- 58.81459
 ```
 
----
+:::
 
-## Mean difference example, continued
+## Mean difference example, continued {.smaller}
+
+::: {.fragment}
 
 Use `table` to get sample size by group:
 ```{r}
@@ -739,26 +809,33 @@ n1 <- 1052
 n2 <- 514
 ```
 
-.pull-left[
+:::
+
+::: {.fragment}
+
+Calculate standard error, t-statistic, and confidence intervals:
+
 ```{r}
 se <- sqrt(sd1^2/n1+sd2^2/n2)
 t <- qt(0.975,n2-1)
 diff+t*se
 diff-t*se
 ```
-]
 
-.pull-right[
+:::
+
+::: {.fragment}
+
 I am 95% confident that, among American adults, married individuals have sex between 8.4 more times per year or 3.45 less times per year than never married individuals, on average. 
-]
 
----
+:::
 
-## Proportion difference example
+## Proportion difference example {.smaller}
 
 What is the difference in support for removing birthright citizenship between those who have served in the military and those who have not? 
 
-.pull-left[
+::: {.fragment}
+
 Use `prop.table` to calculate proportions for each group:
 ```{r, highlight.output=5}
 prop.table(table(politics$brcitizen, 
@@ -767,9 +844,11 @@ p1 <- 0.3029902
 p2 <- 0.4335512
 diff <- p2-p1
 ```
-]
 
-.pull-right[
+:::
+
+::: {.fragment}
+
 Use `table` to get sample sizes by group:
 
 ```{r}
@@ -777,38 +856,54 @@ table(politics$military)
 n1 <- 3779
 n2 <- 459
 ```
-]
 
----
+:::
 
-## Proportion difference example, continued
+## Proportion difference example, continued {.smaller}
 
+::: {fragment}
 
 Calculate standard error and t-statistic:
+
 ```{r}
 se <- sqrt(p1*(1-p1)/n1+p2*(1-p2)/n2)
 t <- qt(0.975, n2-1)
 ```
 
-Confidence intervals:
+:::
+
+::: {fragment}
+
+Calculate confidence intervals:
+
 ```{r}
 diff-t*se
 diff+t*se
 ```
 
+:::
+
+
+::: {.fragment}
+
 I am 95% confident that the percent in support for removing birthright citizenship is between 8.3% and 17.8% higher among who have served in the military than those who have not. 
 
----
+:::
 
-## Correlation coefficent example
+## Correlation coefficent example {.smaller}
 
 What is the correlation between age and wages among US workers? 
 
-.pull-left[
+::: {.fragment}
+
 Use `cor` command to get the sample correlation coefficient:
 ```{r}
 r <- cor(earnings$age, earnings$wages)
 ```
+
+:::
+
+::: {.fragment}
 
 Use `nrow` to get sample size and then calculate standard error and t-statistic.
 ```{r}
@@ -816,18 +911,25 @@ n <- nrow(earnings)
 se <- sqrt((1-r^2)/(n-2))
 t <- qt(0.975, n-2)
 ```
-]
 
-.pull-right[
+:::
+
+::: {.fragment}
+
 Calculate confidence intervals:
 ```{r}
 r - t*se
 r + t*se
 ```
 
-I am 95% confident that the true correlation coefficient between age and wages among US workers is between 0.214 and 0.224. 
-]
+:::
 
+
+::: {.fragment}
+
+I am 95% confident that the true correlation coefficient between age and wages among US workers is between 0.214 and 0.224. 
+
+:::
 
 # Hypothesis Tests {.center background-color="black" background-image="images/chuttersnap-UmncJq4KPcA-unsplash.jpg"}
 
