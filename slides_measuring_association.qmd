@@ -1,0 +1,1087 @@
+---
+title: "Measuring Association"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(here)
+source(here("scripts","check_packages.R"))
+source(here("scripts","set_theme.R"))
+source(here("scripts","load_example_data.R"))
+```
+
+## Thinking about association
+
+The primary goal of most social science statistical analysis is to establish whether there is an association between variables and to describe the strength and direction of this association.
+
+- Is income inequality in a country related to life expectancy?
+- Do stronger networks predict better success at finding jobs for job seekers?
+- Does population size and growth predict environmental degradation? 
+- How does class affect party affiliation and voting?
+
+## Association vs. causation {.smaller}
+
+We often think about the relationships we observe in data as being causally determined, but the simple measurement of association is insufficient to establish a necessary causal connection between the variables.
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+#### Spuriousness
+The association between two variables could be generated because they are both related to a third variable that is actually the cause. 
+
+```{r}
+#| label: spuriousness
+#| echo: false
+#| fig-height: 5
+par(mar=c(0,0,0,0))
+plot(-100,-100, xaxt="n", yaxt="n",
+     xlim=c(0,10),
+     ylim=c(0,10), bty="n")
+rect(0,1,4,4, col="skyblue")
+text(2,2.5, "Speeding Tickets")
+rect(6,1,10,4, col="skyblue")
+text(8,2.5, "Accidents")
+rect(3,6,7,10, col="red")
+text(5, 8, "Miles Driven")
+arrows(4.5,5.8,2.5,4.2)
+arrows(5.5,5.8,8,4.2)
+arrows(4.2,2.5,5.8,2.5, lty=2)
+text(3, 5, "+")
+text(7, 5, "+")
+text(5, 3, "+")
+```
+
+:::
+
+::: {.column .fragment}
+
+#### Reverse causality
+We may think that one variable causes the other, but it is equally possible that the causal relationship is the other way. 
+
+
+```{r}
+#| label: reverse-causality
+#| echo: false
+#| fig-height: 5
+par(mar=c(0,0,0,0))
+plot(-100,-100, xaxt="n", yaxt="n",
+     xlim=c(0,10),
+     ylim=c(0,5), bty="n")
+rect(0,1,4,4, col="skyblue")
+text(2,2.5, "Income")
+rect(6,1,10,4, col="skyblue")
+text(8,2.5, "Health")
+arrows(4,2.5,6,2.5, code=3)
+text(5, 3, "?")
+```
+
+:::
+
+::::
+
+## Different methods for measuring association
+
+::: {.fragment}
+
+### Two categorical variables
+
+The **two-way table** and **comparative barplots**
+
+:::
+
+::: {.fragment}
+
+### Categorical and quantitative variable
+
+**Mean differences** and **comparative boxplots**
+
+:::
+
+::: {.fragment}
+
+### Two quantitative variables
+
+The **correlation coefficient** and **scatterplots**
+
+:::
+
+# The Two-Way Table {.center background-color="black" background-image="images/jan-jakub-nanista-UHyrjKPsshk-unsplash.jpg"}
+
+## The two-way table
+
+The **two-way table** (or **cross-tabulation**) gives the **joint distribution** of two categorical variables. 
+
+::: {.fragment}
+
+We can create a two-way table in *R* using the `table` command but this time we feed in two different variables. Here is an example using sex and survival on the titanic:
+
+```{r}
+#| label: command-table
+tab <- table(titanic$sex, titanic$survival)
+tab
+```
+
+There were `r tab[1,1]` female survivors, `r tab[1,2]` female deaths, and so on.
+
+:::
+
+## Raw numbers are never enough {.smaller}
+
+| Sex   | Survived| Died|
+|:------|--------:|----:|
+|Female | 339     | 127 |
+|Male   | 161     | 682 |
+
+* It might seem like the much higher number of male deaths is enough to claim that there is a relationship between gender and survival, but this comparison would be flawed. Why?
+* There were a lot more male passengers on the Titanic than female passengers. So even if they had the same probability of survival, we would expect to see more male deaths. 
+* We need to compare the **proportion** of deaths among men to the **proportion** of deaths among women to make a proper comparison.
+* Never, ever compare raw numbers directly. Instead, we need to first calculate a **conditional distribution** using proportions. In this case, I want the distribution of survival **conditional** on gender. 
+
+## Calculate maginal distributions {.smaller}
+
+A first step in establishing the relationship is to calculate the **marginal distributions** of the row and column variables. The marginal distributions are simply the distributions of each categorical variable separately. We can calculate these from the `tab` object I created using the `margin.table` command in *R*:
+
+```{r}
+#| label: command-margin-table
+margin.table(tab, 1)
+margin.table(tab, 2)
+```
+
+Note that the the option `1` here gives me the row marginal and the option `2` gives me the column marginal.
+
+## Distribution of survival conditional on sex {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+| Sex   | Survived| Died|  Total  |
+|:------|--------:|----:|--------:|
+|Female | 339     | 127 |   466   |
+|Male   | 161     | 682 |   843   |
+|Total  | 500     | 809 |   1309  |
+
+::: {.fragment}
+
+To get distribution of survival by gender, divide each row by row totals: 
+
+| Sex   | Survived| Died|  Total  |
+|:------|--------:|----:|--------:|
+|Female | 339/466     | 127/466 |   466   |
+|Male   | 161/843     | 682/843 |   843   |
+
+:::
+
+:::
+
+::: {.column .fragment}
+
+| Sex   | Survived| Died|  Total  |
+|:------|--------:|----:|--------:|
+|Female | 0.727     | 0.273 |   1.0   |
+|Male   | 0.191     | 0.809 |   1.0   |
+
+* Read the distribution within the rows:
+  * 72.7% of women survived and 27.3% of women died.
+  * 19.1% of men survived and 80.9% of men died. 
+* Men were much more likely to die on the Titanic than women.
+
+:::
+
+:::
+
+## Calculating conditional distributions in *R*
+
+You can use `prop.table` to calculate conditional distributions in *R*.
+
+```{r}
+#| label: command-prop-table
+tab <- table(titanic$sex, titanic$survival)
+prop.table(tab, 1)
+```
+
+* Take note of the `1` as the second argument in `prop.table`. You **must** include this to get the distribution of the column variable conditional on the row. 
+* Make sure that the proportions sum up to one within the rows to check yourself. 
+
+
+## The other conditional distribution
+
+```{r}
+#| label: other-conditional
+prop.table(tab, 2)
+```
+
+What changed? 
+
+* Notice that the rows do not sum to one anymore. However, the columns do sum to one. 
+* Because of the `2` in the `prop.table` command, we are now looking at the distribution of gender conditional on survival.
+
+## Comparative barplot by faceting
+
+```{r}
+#| label: comparative-barplot
+#| echo: false
+#| fig-width: 24
+#| fig-height: 14
+ggplot(titanic, aes(x=survival, y=..prop.., group=1))+
+  geom_bar()+
+  scale_y_continuous(label=scales::percent)+
+  labs(y="percent surviving", x=NULL,
+       title="Distribution of Titanic survival by gender")+
+  facet_wrap(~sex)
+```
+
+---
+
+## Code and output for comparative barplot {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: comp-barplot-example1
+#| eval: false
+ggplot(titanic, aes(x=survival, y=..prop..,
+                    group=1))+
+  geom_bar()+
+  scale_y_continuous(label=scales::percent)+
+  labs(y="percent surviving", x=NULL,
+       title="Distribution of Titanic survival by gender")+
+  facet_wrap(~sex)+
+  theme_bw()
+```
+
+::: {.fragment data-code-focus="7"}
+The code here is identical to that for a simple barplot except for the addition of `facet_wrap`. The `facet_wrap` command allows us to make separate panels of the same graph across the categories of some other variable. 
+
+:::
+
+:::
+
+::: {.column}
+
+```{r}
+#| label: comp-barplot-example2
+#| echo: false
+ggplot(titanic, aes(x=survival, y=..prop..,
+                    group=1))+
+  geom_bar()+
+  scale_y_continuous(label=scales::percent)+
+  labs(y="percent surviving", x=NULL,
+       title="Distribution of Titanic survival by gender")+
+  facet_wrap(~sex)+
+  theme_bw()
+```
+
+:::
+
+::::
+
+## Comparative barplot by fill aesthetic {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: comp-barplot-color1
+#| eval: false
+ggplot(titanic, aes(x=survival, y=..prop..,
+                    group=sex, fill=sex))+
+  geom_bar(position="dodge")+
+  scale_y_continuous(label=scales::percent)+
+  labs(y="percent surviving", x=NULL,
+       title="Distribution of Titanic survival by gender",
+       fill="gender")+
+  theme_bw()
+```
+
+::: {.fragment data-code-focus="2"}
+
+We `group` by sex and also add a `fill` aesthetic that will apply different colors by sex.
+
+:::
+
+::: {.fragment data-code-focus="3"}
+
+We add `position="dodge"` to `geom_bar` so that bars are drawn side-by-side rather than stacked.
+
+:::
+
+::: {.fragment data-code-focus="7"}
+
+We add `fill="gender"` to `labs` so that our legend has a nice title.
+
+:::
+ 
+:::
+
+::: {.column}
+
+```{r}
+#| label: comp-barplot-color2
+#| echo: false
+ggplot(titanic, aes(x=survival, y=..prop..,
+                    group=sex, fill=sex))+
+  geom_bar(position="dodge")+
+  scale_y_continuous(label=scales::percent)+
+  labs(y="percent surviving", x=NULL,
+       title="Distribution of Titanic survival by gender",
+       fill="gender")+ #<<
+  theme_bw()
+```
+
+:::
+
+::::
+
+## {{< fa user-ninja >}} Presidential choice by education {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: vote-by-educ
+# first command drops non-voters
+temp <- droplevels(subset(politics, 
+                          president!="No Vote")) 
+tab <- table(temp$educ, temp$president)
+# round and multiply prop.table by 100
+# to get percents
+props <- round(prop.table(tab, 1),3)*100
+props
+```
+
+:::
+
+::: {.column}
+
+```{r}
+#| label: vote-educ-barplot
+#| fig-height: 6
+ggplot(subset(politics, president!="No Vote"), 
+       aes(x=president, y=..prop.., 
+           group=educ, fill=educ))+
+  geom_bar(position = "dodge")+
+  labs(title="presidential choice by education",
+       x=NULL,
+       y="percent of education group",
+       fill="education")+
+  scale_y_continuous(label=scales::percent)+
+  scale_fill_brewer(palette="YlGn") #<<
+```
+
+:::
+
+::::
+
+## {{< fa user-ninja >}} Super fancy three-way table {.smaller}
+
+:::: {.columns}
+
+::: {.column width="45%"}
+
+```{r}
+#| label: three-way-comp-barplot1
+#| eval: false
+ggplot(subset(politics, president!="No Vote" &
+                gender!="Other"), 
+       aes(x=president, y=..prop.., 
+           group=educ, fill=educ))+
+  geom_bar(position = "dodge")+
+  labs(title="presidential choice by education",
+       x=NULL,
+       y="percent of education group",
+       fill="education")+
+  scale_y_continuous(label=scales::percent)+
+  scale_fill_brewer(palette="YlGn")+
+  facet_wrap(~gender)
+```
+
+::: {.fragment data-code-focus="12"}
+
+Just add a `facet_wrap` to see how education affected presidential voting differently for men and women.
+
+:::
+
+:::
+
+::: {.column width="55%"}
+
+```{r}
+#| label: three-way-comp-barplot2
+#| echo: false
+#| fig-height: 10
+ggplot(subset(politics, president!="No Vote" &
+                gender!="Other"), 
+       aes(x=president, y=..prop.., 
+           group=educ, fill=educ))+
+  geom_bar(position = "dodge")+
+  labs(title="presidential choice by education",
+       x=NULL,
+       y="percent of education group",
+       fill="education")+
+  scale_y_continuous(label=scales::percent)+
+  scale_fill_brewer(palette="YlGn")+
+  facet_wrap(~gender) #<<
+```
+
+:::
+
+::::
+
+## How to compare differences in probabilities? {.smaller}
+
+```{r}
+round(prop.table(table(titanic$sex, titanic$survival), 1)*100,2)
+```
+
+We could look at the difference (72.75-19.1=53.65), but this can be misleading because as the overall probability approaches either 0% or 100%, the difference must get smaller.
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+### Titanic
+![](images/titanic.jpg)
+
+38% of passengers survived
+
+:::
+
+::: {.column .fragment}
+
+### Costa Concordia
+![](images/costa_concordia.jpg)
+
+Roughly 99.2% of passengers survived
+
+:::
+
+::::
+
+## Calculate the odds {.smaller}
+
+The **odds** is the ratio of "successes" to "failures." Convert probabilities to odds by taking $$\texttt{Odds}=\texttt{probability}/(1-\texttt{probability})$$
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+#### Women
+
+If 72.75% of women survived, then the odds of survival for women are $$0.7275/(1-0.7272)=2.67$$
+
+About 2.67 women survived for every woman that died.
+
+:::
+
+::: {.column .fragment}
+
+#### Men
+
+If 19.1% of men survived, then the odds of survival for men are $$0.191/(1-0.191)=0.236$$
+
+About 0.236 men survived for every man that died. Alternatively, 0.236 is close to 0.25, so about one man survived for every four that died. 
+
+:::
+
+::::
+
+## Calculate the odds ratio {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+### Odds ratio
+To determine the difference in our odds we take the **odds ratio** by dividing one of the odds by the other.
+
+$$\texttt{Odds ratio}=\frac{O_1}{O_2}=\frac{2.67}{0.236}=11.31$$
+
+The odds of surviving the Titanic were 11.31 times higher for women than for men.
+
+:::
+
+::: {.column .fragment}
+
+### Cross-product method
+| Sex   | Survived| Died|
+|:------|--------:|----:|
+|Female | **339**     | *127* |
+|Male   | *161*     | **682** |
+
+Multiply the **diagonal** bolded values together and divide by the product of the **reverse-diagonal** italicized values to get the same odds ratio.
+
+$$\frac{339*682}{161*127}=11.31$$
+
+:::
+
+::::
+
+# Mean Differences {.center background-color="black" background-image="images/charles-cMvDruWjv0Y-unsplash.jpg"}
+
+---
+
+## Comparative boxplots
+
+```{r}
+#| label: comp-boxplot
+#| echo: false
+#| fig-width: 24
+#| fig-height: 14
+ggplot(earnings, aes(x=reorder(race, wages, median), 
+                     y=wages))+
+  geom_boxplot(fill="grey", outlier.color="red")+
+  scale_y_continuous(label=scales::dollar)+
+  labs(x=NULL, y="hourly wages",
+       title="Comparative boxplots of wages by race",
+       caption="Source: CPS 2018")
+```
+
+---
+
+## Code and output for comparative boxplot {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{r comp-boxplot, fig.show="hide"}
+#| label: comp-boxplot-show1
+#| eval: false
+ggplot(earnings, 
+       aes(x=reorder(race, wages, median), #<<
+           y=wages))+
+  geom_boxplot(fill="grey", outlier.color="red")+
+  scale_y_continuous(label=scales::dollar)+
+  labs(x=NULL, y="hourly wages",
+       title="Comparative boxplots of wages by race",
+       caption="Source: CPS 2018")+
+  theme_bw()
+```
+
+::: {.fragment data-code-focus="2"}
+We just need to add an `x` aesthetic (in this case race) to the plot to get a comparative boxplot.
+
+In this case, I have also used the `reorder` command to reorder my categories so they go from smallest to largest median wage by race. This is not necessary but will add more information to the boxplot. 
+:::
+
+:::
+
+::: {.column}
+
+```{r}
+#| label: comp-boxplot-show2
+#| echo: false
+ggplot(earnings, 
+       aes(x=reorder(race, wages, median),
+           y=wages))+
+  geom_boxplot(fill="grey", outlier.color="red")+
+  scale_y_continuous(label=scales::dollar)+
+  labs(x=NULL, y="hourly wages",
+       title="Comparative boxplots of wages by race",
+       caption="Source: CPS 2018")+
+  theme_bw()
+```
+
+:::
+
+::::
+
+## Income and presidential choice
+
+```{r}
+#| label: comp-boxplot-vote-income
+#| echo: false
+#| fig-width: 24
+#| fig-height: 14
+ggplot(politics, aes(x=reorder(president, income, median), 
+                     y=income*1000))+
+  geom_boxplot(fill="grey", outlier.color = "red")+
+  scale_y_continuous(label=scales::dollar)+
+  labs(y="household income",
+       x=NULL,
+       title="Distribution of household income by presidential choice")
+```
+
+## Calculating mean differences {.smaller}
+
+Use the `tapply` command to get the mean income of respondents separately by who they voted for: 
+
+```{r}
+tapply(politics$income, politics$president, mean)
+```
+
+* The first argument is the quantitative variable
+* The second argument is the categorical variable
+* The third argument is the function you want to run on the subsets of the quantitative variable
+
+::: {.fragment}
+
+The mean difference is given by: $$80.23-77.33=2.9$$ Clinton voters had a household income $2900 higher than Trump voters, on average. 
+
+:::
+
+## What about median differences? {.smaller}
+
+```{r}
+tapply(politics$income, politics$president, median)
+```
+
+::: {.fragment}
+
+Clinton voters had median household incomes $2000 **lower** than Trump voters. Why are the results different between the mean and median? 
+
+:::
+
+::: {.fragment}
+
+:::: {.columns}
+
+::: {.column}
+
+The income distribution of Clinton supporters is more right-skewed than Trump supporters so it has a higher mean but lower median. However, the differences are relatively small regardless. 
+
+:::
+
+::: {.column}
+
+```{r}
+#| label: income-dist-comp-vote
+#| echo: false
+#| fig-height: 6
+ggplot(subset(politics, president=="Clinton" | president=="Trump"),
+              aes(x=income, y=..density.., fill=president))+
+  geom_histogram(data=subset(politics, president=="Clinton"), alpha=0.6)+
+  geom_histogram(data=subset(politics, president=="Trump"), alpha=0.6)+
+  labs(x="household income in thousands of USD",
+       fill="presidential vote",
+       title="distribution of income by presidential vote")+
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+```
+
+:::
+
+::::
+
+:::
+
+# Scatterplot and Correlation Coefficient {.center background-color="black" background-image="images/mel-poole-ToI01Apo4Pk-unsplash.jpg"}
+
+## Constructing a scatterplot
+
+```{r}
+#| label: construct-scatterplot1
+#| echo: false
+#| fig-width: 24
+#| fig-height: 14
+ggplot(crimes, aes(x=Unemployment, y=Property))+
+  xlim(2,9)+
+  ylim(1500,5000)+
+  annotate("label", 3.85, 4500,
+           label="We call the variable on the y-axis the dependent variable.\nThis is the outcome variable we want to predict.",
+           size=10)+
+  annotate("label", 6.5, 1600,
+           label="We call the variable on the x-axis the independent variable.\nThis is the variable we think predicts the outcome.",
+           size=10)+
+  labs(x="unemployment rate",
+       y="property crimes per 100,000 population",
+       title="Start by defining axes correctly")
+```
+
+## Constructing a scatterplot
+
+```{r}
+#| label: construct-scatterplot2
+#| echo: false
+#| fig-width: 24
+#| fig-height: 14
+xvalue <- subset(crimes, state=="Alaska")$unemploy_rate
+yvalue <- subset(crimes, state=="Alaska")$property_rate
+ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
+  xlim(2,9)+
+  ylim(1500,5000)+
+  geom_hline(yintercept = yvalue, linetype=3)+
+  annotate("label", 3, yvalue*1, label="Alaska's property crime rate",
+           size=10)+
+  geom_vline(xintercept = xvalue, linetype=3)+
+  annotate("label", xvalue*1, 2000, label="Alaska's\nunemployment rate", 
+           size=10)+
+  geom_point(data=subset(crimes, state=="Alaska"), size=4)+
+  geom_text_repel(data=subset(crimes, state=="Alaska"), 
+                  aes(label=state), size=10)+
+  labs(x="unemployment rate",
+       y="property crimes per 100,000 population",
+       title="Adding the first point to the scatterplot")
+```
+
+## Constructing a scatterplot
+
+```{r}
+#| label: construct-scatterplot3
+#| echo: false
+#| fig-width: 24
+#| fig-height: 14
+ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
+  xlim(2,9)+
+  ylim(1500,5000)+
+  geom_point(size=3)+
+  labs(x="unemployment rate",
+       y="property crimes per 100,000 population",
+       title="Adding all the points")
+```
+
+## Code and output for scatterplot {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: code-scatter1
+#| eval: false
+ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
+  geom_point()+
+  labs(x="unemployment rate",
+       y="property crimes per 100,000 population",
+       title="Property crime rates by unemployment")
+```
+
+::: {.fragment data-code-focus="1"}
+Define `x` and `y` variables in aesthetics.
+:::
+
+::: {.fragment data-code-focus="2"}
+Use `geom_point` to draw the points.
+:::
+
+::: {.fragment data-code-focus="3-5"}
+Use good labeling as always.
+:::
+
+:::
+
+::: {.column}
+
+```{r}
+#| label: code-scatter2
+#| echo: false
+ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
+  geom_point(size=2)+
+  labs(x="unemployment rate",
+       y="property crimes per 100,000 population",
+       title="Property crime rates by unemployment")
+```
+
+:::
+
+::::
+
+## What are we looking for? {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: code-scatter3
+#| echo: false
+ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
+  geom_point(size=2)+
+  labs(x="unemployment rate",
+       y="property crimes per 100,000 population",
+       title="Property crime rates by unemployment")
+```
+
+:::
+
+::: {.column}
+
+Direction
+: Is the relationship positive (y is high when x is high) or negative (y is low when x is high)?
+
+Linearity
+: Does the relationship look linear or does it "curve?"
+
+Strength
+: Do points fall in a broad cloud or a tight line?
+
+Outliers
+: Are there outliers and are they inconsistent with the general trend?
+
+:::
+
+::::
+
+## Overplotting with discrete variables
+
+:::: {.columns}
+
+
+::: {.column .fragment}
+
+```{r}
+#| label: scatter-overplot
+#| echo: false
+ggplot(popularity, aes(x=pseudo_gpa, y=nominations))+
+  geom_point()+
+  labs(x="student GPA",
+       y="number of friend nominations",
+       title="All the points plot on top of each other!")
+```
+
+:::
+
+::: {.column .fragment}
+
+```{r}
+#| label: scatter-jitter-alpha
+#| echo: false
+ggplot(popularity, aes(x=pseudo_gpa, y=nominations))+
+  geom_jitter(alpha=0.2, width=0.3, height=0.4)+
+  labs(x="student GPA",
+       y="number of friend nominations",
+       title="Jittering and semi-transparency help")
+```
+
+:::
+
+::::
+
+## Overplotting corrections {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: overplot-commands1
+#| eval: false
+ggplot(earnings, aes(x=age, y=wages))+
+  geom_jitter(alpha=0.01, width=0.4)+
+  labs(x="worker age",
+       y="hourly wage")
+```
+
+::: {.fragment data-code-focus="2"}
+
+* `geom_jitter` instead of `geom_point` will add some randomness to x and y values so that points are not plotted on top of each other. The `width` and `height` arguments can be adjusted for more or less randomness (scale 0-1). 
+* The `alpha` argument will create semi-transparent points (scale 0-1). I have it set very low because of the large number of points, but you should adjust as needed.
+
+:::
+
+:::
+
+::: {.column}
+
+```{r}
+#| label: overplot-commands2
+#| echo: false
+ggplot(earnings, aes(x=age, y=wages))+
+  geom_jitter(alpha=0.05)+
+  labs(x="worker age",
+       y="hourly wage")
+```
+
+:::
+
+::::
+
+## {{< fa user-ninja >}} Adding a third variable by color {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: scatter-color1
+#| eval: false
+ggplot(popularity, aes(x=nsports, y=nominations,
+                       color=gender))+
+  geom_jitter(alpha=0.4, width=0.5, height=0.4)+
+  scale_color_viridis_d(end = 0.75)+
+  labs(x="number of sports played",
+       y="number of friend nominations",
+       color="gender")
+```
+
+::: {.fragment data-code-focus="2"}
+
+I just add a third aesthetic to the `aes` command for `color`. This will color the points by the category of the variable used (in this case, gender).
+
+:::
+
+::: {.fragment data-code-focus="4"}
+
+I am using the viridis color scheme here, but you can adjust the palette if you like.
+
+:::
+
+:::
+
+::: {.column}
+
+```{r}
+#| label: scatter-color2
+#| echo: false
+ggplot(popularity, aes(x=nsports, y=nominations,
+                       color=gender))+
+  geom_jitter(alpha=0.4, width=0.5, height=0.4)+
+  scale_color_viridis_d(end = 0.75)+
+  labs(x="number of sports played",
+       y="number of friend nominations",
+       color="gender")
+```
+
+:::
+
+::::
+
+## The correlation coefficient {.smaller}
+
+The correlation coefficient ($r$) measures the association between two quantitative variables. The formula is:
+
+$$r=\frac{1}{n-1}\sum^n_{i=1} (\frac{x_i-\bar{x}}{s_x}*\frac{y_i-\bar{y}}{s_y})$$
+
+::: {.fragment}
+
+### {{< fa compact-disc >}} Let's break it down
+
+:::
+
+::: {.fragment}
+
+$(x_i-\bar{x})$ and $(y_i-\bar{y})$: Subtract the mean from each value of x and y to get distance above and below mean.
+
+```{r}
+#| label: calc-distance
+crimes$x_dist <- crimes$unemploy_rate-mean(crimes$unemploy_rate)
+crimes$y_dist <- crimes$property_rate-mean(crimes$property_rate)
+```
+
+:::
+
+::: {.fragment}
+
+$(x_i-\bar{x})/s_x$ and $(y_i-\bar{y})/s_y$: Divide the difference by the standard deviation of $x$ and $y$. We now have the number of standard deviations above or below the mean.
+
+```{r}
+#| label: standardize
+crimes$x_sd <- crimes$x_dist/sd(crimes$unemploy_rate)
+crimes$y_sd <- crimes$y_dist/sd(crimes$property_rate)
+```
+
+:::
+
+## Evidence of positive or negative relationship
+
+```{r}
+#| label: scatter-evidence
+#| echo: false
+#| fig-width: 24
+#| fig-height: 14
+crimes$evidence <- ifelse(crimes$x_sd*crimes$y_sd>0, "Positive", "Negative")
+ggplot(crimes, aes(x=x_sd, y=y_sd))+
+  geom_rect(xmin=-10, xmax=0, ymin=0, ymax=10, fill="red", alpha=0.2)+
+  geom_rect(xmin=0, xmax=10, ymin=0, ymax=-10, fill="red", alpha=0.2)+
+  geom_rect(xmin=-10, xmax=0, ymin=0, ymax=-10, fill="blue", alpha=0.2)+
+  geom_rect(xmin=0, xmax=10, ymin=0, ymax=10, fill="blue", alpha=0.2)+
+  geom_hline(yintercept = 0, linetype=2)+
+  geom_vline(xintercept = 0, linetype=2)+
+  annotate("label", -2, 2.5, label="negative", size=8)+
+  annotate("label", 2, -1.5, label="negative", size=8)+
+  annotate("label", 2, 2.5, label="positive", size=8)+
+  annotate("label", -2, -1.5, label="positive", size=8)+
+  geom_point(color="white", size=4)+
+  geom_point(color="black", size=3)+
+  labs(x=expression((x[i]-bar(x)) / s[x]),
+       y=expression((y[i]-bar(y)) / s[y]))
+```
+
+## The correlation coefficient {.smaller}
+
+::: {.fragment}
+
+$(\frac{x_i-\bar{x}}{s_x}*\frac{y_i-\bar{y}}{s_y})$: Multiply x and y values together. The results provides evidence of negative or positive relationship.
+
+```{r}
+#| label: product-evidence
+crimes$evidence <- crimes$x_sd*crimes$y_sd
+```
+
+:::
+
+::: {.fragment}
+
+$\sum^n_{i=1} (\frac{x_i-\bar{x}}{s_x}*\frac{y_i-\bar{y}}{s_y})$: Sum up all the evidence, positive and negative.
+
+```{r}
+#| label: sum-evidence
+sum_evidence <- sum(crimes$evidence)
+```
+
+:::
+
+::: {.fragment}
+
+$\frac{1}{n-1}\sum^n_{i=1} (\frac{x_i-\bar{x}}{s_x}*\frac{y_i-\bar{y}}{s_y})$: Divide result by sample size to get final correlation coefficient.
+
+```{r}
+sum_evidence/(nrow(crimes)-1)
+```
+
+::: 
+
+::: {.fragment}
+
+Alternatively, use the `cor` command: `r emo::ji("sunglasses")`
+
+```{r}
+cor(crimes$unemploy_rate, crimes$property_rate)
+```
+
+:::
+
+## What does the correlation coefficient mean?
+
+{{< fa signs-post >}} Direction
+: The sign of $r$ indicates the direction of the relationship. Positive values indicate a positive relationship and negative values indicate a negative relationship. Zero indicates no relationship.
+
+`r emo::ji("muscle")` Strength
+: The **absolute value** of $r$ indicates the strength of the relationship. The maximum value of $r$ is 1 and the minimum value is -1. You only reach these values if the points fall exactly on a straight line.
+
+`r emo::ji("warning")` Limitations
+: $r$ is only applicable for linear relationships and $r$ can be severely affected by outliers.
+
+##  Simulated examples of correlation strength
+
+```{r}
+#| label: scatter-simulated
+#| echo: false
+#| fig-width: 24
+#| fig-height: 14
+r_values <- seq(from=0.0, length=12, by=0.09)
+r <- lapply(r_values, function(x) {cbind(c(1,x),c(x,1))})
+temp <- lapply(r, function(x) {mvrnorm(300,c(0,0),Sigma=x)})
+correlations <- NULL
+for(i in 1:length(r_values)) {
+  correlations <- rbind(correlations, temp[[i]])
+}
+correlations <- as.data.frame(correlations)
+colnames(correlations) <- c("x","y")
+correlations$r <- rep(r_values, each=300)
+ggplot(correlations, aes(x=x, y=y))+
+  geom_point(alpha=0.5)+
+  facet_wrap(~r)+
+  theme_bw()+
+  theme(axis.title = element_blank(), strip.text=element_text(size=30),
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+```

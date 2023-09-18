@@ -12,7 +12,7 @@ packages = c("here","tidyverse", "broom",
              "sandwich","lmtest","survey","mice",
              "margins","logistf",
              "gapminder",
-             "texreg", "pander", "kableExtra",
+             "texreg", "pander", "kableExtra","gt",
              "latex2exp")
 
 package.check <- lapply(packages, FUN = function(x) {
