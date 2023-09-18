@@ -933,9 +933,18 @@ I am 95% confident that the true correlation coefficient between age and wages a
 
 # Hypothesis Tests {.center background-color="black" background-image="images/chuttersnap-UmncJq4KPcA-unsplash.jpg"}
 
-## Game of make believe
+## Game of make believe {.smaller}
 
-.pull-left[
+:::: {.columns}
+
+::: {.column width="30%"}
+
+![](images/winnie_pooh.jpg)
+
+:::
+
+::: {.column width="70%"}
+
 We know what the sampling distribution should look like, but we don't know its center (the true population parameter). 
 
 So we set up a game of make-believe:
@@ -943,58 +952,56 @@ So we set up a game of make-believe:
 * Assume that the true parameter is some value.
 * If assumption is correct, what is the probability that I would have gotten the sample statistic that I got?
 * If this probability is really low, then I reject my assumption. 
-]
 
+:::
 
-.pull-right[
-![Winnie the Pooh and Christopher Robin](images/winnie_pooh.jpg)
-]
-
----
+::::
 
 ## An almost true story
 
-.pull-left[
-![Coke bottle](images/coke.png)
-]
+:::: {.columns}
 
-.pull-right[
-Coca-Cola used to do promotionals where it claimed that 1 in 12 bottle caps (8.3%) on a Coca-Cola bottle would earn a free Coke.
+::: {.column width="25%"}
 
-When I was a busy assistant professor trying to get tenure, I bought 100 bottles of Coke from the downstairs vending machine and only got 5 winners (5%). (The number is not true, but it is nice and round)
+![](images/coke.png)
 
-Does the difference between my winning percentage and that claimed by Coca-Cola show that they were lying?
-]
+:::
 
----
+::: {.column width="75%"}
 
-## Lets set up a null hypothesis
+* Coca-Cola used to do promotionals where it claimed that 1 in 12 bottle caps (8.3%) on a Coca-Cola bottle would earn a free Coke.
+* When I was a busy assistant professor trying to get tenure, I bought 100 bottles of Coke from the downstairs vending machine and only got 5 winners (5%). (The number is not true, but it is nice and round)
+* Does the difference between my winning percentage and that claimed by Coca-Cola show that they were lying?
 
---
+:::
 
-.pull-left[
+::::
+
+## Lets set up a null hypothesis {.smaller}
 ### In English
+
 * The **null hypothesis** ( $H_0$ ) is your assumption about the true parameter value. It is your prior assumption unless the data can prove you wrong. 
-
 * I assume that Coca-Cola is telling the truth, until I can prove them wrong, so my null hypothesis is that the true percentage of winning bottlecaps is 8.3%. 
-]
 
---
+::: {.fragment}
 
-.pull-right[
 ### Mathematical symbols
 
 $$H_0: \rho=0.083$$
 
 I use the Greek $\rho$ to indicate the population proportion of winners. I will use $\hat{p}$ later to represent the proportion observed in my sample. 
-]
 
----
+:::
 
-## Assuming the null hypothesis is true, what is the sampling distribution of my sample proportion?
+## Assuming $H_0$ is true, what is the sampling distribution of my sample proportion? {.smaller}
 
-.pull-right[
-```{r echo=FALSE}
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+#| fig-height: 10
 x <- seq(from=-0.02,to=0.2,by=0.001)
 p <- 0.083
 se <- sqrt(p*(1-p)/100)
@@ -1005,17 +1012,19 @@ text(p,8,"?", cex=10)
 ```
 ]
 
----
+:::
 
-## Assuming the null hypothesis is true, what is the sampling distribution of my sample proportion?
+::::
 
-.pull-left[
+## Assuming $H_0$ is true, what is the sampling distribution of my sample proportion? {.smaller}
 
-* With a sample size of 100, it should be normally distributed.
-]
+:::: {.columns}
 
-.pull-right[
-```{r echo=FALSE}
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+#| fig-height: 10
 x <- seq(from=-0.02,to=0.2,by=0.001)
 p <- 0.083
 se <- sqrt(p*(1-p)/100)
@@ -1023,21 +1032,26 @@ y <- (1/(se*sqrt(2*pi)))*exp(-1*(x-p)^2/(2*se^2))
 
 plot(x,y,type="l",xlab="sample proportion of winning bottlecaps",yaxt="n",ylab="", main="Sampling distribution for sample proportion\nassuming null hypothesis is true")
 ```
-]
 
----
+:::
 
-## Assuming the null hypothesis is true, what is the sampling distribution of my sample proportion?
+::: {.column}
 
-.pull-left[
+With a sample size of 100, it should be normally distributed.
 
-* With a sample size of 100, it should be normally distributed.
+:::
 
-* The center of the distribution is the true population parameter assuming $H_0$ is true. In this case, that is 0.083.
-]
+::::
 
-.pull-right[
-```{r echo=FALSE}
+## Assuming $H_0$ is true, what is the sampling distribution of my sample proportion? {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+#| fig-height: 10
 x <- seq(from=-0.02,to=0.2,by=0.001)
 p <- 0.083
 se <- sqrt(p*(1-p)/100)
@@ -1047,23 +1061,27 @@ plot(x,y,type="l",xlab="sample proportion of winning bottlecaps",yaxt="n",ylab="
 abline(v=p,lwd=4,col="blue")
 text(p,3,"true proportion = 0.083", col="blue", pos=4)
 ```
-]
 
----
+:::
 
-## Assuming the null hypothesis is true, what is the sampling distribution of my sample proportion?
+::: {.column}
 
-.pull-left[
+With a sample size of 100, it should be normally distributed.
 
-* With a sample size of 100, it should be normally distributed.
+The center of the distribution is the true population parameter assuming $H_0$ is true. In this case, that is 0.083.
 
-* The center of the distribution is the true population parameter assuming $H_0$ is true. In this case, that is 0.083.
+:::
 
-* As we learned in the previous section, the standard error is given by: $$\sqrt\frac{0.083*(1-0.083)}{100}=0.0276$$
-]
+::::
 
-.pull-right[
-```{r echo=FALSE}
+## Assuming $H_0$ is true, what is the sampling distribution of my sample proportion? {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
 x <- seq(from=-0.02,to=0.2,by=0.001)
 p <- 0.083
 se <- sqrt(p*(1-p)/100)
@@ -1076,14 +1094,30 @@ arrows(p,1,p+se,1)
 text(p,3,"true proportion = 0.083", col="blue", pos=4)
 text(p+se,1,"standard error = 0.0276", col="red", pos=4)
 ```
-]
 
----
+:::
+
+::: {.column}
+
+With a sample size of 100, it should be normally distributed.
+
+The center of the distribution is the true population parameter assuming $H_0$ is true. In this case, that is 0.083.
+
+As we learned in the previous section, the standard error is given by: $$\sqrt\frac{0.083*(1-0.083)}{100}=0.0276$$
+
+:::
+
+::::
 
 ## Is the actual sample proportion unusual?
 
-.pull-left[
-```{r echo=FALSE}
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+#| fig-height: 10
 x <- seq(from=-0.02,to=0.2,by=0.001)
 p <- 0.083
 se <- sqrt(p*(1-p)/100)
@@ -1096,44 +1130,56 @@ abline(v=0.05,lwd=4,col="red")
 text(0.05,1,"our sample      \nproportion = 0.05", col="red", pos=2)
 arrows(p,1,0.05,1)
 ```
-]
 
-.pull-right[
+:::
+
+::: {.column}
+
 #### How far is our sample proportion from where the center would be if the null hypothesis was true?
 
 * If our sample proportion is far way and unlikely to be drawn, then we **reject the null hypothesis**.
 * If our sample proportion is not far away and reasonably likely to be drawn, then we **fail to reject the null hypothesis**.
-]
 
----
+:::
 
-## How far is far enough?
+::::
 
-.pull-left[
-* We determine how far our sample proportion is from the center in terms of the number of standard errors. $$\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18$$
-]
+## How far is far enough? {.smaller}
 
-.pull-right[
-```{r echo=FALSE}
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+#| fig-height: 10
 x2 <- (x-p)/se
 plot(x2,y,type="l",xlab="sample proportion",yaxt="n",ylab="", main="Game of make believe")
 abline(h=0)
 abline(v=-1.18,lwd=4,col="red")
 ```
-]
 
+:::
 
----
+::: {.column}
 
-## How far is far enough?
+We determine how far our sample proportion is from the center in terms of the number of standard errors. 
 
-.pull-left[
-* We determine how far our sample proportion is from the center in terms of the number of standard errors. $$\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18$$
-* What proportion of sample proportions are this low or lower?
-]
+$$\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18$$
 
-.pull-right[
-```{r echo=FALSE}
+:::
+
+::::
+
+## How far is far enough? {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+#| fig-height: 10
 x2 <- (x-p)/se
 plot(x2,y,type="l",xlab="sample proportion",yaxt="n",ylab="", main="Game of make believe")
 abline(h=0)
@@ -1142,20 +1188,31 @@ abline(v=-1.18,lwd=4,col="red")
 arrows(-3,3,-1.5,2)
 text(-2.5,3.5,"0.12 (12%)",pos=3)
 ```
-]
 
----
+:::
 
-## How far is far enough?
+::: {.column}
 
-.pull-left[
-* We determine how far our sample proportion is from the center in terms of the number of standard errors. $$\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18$$
-* What proportion of sample proportions are this low or lower?
-* We also need to take account of sample proportions this far away in the opposite direction. This is called a **two-tailed test**.
-]
+We determine how far our sample proportion is from the center in terms of the number of standard errors. 
 
-.pull-right[
-```{r echo=FALSE}
+$$\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18$$
+
+What proportion of sample proportions are this low or lower?
+
+:::
+
+::::
+
+## How far is far enough? {.smaller}
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+#| fig-height: 10
 x2 <- (x-p)/se
 plot(x2,y,type="l",xlab="sample proportion",yaxt="n",ylab="", main="Game of make believe")
 abline(h=0)
@@ -1168,21 +1225,32 @@ text(-2.5,3.5,"0.12 (12%)",pos=3)
 arrows(3,3,1.5,2)
 text(2.5,3.5,"0.12 (12%)",pos=3)
 ```
-]
 
----
+:::
 
-## How far is far enough?
+::: {.column}
 
-.pull-left[
-* We determine how far our sample proportion is from the center in terms of the number of standard errors. $$\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18$$
-* What proportion of sample proportions are this low or lower?
-* We also need to take account of sample proportions this far away in the opposite direction. This is called a **two-tailed test**.
-* The area in the tails is called the **p-value**.
-]
+We determine how far our sample proportion is from the center in terms of the number of standard errors. 
 
-.pull-right[
-```{r echo=FALSE}
+$$\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18$$
+
+What proportion of sample proportions are this low or lower?
+
+We also need to take account of sample proportions this far away in the opposite direction. This is called a **two-tailed test**.
+
+:::
+
+::::
+
+## How far is far enough? {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+#| fig-height: 10
 x2 <- (x-p)/se
 plot(x2,y,type="l",xlab="sample proportion",yaxt="n",ylab="", main="Game of make believe")
 abline(h=0)
@@ -1198,24 +1266,47 @@ arrows(-2.5,4.5,-0.5,10)
 arrows(2.5,4.5,0.5,10)
 text(0,11,"p-value=0.12+0.12=0.24 (24%)",pos=3)
 ```
-]
 
----
+:::
 
-## The p-value is the endgame
+::: {.column}
 
-.pull-left[
+We determine how far our sample proportion is from the center in terms of the number of standard errors. 
+
+$$\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18$$
+
+What proportion of sample proportions are this low or lower?
+
+We also need to take account of sample proportions this far away in the opposite direction. This is called a **two-tailed test**.
+
+The area in the tails is called the **p-value**.
+
+:::
+
+::::
+
+## The p-value is the endgame {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
 ### Interpretation
+
 The p-value tells you the probability of getting a statistic this far away or farther from the the assumed true population parameter, assuming the null hypothesis is true.
 
+::: {.fragment}
+
 In my case:
+
 > Assuming the null hypothesis is true, there is a 24% probability that I would have gotten a sample proportion (0.05) this far or farther from the true poplation paramter (0.083).
 
-]
+:::
 
---
+:::
 
-.pull-right[
+::: {.column .fragment}
+
 ### {{< fa calculator >}} Calculation
 
 We use the `pt` command to get the area in the lower tail and multiply by two to get both tails:
@@ -1224,145 +1315,157 @@ We use the `pt` command to get the area in the lower tail and multiply by two to
 2*pt(-1.18,99)
 ```
 
-* The first argument is always the **negative version** of the number of standard errors.
+* The first argument is always the **negative version** of the number of standard errors away because this command will always give you the area below the value.
 * The second argument is the degrees of freedom to adjust for the fact that we use sample standard deviations to get standard errors. 
-]
 
----
+:::
 
-## The critical value
+::::
 
+## The critical value {.smaller}
 
-.left-column[
-![strongman game](images/strongman-game.png)
-]
+:::: {.columns}
 
-.right-column[
+::: {.column width="30%"}
+
+![](images/strongman-game.png)
+
+:::
+
+::: {.column width="70%"}
+
 * We will reject the null hypothesis if our p-value is low enough. 
 * The **critical value** is the benchmark for how low our p-value has to be to reject. 
   * We will reject the null hypothesis if the p-value is lower than or equal to the critical value.
   * We will fail to reject the null hypothesis if the p-value is higher than the critical value.
 * The standard but entirely arbitrary critical value used across the sciences is 0.05 (5%).
 * For the Coca-Cola bottlecap case, the p-value is 0.24, so we fail to reject the null hypothesis that Coca-Cola's claim was truthful.
-]
 
+:::
 
----
+::::
 
 ## The general procedure of hypothesis testing
 
---
-
 1. State a **null hypothesis**.
-
---
-
 2. Calculate a **test statistic** that tells you how different your sample is from what you would expect under the null hypothesis. For our purposes, this test statistic is always the number of standard errors above or below the center of the sampling distribution. 
-
---
-
 3. Calculate the **p-value** for the given test statistic.
-
---
-
 4. Based on the p-value, either **reject** or **fail to reject** the null hypothesis.
 
----
-
-## Hypothesis tests of relationships
+## Hypothesis tests of relationships {.smaller}
 
 The hypothesis test we are most interested in is whether the association we observe between two variables in our sample holds in the population. 
 
---
-
 * Mean/proportion differences: Are the means/proportions between two groups in the population different? In other words, is the mean/proportion difference non-zero?
-
---
-
 * Correlation coefficient: is the correlation coefficient in the population non-zero? 
 
---
+::: {.fragment}
 
 ### Statistical Significance
 
-.left-column[
-![stat sig other](images/statsigother.png)
-]
+:::: {.columns}
 
-.right-column[
-If you reject the null hypothesis of "no association," then the association you observe in the sample is said to be **statistically significant**.
+::: {.column width="30%"}
 
+![](images/statsigother.png)
 
+:::
+
+::: {.column width="70%"}
+
+* If you reject the null hypothesis of "no association," then the association you observe in the sample is said to be **statistically significant**.
 * Don't confuse statistical and substantive significance. In a large sample, even very small substantive associations can be found to be statistically significant. On the flip side, in small samples, very large substantive associations can fail to be statistically significant.
-]
 
----
+:::
 
-## Example: Mean differences
+::::
 
-Is there a difference in sexual frequency between married and never married individuals? Formally, my null hypothesis is:
+:::
 
-$$H_0: \mu_M-\mu_N=0$$
+## Example: Mean differences {.smaller}
 
-Where $\mu_M$ is the population mean sexual frequency of married individuals and $\mu_N$ is the population mean sexual frequency of never-married individuals.
+Is there a difference in sexual frequency between married and divorced individuals? Formally, my null hypothesis is:
 
---
+$$H_0: \mu_M-\mu_D=0$$
+
+Where $\mu_M$ is the population mean sexual frequency of married individuals and $\mu_D$ is the population mean sexual frequency of never-married individuals.
+
+:::: {.columns}
+
+::: {.column .fragment}
 
 ```{r}
 tapply(sex$sexf, sex$marital, mean)
-diff <- 56.094106-53.617704
+diff <- 46.44548-47.87926
 diff
 ```
 
-In my sample, married individuals have sex about 2.5 more times per year than never-married individuals, on average. Is this difference far enough from zero to reject the null hypothesis? 
+::: {.fragment}
 
----
+In my sample, married individuals have sex about 1.4 fewer times per year than divorced individuals, on average. Is this difference far enough from zero to reject the null hypothesis? 
 
-## Example: Mean differences, continued
+:::
 
-I calculate the standard error of the sample mean difference, as per the formula in the previous section, which requires the sample SD's and sample size of both groups.
+:::
+
+::: {.column .fragment}
+
+I gather terms to calculate the standard error.
 
 ```{r}
 tapply(sex$sexf, sex$marital, sd)
-sd1 <- 49.95361
-sd2 <- 58.81459
+sd1 <- 42.42236
+sd2 <- 46.42971
 table(sex$marital)
-n1 <- 1052
-n2 <- 514
+n1 <- 5374
+n2 <- 2319
 se <- sqrt(sd1^2/n1+sd2^2/n2)
 ```
 
----
+:::
 
-## Example: Mean differences, continued
+::::
 
-I can now calculate how many standard errors my sample mean difference is from zero
+## Example: Mean differences, continued {.smaller}
+
+::: {.fragment}
+
+I can now calculate how many standard errors my sample mean difference is from zero:
 
 ```{r}
 diff/se
 ```
 
+:::
+
+::: {.fragment}
+
 I then feed the negative version of this number into the `pt` formula and multiply by two to get my p-value:
 
 ```{r}
-2*pt(-0.8208,n2-1)
+2*pt(-1.275052, n2-1)
 ```
 
-Assuming that the true sexual frequency difference between married and never-married individuals is zero in the population, there is a 41.2% chance of observing a sample sexual frequency difference of 2.5 years or larger in a sample of this size. Thus, I **fail to reject** the null hypothesis there there is no difference in the average sexual frequency between married and never-married individuals in the US. 
+:::
 
----
+::: {.fragment}
 
-## Example: Proportion differences
+> Assuming that the true sexual frequency difference between married and divorced individuals is zero in the population, there is a 20.2% chance of observing a sample sexual frequency difference of 1.4 times per year or larger between the two groups in a sample of this size. Thus, I **fail to reject** the null hypothesis there there is no difference in the average sexual frequency between married and divorced individuals in the US. 
+
+:::
+
+## Example: Proportion differences {.smaller}
 
 Is there a difference in support for removing birthright citizenship between those who have served in the military and those who have not? 
 
---
+:::: {.columns}
 
-.pull-left[
-```{r, highlight.output=5}
+::: {.column .fragment}
+
+```{r}
 prop.table(table(politics$brcitizen, 
                  politics$military), 2)
-p1 <- 0.303
+p1 <- 0.304
 p2 <- 0.434
 ```
 
@@ -1370,48 +1473,44 @@ p2 <- 0.434
 diff <- p2-p1
 diff
 ```
-]
 
---
+:::
 
-.pull-right[
+::: {.column .fragment}
+
 ```{r}
 table(politics$military)
 n1 <- 3778
-n2 <- 460
+n2 <- 459
 se <- sqrt(p1*(1-p1)/n1+p2*(1-p2)/n2)
 diff/se
-pt(-5.391824, n2-1)
+pt(-5.346688, n2-1)
 ```
-]
 
----
+:::
 
-## `r emo::ji("thinking_face")` A p-value of 5.591127e-08?
+::::
 
-* What does the value of 5.591127e-08 mean? 
+## `r emo::ji("thinking_face")` A p-value of 7.082129e-08? {.smaller}
 
---
+* What does the value of 7.082129e-08 mean? 
+* The number is so small that R is reporting it using scientific notation: $$7.082129 x 10^{-8}$$
+* That means we need to move the decimal place over 8 spaces to the left. So the number is really 0.00000007082129. So I would interpret my result as: 
 
-* The number is so small that R is reporting it using scientific notation: $$5.591127 x 10^{-8}$$
+::: {.fragment}
 
---
+> Assuming that there is no difference in the US population between those who have served in the military and those who have not in support for removing birthright citizenship, there is less than a 0.000007% chance of observing a sample difference in proportion of 13.1% or greater by random chance in a sample of this size. Thus, I **reject** the null hypothesis there there is no difference in support for removing birthright citizenship between those who have served in the military and those who have not. 
 
-* That means we need to move the decimal place over 8 spaces to the left. So the number is really 0.00000005591127. So I would interpret my result as: 
+:::
 
---
-
-> Assuming that there is no difference in the US population between those who have served in the military and those who have not in support for removing birthright citizenship, there is less than a 0.000006% chance of observing a sample difference in proportion of 13.1% or greater by random chance in a sample of this size. Thus, I **reject** the null hypothesis there there is no difference in support for removing birthright citizenship between those who have served in the military and those who have not. 
-
----
-
-## Example: Correlation coefficient
+## Example: Correlation coefficient {.smaller}
 
 Is there a relationship between a person's age and their wages in the US? 
 
---
+:::: {.columns}
 
-.pull-left[
+::: {.column .fragment}
+
 ```{r}
 r <- cor(earnings$age, earnings$wages)
 r
@@ -1420,12 +1519,13 @@ se <- sqrt((1-r^2)/(n-2))
 r/se
 pt(-85.46473, n-2)
 ```
-]
 
---
+:::
 
-.pull-right[
-Assuming no association between a person's age and their wage in the US, there is almost 0% chance of observing a correlation coefficient between age and wages of 0.219 or larger in absolute magnitude in a sample of this size. Therefore, I **reject** the null hypothesis that there is no relationship between a person's age and their wages in the US population.
-]
+::: {.column .fragment}
 
+> Assuming no association between a person's age and their wage in the US, there is almost 0% chance of observing a correlation coefficient between age and wages of 0.219 or larger in absolute magnitude in a sample of this size. Therefore, I **reject** the null hypothesis that there is no relationship between a person's age and their wages in the US population.
 
+:::
+
+::::
