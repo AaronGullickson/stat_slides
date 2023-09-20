@@ -1442,31 +1442,45 @@ htmlreg(list(model1, model2),
 
 # Interaction Terms {.center background-color="black" background-image="images/denys-nevozhai-7nrsVjvALnA-unsplash.jpg"}
 
-## Adding context to a relationship
+## Adding context to a relationship {.smaller}
 
+:::: {.columns}
 
-.pull-left[
-#### What if the relationship between number of children and hourly wages varies by gender?
+::: {.column width="35%"}
 
-```{r interact-example, fig.show = 'hide'}
+```{r}
+#| label: interact-example1
+#| eval: false
 ggplot(earnings, aes(x=nchild, y=wages, 
-                     color=gender))+ #<<
-  geom_jitter(alpha=0.1)+
+                     color=gender))+
+  geom_jitter(alpha=0.05)+
+  scale_color_viridis_d(end=0.75)+
   geom_smooth(method="lm", se=FALSE)+
   labs(x="number of children",
-       y="hourly wages in USD")+
-  theme_bw()
+       y="hourly wages in USD")
 ```
-]
+:::
 
-.pull-right[
-```{r ref.label = 'interact-example', echo = FALSE}
+::: {.column width="65%"}
+
+```{r}
+#| label: interact-example2
+#| echo: false
+#| fig-height: 9
+ggplot(earnings, aes(x=nchild, y=wages, 
+                     color=gender))+
+  geom_jitter(alpha=0.1)+
+  scale_color_viridis_d(end=0.75)+
+  geom_smooth(method="lm", se=FALSE)+
+  labs(x="number of children",
+       y="hourly wages in USD")
 ```
-]
 
----
+:::
 
-## Additive models will miss context
+::::
+
+## Additive models will miss context {.smaller}
 
 ```{r}
 model_add <- lm(wages~nchild+gender, data=earnings)
@@ -1477,9 +1491,10 @@ $$\hat{\texttt{wages}}_i=25.24+1.55(\texttt{nchild}_i)-3.97(\texttt{female}_i)$$
 
 What is the relationship between wages and number of children for men and women?
 
---
+:::: {.columns}
 
-.pull-left[
+::: {.column .fragment}
+
 ### Men
 The $\texttt{female}_i$ variable is an indicator variable that is zero for men, so:
 
@@ -1488,11 +1503,10 @@ $$\begin{eqnarray*}
 \hat{\texttt{wages}}_i & = & 25.24+1.55(\texttt{nchild}_i)
 \end{eqnarray*}$$
 
-]
+:::
 
---
+::: {.column .fragment}
 
-.pull-right[
 ### Women
 The $\texttt{female}_i$ variable is an indicator variable that is one for women, so:
 
@@ -1501,36 +1515,47 @@ $$\begin{eqnarray*}
 \hat{\texttt{wages}}_i & = & (25.24-3.97)+1.55(\texttt{nchild}_i)\\
 \hat{\texttt{wages}}_i & = & 21.27+1.55(\texttt{nchild}_i)\\
 \end{eqnarray*}$$
-]
 
----
+:::
 
-## Because additive models make parallel lines
+::::
 
-.pull-left[
-```{r echo=FALSE}
+## Additive models make parallel lines {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: parallel-lines
+#| echo: false
 temp <- expand.grid(nchild=0:8, gender=c("Male","Female"))
 temp$wages <- predict(model_add, newdata=temp)
 ggplot(earnings, aes(x=nchild, y=wages, 
                      color=gender))+
   geom_jitter(alpha=0.1)+
   geom_line(data=temp, size=2)+
+  scale_color_viridis_d(end=0.75)+
   labs(x="number of children",
-       y="hourly wages in USD")+
-  theme_bw()
+       y="hourly wages in USD")
 ```
-]
 
-.pull-right[
-$$\hat{\texttt{wages}}_i=25.24+1.55(\texttt{nchild}_i)-3.97(\texttt{female}_i)$$
+:::
+
+::: {.column}
+$$\begin{eqnarray*}
+\hat{\texttt{wages}}_i&=&25.24+1.55(\texttt{nchild}_i)\\
+ & & -3.97(\texttt{female}_i)
+\end{eqnarray*}$$
 
 * The effect of number of children on wages ($1.55) is **forced** to be the same for men and women.
 * The wage difference between men and women ($3.97) is **forced** to be the same at all values of number of children. 
-]
 
----
+:::
 
-## We need a multiplicative model
+::::
+
+## We need a multiplicative model {.smaller}
 
 ```{r}
 model_mult <- lm(wages~nchild*gender, data=earnings)
@@ -1541,67 +1566,77 @@ $$\hat{\texttt{wages}}_i=24.72+1.78(\texttt{nchild}_i)-2.84(\texttt{female}_i)-1
 
 What is the relationship between wages and number of children for men and women?
 
---
+:::: {.columns}
 
-.pull-left[
+::: {.column .fragment}
+
 ### Men
 The $\texttt{female}_i$ variable is an indicator variable that is zero for men, so:
 
 $$\begin{eqnarray*}
-\hat{\texttt{wages}}_i & = & 24.72+1.78(\texttt{nchild}_i)-2.84(0)-1.33(\texttt{nchild}_i)(0)\\
+\hat{\texttt{wages}}_i & = & 24.72+1.78(\texttt{nchild}_i)-2.84(0)\\
+& & -1.33(\texttt{nchild}_i)(0)\\
 \hat{\texttt{wages}}_i & = & 24.72+1.78(\texttt{nchild}_i)
 \end{eqnarray*}$$
 
-]
+:::
 
---
+::: {.column .fragment}
 
-.pull-right[
 ### Women
 The $\texttt{female}_i$ variable is an indicator variable that is one for women, so:
 
 $$\begin{eqnarray*}
-\hat{\texttt{wages}}_i & = & 24.72+1.78(\texttt{nchild}_i)-2.84(1)-1.33(\texttt{nchild}_i)(1)\\
+\hat{\texttt{wages}}_i & = & 24.72+1.78(\texttt{nchild}_i)-2.84(1)\\
+& & -1.33(\texttt{nchild}_i)(1)\\
 \hat{\texttt{wages}}_i & = & (24.72-2.84)+(1.78-1.33)(\texttt{nchild}_i)\\
 \hat{\texttt{wages}}_i & = & 21.82+0.45(\texttt{nchild}_i)\\
 \end{eqnarray*}$$
-]
 
----
+:::
 
-## Multiplicative models give non-parallel lines
+::::
 
-.pull-left[
-```{r echo=FALSE}
+## Multiplicative models give non-parallel lines {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| echo: false
 temp <- expand.grid(nchild=0:8, gender=c("Male","Female"))
 temp$wages <- predict(model_mult, newdata=temp)
 ggplot(earnings, aes(x=nchild, y=wages, 
                      color=gender))+
   geom_jitter(alpha=0.1)+
   geom_line(data=temp, size=2)+
+  scale_color_viridis_d(end=0.75)+
   labs(x="number of children",
        y="hourly wages in USD")+
   theme_bw()
 ```
-]
 
+:::
 
-.pull-right[
+::: {.column}
+
 $$\begin{eqnarray*}\hat{\texttt{wages}}_i & = & 24.72+1.78(\texttt{nchild}_i)-2.84(\texttt{female}_i)\\
 & & -1.33(\texttt{nchild}_i)(\texttt{female}_i)\\\end{eqnarray*}$$
 
 * This model shows that men and women get different returns to wages for the number of children with men getting a much greater return ($1.78 to $0.45).
 * This models shows that the wage gap starts at $2.84 when men and women have no children and grows by $1.33 for every child. 
 
-]
+:::
 
----
+::::
 
-## Two approaches
+## Two approaches {.smaller}
 
---
+:::: {.columns}
 
-.pull-left[
+::: {.column .fragment}
+
 ### Separate models
 
 ```{r}
@@ -1617,15 +1652,14 @@ coef(lm(wages~nchild,
 * Two intercepts (women and men)
 * Two slopes (women and men)
 
-]
+:::
 
---
-
-.pull-right[
+::: {.column .fragment}
 
 ### Interaction term
 
-```{r echo=FALSE}
+```{r}
+#| echo: false
 options(width=50)
 ```
 
@@ -1633,18 +1667,19 @@ options(width=50)
 coef(lm(wages~nchild*gender, data=earnings))
 ```
 
-```{r echo=FALSE}
+```{r}
+#| echo: false
 options(width=80)
 ```
 
 * One intercept (men) and one difference in intercept (women)
 * One slope (men) and one difference in slope (women)
 
-]
+:::
 
----
+::::
 
-## Interaction terms give difference in slopes
+## Interaction terms give difference in slopes {.smaller}
 
 | Value                                                          | Separate models | Interaction terms |
 | :------------------------------------------------------------- | --------------: | ----------------: |
@@ -1659,7 +1694,7 @@ options(width=80)
 
 ---
 
-## Interpretation
+## Interpretation {.smaller}
 
 ```{r}
 coef(lm(wages~nchild*gender, data=earnings))
@@ -1667,35 +1702,24 @@ coef(lm(wages~nchild*gender, data=earnings))
 
 $$\hat{\texttt{wages}}_i  =  24.72+1.78(\texttt{nchild}_i)-2.84(\texttt{female}_i)-1.33(\texttt{nchild}_i)(\texttt{female}_i)$$
 
---
-
 * The model predicts that men with no children make $24.72/hour, on average.
-
---
-
 * The model predicts that **among workers with no children**, women make $2.84 less than men, on average.
-
---
-
 * The model predicts that **among men**, having an additional child at home is associated with at a $1.78 increase in hourly wages.
-
---
-
 * The model predicts that the gain in hourly wages from having an additional child at home is $1.33 smaller for women than it is for men. 
-
---
-
 * The **main effect** of each variable in the interaction term is only the effect when the other variable in the interaction term is zero/the reference category.
 
----
+## Why not always separate models? {.smaller}
 
-## Why not always separate models?
+:::: {.columns}
 
---
+::: {.column}
 
-.pull-left[
-.stargazer[
-```{r echo=FALSE, results='asis'}
+::: {.tbl-model}
+
+```{r}
+#| label: model-wages-interact
+#| echo: false
+#| results: asis
 model1 <- lm(wages~nchild*gender, data=earnings)
 model2 <- lm(wages~nchild*gender+I(age-40), 
              data=earnings)
@@ -1715,11 +1739,15 @@ htmlreg(list(model1, model2),
         custom.note = "%stars. Standard errors in parenthesis.\nAge centered on 40 years.",
         include.adjrs=FALSE, include.rmse=FALSE)
 ```
-]
-]
 
-.pull-right[
-```{r eval=FALSE}
+:::
+
+:::
+
+::: {.column}
+
+```{r}
+#| eval: false
 model1 <- lm(wages~nchild*gender, data=earnings)
 model2 <- lm(wages~nchild*gender+I(age-40), 
              data=earnings)
@@ -1727,18 +1755,20 @@ model2 <- lm(wages~nchild*gender+I(age-40),
 
 * We can add in additional control variables without forcing everything to vary by context.
 * We can do a hypothesis test directly on whether the slopes really are different by looking at the p-value on the interaction term.
-]
 
----
+:::
 
-## Interacting two categorical variables
+::::
+
+## Interacting two categorical variables {.smaller}
 
 An additive model:
+
 ```{r}
 coef(lm(wages~gender+education, data=earnings))
 ```
 
---
+::: {.fragment}
 
 |                   | LHS |  HS |  AA |  BA | Grad |
 | :---------------- | --: | --: | --: | --: | ---: |
@@ -1746,11 +1776,12 @@ coef(lm(wages~gender+education, data=earnings))
 | Woman             |     |     |     |     |      |
 | Gender difference |     |     |     |     |      |
 
----
+:::
 
-## Interacting two categorical variables
+## Interacting two categorical variables {.smaller}
 
 An additive model:
+
 ```{r}
 coef(lm(wages~gender+education, data=earnings))
 ```
@@ -1761,11 +1792,10 @@ coef(lm(wages~gender+education, data=earnings))
 | Woman             |       |     |     |     |      |
 | Gender difference |       |     |     |     |      |
 
----
-
-## Interacting two categorical variables
+## Interacting two categorical variables {.smaller}
 
 An additive model:
+
 ```{r}
 coef(lm(wages~gender+education, data=earnings))
 ```
@@ -1776,11 +1806,10 @@ coef(lm(wages~gender+education, data=earnings))
 | Woman             | 16.27-5.06 |     |     |     |      |
 | Gender difference |      -5.06 |     |     |     |      |
 
----
-
-## Interacting two categorical variables
+## Interacting two categorical variables {.smaller}
 
 An additive model:
+
 ```{r}
 coef(lm(wages~gender+education, data=earnings))
 ```
@@ -1790,11 +1819,10 @@ coef(lm(wages~gender+education, data=earnings))
 | Woman             | 16.27-5.06 |            |     |     |      |
 | Gender difference |      -5.06 |            |     |     |      |
 
----
-
-## Interacting two categorical variables
+## Interacting two categorical variables {.smaller}
 
 An additive model:
+
 ```{r}
 coef(lm(wages~gender+education, data=earnings))
 ```
@@ -1804,11 +1832,10 @@ coef(lm(wages~gender+education, data=earnings))
 | Woman             | 16.27-5.06 | 16.27+4.71-5.06 |     |     |      |
 | Gender difference |      -5.06 |           -5.06 |     |     |      |
 
----
-
-## Interacting two categorical variables
+## Interacting two categorical variables {.smaller}
 
 An additive model:
+
 ```{r}
 coef(lm(wages~gender+education, data=earnings))
 ```
@@ -1819,16 +1846,13 @@ coef(lm(wages~gender+education, data=earnings))
 | Woman             | 16.27-5.06 | 16.27+4.71-5.06 | 16.27+8.40-5.06 | 16.27+17.13-5.06 | 16.27+24.63-5.06 |
 | Gender difference |      -5.06 |           -5.06 |           -5.06 |            -5.06 |            -5.06 |
 
---
-
 * Gender differences are **forced** to be the same at every education level
 * Returns to degree are **forced** to be the same for men and women
 
----
-
-## Interacting two categorical variables:
+## Interacting two categorical variables {.smaller}
 
 A multiplicative model:
+
 ```{r}
 coef(lm(wages~gender*education, data=earnings))
 ```
@@ -1840,11 +1864,10 @@ coef(lm(wages~gender*education, data=earnings))
 | Woman             |     |     |     |     |      |
 | Gender difference |     |     |     |     |      |
 
----
-
-## Interacting two categorical variables:
+## Interacting two categorical variables {.smaller}
 
 A multiplicative model:
+
 ```{r}
 coef(lm(wages~gender*education, data=earnings))
 ```
@@ -1856,11 +1879,10 @@ coef(lm(wages~gender*education, data=earnings))
 | Woman             |       |     |     |     |      |
 | Gender difference |       |     |     |     |      |
 
----
-
-## Interacting two categorical variables:
+## Interacting two categorical variables {.smaller}
 
 A multiplicative model:
+
 ```{r}
 coef(lm(wages~gender*education, data=earnings))
 ```
@@ -1874,9 +1896,10 @@ coef(lm(wages~gender*education, data=earnings))
 
 ---
 
-## Interacting two categorical variables:
+## Interacting two categorical variables {.smaller}
 
 A multiplicative model:
+
 ```{r}
 coef(lm(wages~gender*education, data=earnings))
 ```
@@ -1890,9 +1913,10 @@ coef(lm(wages~gender*education, data=earnings))
 
 ---
 
-## Interacting two categorical variables:
+## Interacting two categorical variables {.smaller}
 
 A multiplicative model:
+
 ```{r}
 coef(lm(wages~gender*education, data=earnings))
 ```
@@ -1906,9 +1930,10 @@ coef(lm(wages~gender*education, data=earnings))
 
 ---
 
-## Interacting two categorical variables:
+## Interacting two categorical variables {.smaller}
 
 A multiplicative model:
+
 ```{r}
 coef(lm(wages~gender*education, data=earnings))
 ```
@@ -1920,15 +1945,12 @@ coef(lm(wages~gender*education, data=earnings))
 | Woman             | 15.79-3.84 | 15.79+4.82-3.84-0.41 | 15.79+8.58-3.84-0.67 | 15.79+18.30-3.84-2.54 | 15.79+25.82-3.84-2.52 |
 | Gender difference |      -3.84 |                -4.25 |                -4.51 |                 -6.38 |                 -6.36 |
 
----
+## Two ways to view it {.smaller}
 
-## Two ways to view it
+:::: {.columns}
 
+::: {.column .fragment}
 
---
-
-
-.pull-left[
 #### Differences in gender gap by degree
 
 | Degree | Gender gap |
@@ -1938,11 +1960,11 @@ coef(lm(wages~gender*education, data=earnings))
 | AA     | -3.84-0.67 |
 | BA     | -3.84-2.54 |
 | Grad   | -3.84-2.52 |
-]
 
---
+:::
 
-.pull-right[
+::: {.column .fragment}
+
 #### Differences in returns for men and women
 
 | Degree | Men's return | Women's return |
@@ -1951,13 +1973,18 @@ coef(lm(wages~gender*education, data=earnings))
 | AA     |         8.58 |      8.58-0.67 |
 | BA     |         18.3 |      18.3-2.54 |
 | Grad   |        25.82 |     25.82-2.52 |
-]
 
----
+:::
+
+::::
 
 ## Same underlying reality
 
-```{r echo=FALSE, fig.width=12}
+```{r}
+#| label: interact-categorical
+#| echo: false
+#| fig-height: 14
+#| fig-width: 24
 model <- lm(wages~gender*education, data=earnings)
 temp <- expand.grid(gender=c("Male","Female"),
                     education=c("No HS Diploma",
@@ -1967,7 +1994,7 @@ temp <- expand.grid(gender=c("Male","Female"),
                                 "Graduate Degree"))
 temp$wages <- predict(model, newdata=temp)
 ggplot(earnings, aes(x=education, y=wages, color=gender))+
-  geom_jitter(alpha=0.01)+
+  geom_jitter(alpha=0.05)+
   geom_point(data=temp, size=5)+
   geom_line(data=temp, aes(group=gender))+
   labs(x="highest degree", y="hourly wages in USD")+
