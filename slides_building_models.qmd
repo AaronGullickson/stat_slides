@@ -15,9 +15,13 @@ source(here("scripts","load_example_data.R"))
 
 ## Drawing straight lines
 
-```{r echo=FALSE, fig.width=12}
+```{r}
+#| label: scatter-straight-lines1
+#| echo: false
+#| fig-height: 14
+#| fig-width: 24
 ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
-  geom_point()+
+  geom_point(size=3)+
   labs(x="unemployment rate",
        y="property crimes (per 100,000)",
        title="What is the best line through these points?")+
@@ -28,9 +32,13 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
 
 ## Drawing straight lines
 
-```{r echo=FALSE, fig.width=12}
+```{r}
+#| label: scatter-straight-lines2
+#| echo: false
+#| fig-height: 14
+#| fig-width: 24
 ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
-  geom_point()+
+  geom_point(size=3)+
   geom_smooth(method="lm", se=FALSE, fullrange=TRUE)+
   labs(x="unemployment rate",
        y="property crimes (per 100,000)",
@@ -42,14 +50,18 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
 
 ## Elements of a straight line
 
-```{r echo=FALSE, fig.width=12}
+```{r}
+#| label: scatter-straight-lines3
+#| echo: false
+#| fig-height: 14
+#| fig-width: 24
 model <- lm(property_rate~unemploy_rate, data=crimes)
 ypredict <- predict(model, newdata=data.frame(unemploy_rate=c(5,6)))
 ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
-  geom_point()+
+  geom_point(size=3)+
   geom_smooth(method="lm", se=FALSE, fullrange=TRUE)+
   geom_point(x=0, y=coef(model)[1], color="red", size=3)+
-  annotate("label", x=1, coef(model)[1]*0.92, label=paste("y-intercept=", round(coef(model)[1], 2), sep=""))+
+  annotate("label", x=1, coef(model)[1]*0.92, label=paste("y-intercept=", round(coef(model)[1], 2), sep=""), size=15)+
   annotate("segment", x = 5, xend = 6, 
            y = ypredict[1], yend = ypredict[1], 
            color="red",
@@ -58,10 +70,11 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
            y = ypredict[1], yend = ypredict[2], 
            color="red",
            arrow=arrow(length=unit(0.1,"cm"), type = "closed"))+
-  annotate("label", x=5.5, y=ypredict[1]*0.92, label="run")+
-  annotate("label", x=6.3, y=mean(ypredict), label="rise")+
+  annotate("label", x=5.5, y=ypredict[1]*0.92, label="run", size=15)+
+  annotate("label", x=6.3, y=mean(ypredict), label="rise", size=15)+
   annotate("label", x=5.5, y=3000, 
-           label=paste("slope=rise/run=",round(coef(model)[2],2), sep=""))+
+           label=paste("slope=rise/run=",round(coef(model)[2],2), sep=""),
+           size=15)+
   geom_vline(xintercept = 0, linetype=2)+
   labs(x="unemployment rate",
        y="property crimes (per 100,000)",
@@ -73,21 +86,22 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
 
 ##  The formula for a straight line
 
---
+:::: {.columns}
 
-.pull-left[
+::: {.column .fragment}
+
 ### in high school
 
 $$y=a+bx$$
 
 * $a$ is the **y-intercept**: the value of $y$ when $x$ is zero.
 * $b$ is the **slope**: the change in $y$ for a one-unit increase in $x$ (the rise over the run).
-* In this kind of set-up the constant values of $a$ and $b$ are called **coefficients** -  a constant value that is multiplied by a variable.
-]
+* The values of $a$ and $b$ are called **coefficients** -  a constant value that is multiplied by a variable.
 
---
+:::
 
-.pull-right[
+::: {.column .fragment}
+
 ### How we do it in statistics
 
 $$\hat{y}_i=b_0+b_1x_i$$
@@ -95,16 +109,20 @@ $$\hat{y}_i=b_0+b_1x_i$$
 * $\hat{y}_i$: The predicted value of $y$ for $i$th observation from the linear formula.
 * $b_0$: The predicted value of $y$ when $x$ is zero.
 * $b_1$: The predicted change in $y$ for a one-unit increase in $x$.
-]
 
----
+:::
 
-## How do we know which line is best?
+::::
 
---
+## How do we know which line is best? {.smaller}
 
-.pull-left[
-```{r echo=FALSE}
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: model-resids
+#| echo: false
 model <- lm(property_rate~unemploy_rate, data=crimes)
 temp <- data.frame(unemploy_rate=crimes$unemploy_rate,
                    property_rate=crimes$property_rate,
@@ -113,67 +131,85 @@ temp <- data.frame(unemploy_rate=crimes$unemploy_rate,
 ggplot(temp, aes(x=unemploy_rate, y=property_rate))+
   geom_smooth(method="lm", se=FALSE)+
   geom_segment(aes(xend=unemploy_rate, yend=fitted), color="red")+
-  geom_point()+
+  geom_point(size=3)+
   labs(x="unemployment rate",
        y="property crimes (per 100,000)",
        title="The red lines are the residuals/errors")
 ```
-]
 
---
+:::
 
-.pull-right[
+::: {.column}
+
+::: {.fragment}
 
 #### We choose the line that minimizes the error in our prediction
 
+:::
+
+::: {.fragment}
+
 For a given observation $i$, the value $y_i-\hat{y}_i$ gives the residual or error in the prediction.
+
+:::
+
+::: {.fragment}
 
 To get the total error in prediction, we can calculate the sum of squared residuals:
 
 $$SSR=\sum_{i=1}^n (y_i-\hat{y}_i)^2=\sum_{i=1}^n (y_i-b_0-b_1x_i)^2$$
 
+::: 
+
+::: {.fragment}
+
 The best-fitting line is the one with the smallest possible sum of squared residuals. This is called the **Ordinary Least Squares (OLS) regression line**.
-]
 
----
+:::
 
-class: center, middle
+:::
 
-<iframe src="https://aarongullickson.shinyapps.io/reducerss/">
+::::
 
-</iframe>
-
----
-
-## Formulas for the best-fitting line
+## Formulas for the best-fitting line {.smaller}
 
 $$b_1=r * \frac{s_y}{s_x}$$
 $$b_0=\bar{y}-b_1*\bar{x}$$
 
---
+::: {.fragment}
 
 We can calculate by hand in R, although we will learn an easier way later:
 
 ```{r}
 slope <- cor(crimes$property_rate,crimes$unemploy_rate)*sd(crimes$property_rate)/sd(crimes$unemploy_rate)
 slope
-mean(crimes$property_rate)-slope*mean(crimes$unemploy_rate)
+intercept <- mean(crimes$property_rate)-slope*mean(crimes$unemploy_rate)
+intercept
 ```
 
---
+:::
 
-$$\hat{\texttt{property_crimes}}_i=1628.4+148.7(\texttt{unemployment_rate}_i)$$
+::: {.fragment}
 
----
+$$\hat{\texttt{property_crimes}}_i=1238.1+220.8(\texttt{unemployment_rate}_i)$$
 
-## The OLS regression line as a model
+:::
 
-.left-column[
-![model plane](images/scarbor-siu-pKGvVjAp0P8-unsplash.jpg)
-]
+## The OLS regression line as a model {.smaller}
 
-.right-column[
+:::: {.columns}
+
+::: {.column width="25%"}
+
+![](images/scarbor-siu-pKGvVjAp0P8-unsplash.jpg)
+
+:::
+
+::: {.column width="75%"}
+
 The OLS regression line is often called a **linear model** because we are measuring the relationship between two variables by applying a **linear function** to characterize the relationship.
+
+::: {.fragment}
 
 the `lm` command can be used to create a model object in R:
 
@@ -181,108 +217,161 @@ the `lm` command can be used to create a model object in R:
 model <- lm(property_rate~unemploy_rate, data=crimes)
 ```
 
-The tilde (~) is used to indicate the relationship between the two variables with the dependent variable on the left hand side. I can then use the `coef` command on this model to get my coefficients (i.e. intercept and slope).
+The tilde (~) is used to indicate the relationship between the two variables with the dependent variable on the left hand side. 
+
+:::
+
+::: {.fragment}
+
+
+I can then use the `coef` command on this model to get my coefficients (i.e. intercept and slope).
 
 ```{r}
 coef(model)
 ```
-]
 
----
+:::
+
+:::
+
+::::
 
 ## Use `summary` for model TMI
 
-```{r, highlight.output=c(11,12,17)}
+```{r}
 summary(model)
 ```
 
-## Add the best-fitting line to your scatterplot
+## Add the best-fitting line to your scatterplot {.smaller}
 
-.pull-left[
-```{r add-line-example, fig.show = 'hide'}
+:::: {.columns}
+
+::: {.column width="40%"}
+
+```{r}
+#| label: scatter-best-fitting1
+#| eval: false
+#| fig-height: 10
 ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   geom_point()+
   geom_smooth(method="lm", se=FALSE)+
   labs(x="unemployment rate",
        y="property crimes (per 100,000)")
 ```
-* `geom_smooth` with the argument `method="lm"` will add the OLS regression line to your scatterplot.
-* `se=FALSE` will suppress a confidence band which I will show later.
-]
 
-.pull-right[
-```{r ref.label = 'add-line-example', echo = FALSE}
+::: {.fragment data-code-focus="3"}
+
+`geom_smooth` with the argument `method="lm"` will add the OLS regression line to your scatterplot. 
+
+`se=FALSE` will suppress a confidence band which I will show later.
+
+:::
+
+:::
+
+::: {.column width="60%"}
+
+
+```{r}
+#| label: scatter-best-fitting2
+#| echo: false
+ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
+  geom_point()+
+  geom_smooth(method="lm", se=FALSE)+
+  labs(x="unemployment rate",
+       y="property crimes (per 100,000)")
 ```
-]
 
----
+:::
+
+::::
 
 ## Interpreting the results
 
-$$\hat{\texttt{property_crimes}}_i=1628.4+148.7(\texttt{unemployment_rate}_i)$$
+$$\hat{\texttt{property_crimes}}_i=1238.1+220.8(\texttt{unemploy_rate}_i)$$
 
---
+:::: {.columns}
 
-.pull-left[
+::: {.column .fragment}
+
 ### Intercept
 
-**The model predicts** that states with **no unemployment** will have a property crime rate of 1628 crimes per 1000,000, **on average**.
-]
+**The model predicts** that states with **no unemployment** will have a property crime rate of 1238.1 crimes per 100,000, **on average**.
 
---
+:::
 
-.pull-right[
+::: {.column .fragment}
+
 ### Slope
 
-**The model predicts** that a **one percent increase** in the unemployment rate **is associated with** an increase of 149 property crimes per 100,000, **on average**.  
-]
+**The model predicts** that a **one percent increase** in the unemployment rate **is associated with** an increase of 220.8 property crimes per 100,000, **on average**.  
 
----
+:::
 
-##   Try interpreting these numbers
+::::
 
-Try interpreting these numbers from a regression model where the dependent variable is box office returns (in millions of dollars) and the independent variable is the Tomato Meter (from 0 to 100). 
+## Language Matters!
 
-$$\hat{\texttt{box_office}}_i=18.32+0.56(\texttt{meter}_i)$$
+The model predicts
+: We always preface results with this phrase, because we want to be clear that the results are driven by a model, which could also be a bad model.
 
---
+is associated with
+: We use this to describe the association between variables while avoiding causal language. 
 
-.pull-left[
+on average
+: We don't expect to see the exact same value for all cases with $x=0$ or the same change in $y$ for all one-unit increases in $x$. Rather we expect to see those values on average. If we don't include this qualifier, our results seem to deterministic.
+
+
+##   Try interpreting these numbers {.smaller}
+
+Try interpreting these numbers from a regression model where the dependent variable is box office returns (in millions of dollars) and the independent variable is the metascore (from 0 to 100 in "points"). 
+
+$$\hat{\texttt{box_office}}_i=4.98+0.77(\texttt{metascore}_i)$$
+
+:::: {.columns}
+
+::: {.column .fragment}
+
 ### Intercept
 
-The model predicts that movies that receive a zero on the Tomato Meter will make $18.32 million, on average.
-]
+The model predicts that movies that receive a zero metascore rating will make $4.98 million, on average.
 
---
+:::
 
-.pull-right[
+::: {.column .fragment}
+
 ### Slope
 
-The model predicts that a one percentage point increase in the Tomato Meter is associated with a $560,000 increase in box office returns, on average.
-]
+The model predicts that a one point increase in the metascore rating is associated with a $770,000 increase in box office returns, on average.
 
----
+:::
 
-## Nonsensical Intercepts
+::::
+
+## Nonsensical Intercepts {.smaller}
 
 Try interpreting these numbers from a regression model where the dependent variable is sexual frequency (sexual encounters per year) and the independent variable is age in years. 
 
-$$\hat{\texttt{sex}}_i=107.96-1.30(\texttt{age}_i)$$
+$$\hat{\texttt{sex}}_i=88.32-0.83(\texttt{age}_i)$$
 
---
+:::: {.columns}
 
-.pull-left[
+::: {.column .fragment}
+
 ### Intercept
 
-The model predicts that newborns will have sex 107.96 times per year, on average. 
+The model predicts that newborns will have sex 88.32 times per year, on average. 
 
 `r emo::ji("open_mouth")` Say what??!!
-]
 
---
+:::
 
-.pull-right[
-```{r echo=FALSE, fig.height=5}
+::: {.column .fragment}
+
+```{r}
+#| label: scope-problem
+#| echo: false
+#| fig-height: 8
 model <- lm(sexf~age, data=sex)
 ypred <- predict(model, newdata=data.frame(age=c(0,18)))
 ggplot(sex, aes(x=age, y=sexf))+
@@ -292,19 +381,28 @@ ggplot(sex, aes(x=age, y=sexf))+
   geom_segment(x=0, y=ypred[1], xend=18, yend=ypred[2],
                 arrow=arrow(length=unit(0.1, "inches"), ends = "both"), 
                 color="red", linewidth=2)+
-  annotate("label", 30, 95, label="Outside scope of the data")+
+  annotate("label", 30, 95, label="Outside scope of the data", size=8)+
   labs(x="age", y="sexual frequency (times per year)",
        title="scope problem")
 ```
 
-## Getting meaningful intercepts
+:::
 
-.pull-left[
+::::
+
+## Getting meaningful intercepts {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
 Lets subtract some constant $a$ from the variable $x$:
 
 $$x^*=x-a$$
 
 The value for zero on our new re-centered $x^*$ will be $a$ on the original scale.
+
+::: {.fragment}
 
 In the formula of the `lm` command in R, we can do this easily by surrounding our math with `I()` which tells R to apply the function inside and treat it as a new variable:
 
@@ -312,12 +410,16 @@ In the formula of the `lm` command in R, we can do this easily by surrounding ou
 model <- lm(sexf~I(age-18), data=sex)
 round(coef(model), 2)
 ```
-]
 
---
+:::
 
-.pull-right[
-```{r echo=FALSE}
+:::
+
+::: {.column .fragment}
+
+```{r}
+#| label: move-intercept
+#| echo: false
 model2 <- lm(sexf~age, data=sex)
 ggplot(sex, aes(x=age, y=sexf))+
   geom_segment(x=0, y=20, xend=18, yend=20,
@@ -334,8 +436,10 @@ ggplot(sex, aes(x=age, y=sexf))+
   geom_jitter(alpha=0.3, height=20)+
   geom_point(x=0, y=coef(model2)[1], color="red", size=3)+
   geom_point(x=18, y=coef(model)[1], color="red", size=3)+
-  annotate(x=5, y=coef(model2)[1]*1.06, geom="label", label=round(coef(model2)[1],2))+
-  annotate(x=23, y=coef(model)[1]*1.06, geom="label", label=round(coef(model)[1],2))+
+  annotate(x=5, y=coef(model2)[1]*1.06, geom="label",
+           label=round(coef(model2)[1],2), size=8)+
+  annotate(x=23, y=coef(model)[1]*1.06, geom="label",
+           label=round(coef(model)[1],2), size=8)+
   scale_x_continuous(breaks=seq(from=0,to=90, by=18),
                      labels=paste(seq(from=0,to=90, by=18),
                                   seq(from=0,to=90, by=18)-18,
@@ -344,47 +448,54 @@ ggplot(sex, aes(x=age, y=sexf))+
   labs(x="age", y="sexual frequency (times per year)",
        title="We effectively shift the y-axis")
 ```
-]
 
----
+:::
+
+::::
 
 ##  Now interpret these numbers
 
-$$\hat{\texttt{sex}}_i=84.58-1.30(\texttt{age}_i-18)$$
+$$\hat{\texttt{sex}}_i=73.45-0.83(\texttt{age}_i-18)$$
 
---
+:::: {.columns}
 
-.pull-left[
+::: {.column .fragment}
+
 ### Intercept
-The model predicts that 18 year old individuals have sex 84.58 times per year, on average.
-]
+The model predicts that 18 year old individuals have sex 73.45 times per year, on average.
 
---
+:::
 
-.pull-right[
+::: {.column .fragment}
+
 ### Slope
-The model predicts that a one year increase in age is associated with 1.3 fewer sexual encounters per year, on average.
-]
+The model predicts that a one year increase in age is associated with 0.83 fewer sexual encounters per year, on average.
 
----
+:::
+
+::::
 
 ## How good is $x$ as a predictor of $y$?
 
 I pick a random observation from the dataset and ask you to guess the value of $y$. What is your best guess?
 
---
-.pull-left[
+:::: {.columns}
+
+::: {.column .fragment}
 
 ### Choose $\bar{y}$
 
 * Because it is the balancing point, the mean will give you the smallest error, on average.
 * If you repeat this procedure, your average error in prediction will be equal to $s_y$.
 
+:::
 
-]
+::: {.column .fragment}
 
-.pull-right[
-```{r echo=FALSE, fig.height=6}
+```{r}
+#| label: mean-best-fitting
+#| echo: false
+#| fig-height: 8
 ggplot(crimes, aes(x=reorder(state, property_rate, median), y=property_rate))+
   geom_point()+
   geom_hline(yintercept = mean(crimes$property_rate),
@@ -394,28 +505,35 @@ ggplot(crimes, aes(x=reorder(state, property_rate, median), y=property_rate))+
        title="The mean is the least wrong number")+
   coord_flip()+
   annotate("label", x=49, y=mean(crimes$property_rate), 
-           label="mean of property crime rate", color="red")+
+           label="mean of property crime rate", color="red", size=8)+
   theme(axis.text.y = element_text(size=7))
 ```
-]
 
----
+:::
 
-## How good is $x$ as a predictor of $y$?
+::::
+
+## How good is $x$ as a predictor of $y$? {.smaller}
 
 I pick a random observation from the dataset and *tell you its value of $x$*, and then ask you to guess the value of $y$. What is your best guess?
 
---
-.pull-left[
+:::: {.columns}
+
+::: {.column .fragment}
 
 ### Choose $\hat{y}_i$ from the linear model
 
 * Assuming that a linear model is reasonable, the predicted value from this model will be your best guess.
 * The average error in your prediction will be equal to the average residual from the model, $|\hat{y}_i-y_i|$.
-]
 
-.pull-right[
-```{r echo=FALSE, fig.height=5.5}
+:::
+
+::: {.column .fragment}
+
+```{r}
+#| label: choose-predicted-value
+#| echo: false
+#| fig-height: 8
 ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   geom_point()+
   geom_smooth(method="lm", se=FALSE)+
@@ -427,15 +545,20 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   annotate("label", x=4, y=mean(crimes$property_rate), 
            label="mean of property\ncrime rate", color="red")
 ```
-]
 
----
+:::
 
-## How much did we reduce the error?
+::::
 
+## How much did we reduce the error? {.smaller}
 
-.pull-left[
-```{r, echo=FALSE}
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: reduce-error
+#| echo: false
 model <- lm(property_rate~unemploy_rate, data=crimes)
 crimes$fitted <- model$fitted.values
 
@@ -461,17 +584,32 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   labs(x="Unemployment rate", y="property crimes per 100,000 population")+
   theme_bw()
 ```
-]
 
-.pull-right[
+:::
+
+::: {.column}
 
 #### On average, what proportion of the red line is the green line across all observations?
 
+::: {.fragment}
+
 Red: $\sum_{i=1}^n (y_i-\bar{y})^2$
+
+:::
+
+::: {.fragment}
 
 Green: $\sum_{i=1}^n (y_i-\hat{y}_i)^2$
 
+:::
+
+::: {.fragment}
+
 Proportion: $\frac{\sum_{i=1}^n (y_i-\bar{y})^2}{\sum_{i=1}^n (y_i-\hat{y}_i)^2}$
+
+:::
+
+::: {.fragment}
 
 It turns out:
 
@@ -480,33 +618,41 @@ $$\frac{\sum_{i=1}^n (y_i-\bar{y})^2}{\sum_{i=1}^n (y_i-\hat{y}_i)^2}=r^2$$
 ```{r}
 cor(crimes$unemploy_rate, crimes$property_rate)^2
 ```
+
+:::
  
-]
+::: 
+ 
+::::
 
----
+## R-squared is a measure of goodness of fit {.smaller}
 
-## R-squared is a measure of goodness of fit
+:::: {.columns}
 
-.pull-left[
+::: {.column .fragment}
+
 ```{r}
 cor(crimes$unemploy_rate, crimes$property_rate)^2
 ```
 
 About 19.7% of the variation in property crime rates across states can be accounted for by variation in unemployment rates across states.
-]
 
---
+:::
 
-.pull-right[
-```{r highlight.output=17}
+::: {.column .fragment}
+
+```{r}
 summary(lm(property_rate~unemploy_rate, data=crimes))
 ```
-]
+:::
 
-## Statistical inference for linear models
+::::
 
+## Statistical inference for linear models {.smaller}
 
-.pull-left[
+:::: {.columns}
+
+::: {.column .fragment}
 
 The population model is: $$\hat{y}_i=\beta_0+\beta_1(x_i)$$
 
@@ -514,23 +660,27 @@ The null hypothesis of no relationship is given by: $$H_0: \beta_1=0$$
 
 How do we test?
 
-]
+:::
 
---
+::: {.column .fragment}
 
-.pull-right[
-```{r highlight.output=12}
+```{r}
 summary(lm(property_rate~unemploy_rate, data=crimes))
 ```
 
 Just look at a `summary` of the model! `r emo::ji("sunglasses")`
-]
 
----
+:::
+
+::::
 
 ## `r emo::ji("warning")` Linear models only fit straight lines
 
-```{r echo=FALSE, fig.width=12}
+```{r}
+#| label: straight-lines-only
+#| echo: false
+#| fig-height: 14
+#| fig-width: 24
 ggplot(subset(gapminder, year==2007), aes(x=gdpPercap, y=lifeExp))+
   geom_smooth(method="lm", se=FALSE)+
   geom_point(alpha=0.5)+
@@ -538,25 +688,38 @@ ggplot(subset(gapminder, year==2007), aes(x=gdpPercap, y=lifeExp))+
        y="life expectancy",
        caption="source: Gapminder, 2007")+
   ylim(30,90)+
-  annotate("label", x=10000, y=75, label="Underestimate")+
-  annotate("label", x=2000, y=50, label="Overestimate")+
-  annotate("label", x=45000, y=80, label="Overestimate")+
+  annotate("label", x=10000, y=75, label="Underestimate", size=8)+
+  annotate("label", x=2000, y=50, label="Overestimate", size=8)+
+  annotate("label", x=45000, y=80, label="Overestimate", size=8)+
   scale_x_continuous(labels = scales::dollar)
 ```
 
----
-
 ## `r emo::ji("warning")` Outliers can be influential
 
-<iframe src="https://aarongullickson.shinyapps.io/influentialpoints/">
-
-</iframe>
-
----
+```{r}
+#| label: influential-points
+#| echo: false
+#| fig-height: 14
+#| fig-width: 24
+ggplot(crimes, aes(x=median_age, y=property_rate))+
+  geom_point(size=3)+
+  geom_point(data=subset(crimes, state=="District of Columbia"), 
+             size=2.5, color="red")+
+  geom_smooth(data=subset(crimes, state!="District of Columbia"),
+              method="lm", se=FALSE, color="red", linewidth=3)+
+  geom_smooth(method="lm", se=FALSE, linewidth=3)+
+  labs(x="median age in the state", 
+       y="property crimes per 100,000 population",
+       caption="red line shows best fitting line without Washington, DC")
+```
 
 ## `r emo::ji("warning")` Don't extrapolate beyond range of data
 
-```{r echo=FALSE, fig.width=12}
+```{r}
+#| label: dont-extrapolate
+#| echo: false
+#| fig-height: 14
+#| fig-width: 24
 model <- lm(sexf~age, data=sex)
 ypred <- predict(model, newdata=data.frame(age=c(0,18)))
 ggplot(sex, aes(x=age, y=sexf))+
@@ -566,10 +729,8 @@ ggplot(sex, aes(x=age, y=sexf))+
   geom_segment(x=0, y=ypred[1], xend=18, yend=ypred[2],
                 arrow=arrow(length=unit(0.1, "inches"), ends = "both"), 
                 color="red", linewidth=2)+
-  annotate("label", 30, 95, label="Outside scope of the data")+
   labs(x="age", y="sexual frequency (times per year)",
-       title="scope problem")+
-  theme_bw()
+       title="scope problem")
 ```
 
 
