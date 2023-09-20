@@ -44,7 +44,7 @@ $selection-bg: #26351c !default;
   text-align: left;
 
   .title {
-    color: $body-color;
+    color: #FFFFFF;
     font-size: 1.4em;
     font-weight: 350;
   }
@@ -65,7 +65,7 @@ $selection-bg: #26351c !default;
 
   .author,
   .quarto-title-author-name {
-    color: $body-color;
+    color: #FFFFFF;
   }
 
   .quarto-title-authors {
@@ -81,6 +81,10 @@ $selection-bg: #26351c !default;
 
 }
 
+.reveal p {
+  margin-top: 0.25em;
+}
+
 
 .reveal h2 {
   font-weight: 350;
@@ -92,12 +96,13 @@ $selection-bg: #26351c !default;
   font-style: italic;
   font-weight: 350;
   font-size: 0.95em;
+  margin-top: 0.5em;
 }
 
 .reveal h4 {
   color: $accent2;
   font-weight: 350;
-  margin-top: 1.25em;
+  margin-top: 0.5em;
 }
 
 // alerts etc.
@@ -143,6 +148,19 @@ $selection-bg: #26351c !default;
   }
 }
 
+.reveal ul ul ul {
+  list-style: none;
+
+  li:before {
+    content: "\22B3";
+    color: mix($accent, white, 60%);
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+    margin-right: 0.5em;
+  }
+}
+
 // Ordered lists
 
 .reveal ol {
@@ -164,4 +182,12 @@ $selection-bg: #26351c !default;
 .reveal dd {
   font-family: $font-family-sans-serif;
   font-weight: 100;
+}
+
+.reveal pre.sourceCode code {
+  background-color: #f0f0f0;
+}
+
+.tbl-model {
+  font-size: 0.8em;
 }
