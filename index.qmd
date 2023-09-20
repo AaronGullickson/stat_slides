@@ -1,0 +1,14 @@
+---
+title: "Slide Index, Statistical Analysis in Sociology"
+format: html
+---
+
+These are the slides for the course, [Statistical Analysis in Sociology](https://stat-analysis.netlify.app).
+
+| Chapter                |
+|------------------------|
+| [Understanding Data](slides_understanding_data.html)     |
+| [Looking at Distributions](slides_looking_distributions.html) |
+| [Measuring Association](slides_measuring_association.html)   |
+| [Making Inferences](slides_making_inferences.html)      |
+| [Building Models](slides_building_models.html)       |

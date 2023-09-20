@@ -4,6 +4,7 @@ project:
     - scripts/check_packages.R
   render:
     - slides*.qmd
+    - index.qmd
   output-dir: _slides
 
 subtitle: "Sociology 312/412/512, University of Oregon"
