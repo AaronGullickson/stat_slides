@@ -1192,11 +1192,17 @@ tapply(sex$sexf, sex$gender, mean)
 45.94162-48.11560
 ```
 
---
+Women report 2.17 fewer sexual encounters per year than men. 
 
-Women report 2.17 fewer sexual encounters per year than men. Note that I use the term *report* here because its not exactly clear why these numbers would be different. The difference could reflect differences by sexual orientation, or it could just be that either men over-report or women under-report sexual frequency. It could also be sampling error.
+::: {.fragment .fade-up}
 
----
+::: {.callout-warning}
+
+Note that I use the term *report* here because its not exactly clear why these numbers would be different. The difference could reflect differences by sexual orientation, or it could just be that either men over-report or women under-report sexual frequency. It could also be sampling error.
+
+:::
+
+:::
 
 ## Make an indicator variable
 
@@ -1209,18 +1215,22 @@ $$\texttt{female}_i=\begin{cases}
 * female is the **indicated** category.
 * It operates like an on/off switch.
 
---
+::: {.fragment}
 
 ```{r}
 sex$female <- as.numeric(sex$gender=="Female")
 table(sex$gender, sex$female)
 ```
 
----
+:::
 
-# Make a scatterplot with indicator
+## Make a scatterplot with indicator
 
-```{r fig.width=12, echo=FALSE}
+```{r}
+#| label: indicator-gender1
+#| echo: false
+#| fig-height: 14
+#| fig-width: 24
 set.seed(1)
 ggplot(sex, 
        aes(x=female, y=sexf))+
@@ -1229,37 +1239,16 @@ ggplot(sex,
   geom_smooth(method="lm", se=FALSE)+
   labs(x="female indicator variable", 
        y="sexual frequency (times/year)",
-       title="Scatterplot of sexual frequency by female indicator variable")+
-  theme_bw()
+       title="Scatterplot of sexual frequency by female indicator variable")
 ```
 
+## Make a scatterplot with indicator
 
----
-
-# Make a scatterplot with indicator
-
-```{r fig.width=12, echo=FALSE}
-set.seed(1)
-ggplot(sex, 
-       aes(x=female, y=sexf))+
-  geom_jitter(alpha=0.1, width=0.01,
-              height=10)+
-  geom_smooth(method="lm", se=FALSE)+
-  labs(x="female indicator variable", 
-       y="sexual frequency (times/year)",
-       title="Scatterplot of sexual frequency by female indicator variable")+
-  geom_point(data=data.frame(female=c(0,1), 
-                             sexf=tapply(sex$sexf, sex$female, mean)),
-             color="red", size=5)+
-  annotate("label", 0.5, 60, label="best fitting line connects the dots between the two means")+
-  theme_bw()
-```
-
----
-
-# Make a scatterplot with indicator
-
-```{r fig.width=12, echo=FALSE}
+```{r}
+#| label: indicator-gender2
+#| echo: false
+#| fig-height: 14
+#| fig-width: 24
 set.seed(1)
 ggplot(sex, 
        aes(x=female, y=sexf))+
@@ -1272,49 +1261,69 @@ ggplot(sex,
   geom_point(data=data.frame(female=c(0,1), 
                              sexf=tapply(sex$sexf, sex$female, mean)),
              color="red", size=5)+
-  annotate("label", 0.5, 60, label="The slope is equal to the mean difference of -5.854")+
-  theme_bw()
+  annotate("label", 0.5, 60, label="best fitting line connects the dots between the two means", size=10)
 ```
 
----
+## Make a scatterplot with indicator
 
-## `tapply` vs. `lm`
+```{r}
+#| label: indicator-gender3
+#| echo: false
+#| fig-height: 14
+#| fig-width: 24
+set.seed(1)
+ggplot(sex, 
+       aes(x=female, y=sexf))+
+  geom_jitter(alpha=0.1, width=0.01,
+              height=10)+
+  geom_smooth(method="lm", se=FALSE)+
+  labs(x="female indicator variable", 
+       y="sexual frequency (times/year)",
+       title="Scatterplot of sexual frequency by female indicator variable")+
+  geom_point(data=data.frame(female=c(0,1), 
+                             sexf=tapply(sex$sexf, sex$female, mean)),
+             color="red", size=5)+
+  annotate("label", 0.5, 60, label="The slope is equal to the mean difference of -5.854", size=10)
+```
 
-### Two separate means
+## `tapply` vs. `lm` {.smaller}
+
+::: {.fragment}
+
+#### Two separate means
 
 ```{r}
 tapply(sex$sexf, sex$female, mean)
 ```
 
---
+:::
 
-.pull-left[
-### Mean and mean difference
+::: {.fragment}
+
+#### Mean and mean difference
+
 ```{r}
 model <- lm(sexf~female, data=sex)
 coef(model)
 ```
 * Intercept is the mean for the reference (men)
 * Slope is the mean difference which in this case tells us that women report 5.854 fewer instances of sex per year than men.
-]
 
---
+:::
 
+::: {.fragment}
 
-.pull-right[
-### Reverse reference
+#### Reverse reference - what changes and why?
+
 ```{r}
 sex$male <- as.numeric(sex$gender=="Male")
 model <- lm(sexf~male, data=sex)
 coef(model)
 ```
 
-What changes and why?
-]
+:::
 
----
-
-## Categorical variables in `lm`
+## Categorical variables in `lm` {.smaller}
 
 There is no need to create indicator variables. Just feed in categorical variables directly:
 
@@ -1323,20 +1332,17 @@ model <- lm(sexf~gender, data=sex)
 coef(model)
 ```
 
---
-
-* *R* knows what to do with the variable. It creates its own indicator variable. 
-
---
-
+* *R* knows what to do with the variable. It creates its own indicator variable.
 * The reference for the categorical variable is already set as the first category, which in this case is male. You can use the `relevel` command to change the reference:
+
+::: {.fragment}
 
 ```{r}
 model <- lm(sexf~relevel(gender, "Female"), data=sex)
 coef(model)
 ```
 
----
+:::
 
 ## More than two categories
 
@@ -1345,19 +1351,9 @@ model <- lm(sexf~marital, data=sex)
 coef(model)
 ```
 
---
-
 * Each category gets an indicator variable, **except for one.** Which one is missing here?
-
---
-
-* Married is the reference category. The category not included is always the reference category.
-
---
-
+* Never-married is the reference category. The category not included is always the reference category.
 * Each coefficient gives the mean difference between the indicated category and the reference category.
-
----
 
 ## Interpretations
 
@@ -1366,83 +1362,83 @@ model <- lm(sexf~marital, data=sex)
 coef(model)
 ```
 
---
-
-* Married individuals have sex 56.1 times per year, on average.
-
---
-
-* Widowed individuals have sex 46.9 fewer times per year than **married individuals**, on average.
-
---
-
-* Divorced individuals have sex 14.7 fewer times per year than **married individuals**, on average.
-
---
-
-* Separated individuals have sex -0.4 fewer times per year than **married individuals**, on average.
-
---
-
-* Never-married individuals have sex 2.5 fewer times per year than **married individuals**, on average.
+* Never-married individuals have sex 53.5 times per year, on average.
+* Widowed individuals have sex 27.6 fewer times per year than **never-married individuals**, on average.
+* Divorced individuals have sex 5.6 fewer times per year than **never-married individuals**, on average.
+* Married individuals have sex 7.0 fewer times per year than **never-married individuals**, on average.
 
 
----
+## Why use a model?
 
-## Why?
+In a model, we can calculate mean differneces while holding constant other variables. 
 
-We can already calculate mean differences. Why do it in a model?
-
---
-
-In a model, we can control for other variables. 
+::: {.fragment}
 
 For example, how much of the differences in sexual frequency by marital status result from differences in age?
 
---
+:::
+
+::: {.fragment}
 
 ```{r}
 model <- lm(sexf~marital+I(age-18), data=sex)
 coef(model)
 ```
 
----
+:::
 
-## Compare the models
+::: {.fragment}
 
-.pull-left[
-.stargazer[
-```{r echo=FALSE, results='asis'}
+These results are very different!
+
+:::
+
+## Compare the models {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+::: {.tbl-model}
+
+```{r}
+#| label: model-marital-age
+#| echo: false
+#| results: asis
 model1 <- lm(sexf~marital, data=sex)
 model2 <- lm(sexf~marital+I(age-18), data=sex)
 htmlreg(list(model1, model2),
         head.tag = FALSE,
         doctype = FALSE,
         custom.coef.names = c("Intercept",
-                              "Widowed",
+                              "Married",
                               "Divorced",
-                              "Never married",
+                              "Widowed",
                               "Age"),
         custom.gof.names = c("R-squared","N"),
-        caption="OLS regression models predicting sexual frequency",
+        caption="Linear models predicting sexual frequency",
         caption.above=TRUE,
         digits=2,
         star.symbol='&#42;',
         custom.note = "%stars. Standard errors in parenthesis. Age centered on 18 years. Married is reference category for marital status",
         include.adjrs=FALSE, include.rmse=FALSE)
 ```
-]
-]
 
---
+:::
 
-.pull-right[
+:::
+
+::: {.column .fragment}
 
 #### Controlling for age gets rid of the bias between marital groups due to age differences.
-* The difference between widowed and married was reduced from -46.8 to -15.3 once we controlled for age because the widowed are much older than the married.
-* The difference between never married and married increased from -2.5 to -24.3 once we controlled for age because the never married are much younger than the married.
 
-]
+* In Model 1, all of the differences are negative, indicating that never-married individuals, on average, have sex more than the other marital categories. 
+* In Model 2, all of the differences are positive, indicating that never-married individuals, on average, have sex less than the other marital categories **when comparing individuals of the same age.
+* The substantially higher sexual frequency of never-married individuals is entirely a function of age.
+
+:::
+
+::::
 
 # Interaction Terms {.center background-color="black" background-image="images/denys-nevozhai-7nrsVjvALnA-unsplash.jpg"}
 
