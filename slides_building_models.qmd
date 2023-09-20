@@ -1,0 +1,1818 @@
+---
+title: "Building Models"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(here)
+source(here("scripts","check_packages.R"))
+source(here("scripts","set_theme.R"))
+source(here("scripts","load_example_data.R"))
+```
+
+# The OLS Regression Line {.center background-color="black" background-image="images/ridham-nagralawala-kuJkUTxR0z4-unsplash.jpg"}
+
+## Drawing straight lines
+
+```{r echo=FALSE, fig.width=12}
+ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
+  geom_point()+
+  labs(x="unemployment rate",
+       y="property crimes (per 100,000)",
+       title="What is the best line through these points?")+
+  lims(x=c(0,9), y=c(0,5000))
+```
+
+---
+
+## Drawing straight lines
+
+```{r echo=FALSE, fig.width=12}
+ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
+  geom_point()+
+  geom_smooth(method="lm", se=FALSE, fullrange=TRUE)+
+  labs(x="unemployment rate",
+       y="property crimes (per 100,000)",
+       title="This is the best-fitting line")+
+  lims(x=c(0,9), y=c(0,5000))
+```
+
+---
+
+## Elements of a straight line
+
+```{r echo=FALSE, fig.width=12}
+model <- lm(property_rate~unemploy_rate, data=crimes)
+ypredict <- predict(model, newdata=data.frame(unemploy_rate=c(5,6)))
+ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
+  geom_point()+
+  geom_smooth(method="lm", se=FALSE, fullrange=TRUE)+
+  geom_point(x=0, y=coef(model)[1], color="red", size=3)+
+  annotate("label", x=1, coef(model)[1]*0.92, label=paste("y-intercept=", round(coef(model)[1], 2), sep=""))+
+  annotate("segment", x = 5, xend = 6, 
+           y = ypredict[1], yend = ypredict[1], 
+           color="red",
+           arrow=arrow(length=unit(0.1,"cm"), type = "closed"))+
+  annotate("segment", x = 6, xend = 6, 
+           y = ypredict[1], yend = ypredict[2], 
+           color="red",
+           arrow=arrow(length=unit(0.1,"cm"), type = "closed"))+
+  annotate("label", x=5.5, y=ypredict[1]*0.92, label="run")+
+  annotate("label", x=6.3, y=mean(ypredict), label="rise")+
+  annotate("label", x=5.5, y=3000, 
+           label=paste("slope=rise/run=",round(coef(model)[2],2), sep=""))+
+  geom_vline(xintercept = 0, linetype=2)+
+  labs(x="unemployment rate",
+       y="property crimes (per 100,000)",
+       title="Slope and intercept")+
+  lims(x=c(0,9), y=c(0,5000))
+```
+
+---
+
+##  The formula for a straight line
+
+--
+
+.pull-left[
+### in high school
+
+$$y=a+bx$$
+
+* $a$ is the **y-intercept**: the value of $y$ when $x$ is zero.
+* $b$ is the **slope**: the change in $y$ for a one-unit increase in $x$ (the rise over the run).
+* In this kind of set-up the constant values of $a$ and $b$ are called **coefficients** -  a constant value that is multiplied by a variable.
+]
+
+--
+
+.pull-right[
+### How we do it in statistics
+
+$$\hat{y}_i=b_0+b_1x_i$$
+
+* $\hat{y}_i$: The predicted value of $y$ for $i$th observation from the linear formula.
+* $b_0$: The predicted value of $y$ when $x$ is zero.
+* $b_1$: The predicted change in $y$ for a one-unit increase in $x$.
+]
+
+---
+
+## How do we know which line is best?
+
+--
+
+.pull-left[
+```{r echo=FALSE}
+model <- lm(property_rate~unemploy_rate, data=crimes)
+temp <- data.frame(unemploy_rate=crimes$unemploy_rate,
+                   property_rate=crimes$property_rate,
+                   fitted=model$fitted.values)
+
+ggplot(temp, aes(x=unemploy_rate, y=property_rate))+
+  geom_smooth(method="lm", se=FALSE)+
+  geom_segment(aes(xend=unemploy_rate, yend=fitted), color="red")+
+  geom_point()+
+  labs(x="unemployment rate",
+       y="property crimes (per 100,000)",
+       title="The red lines are the residuals/errors")
+```
+]
+
+--
+
+.pull-right[
+
+#### We choose the line that minimizes the error in our prediction
+
+For a given observation $i$, the value $y_i-\hat{y}_i$ gives the residual or error in the prediction.
+
+To get the total error in prediction, we can calculate the sum of squared residuals:
+
+$$SSR=\sum_{i=1}^n (y_i-\hat{y}_i)^2=\sum_{i=1}^n (y_i-b_0-b_1x_i)^2$$
+
+The best-fitting line is the one with the smallest possible sum of squared residuals. This is called the **Ordinary Least Squares (OLS) regression line**.
+]
+
+---
+
+class: center, middle
+
+<iframe src="https://aarongullickson.shinyapps.io/reducerss/">
+
+</iframe>
+
+---
+
+## Formulas for the best-fitting line
+
+$$b_1=r * \frac{s_y}{s_x}$$
+$$b_0=\bar{y}-b_1*\bar{x}$$
+
+--
+
+We can calculate by hand in R, although we will learn an easier way later:
+
+```{r}
+slope <- cor(crimes$property_rate,crimes$unemploy_rate)*sd(crimes$property_rate)/sd(crimes$unemploy_rate)
+slope
+mean(crimes$property_rate)-slope*mean(crimes$unemploy_rate)
+```
+
+--
+
+$$\hat{\texttt{property_crimes}}_i=1628.4+148.7(\texttt{unemployment_rate}_i)$$
+
+---
+
+## The OLS regression line as a model
+
+.left-column[
+![model plane](images/scarbor-siu-pKGvVjAp0P8-unsplash.jpg)
+]
+
+.right-column[
+The OLS regression line is often called a **linear model** because we are measuring the relationship between two variables by applying a **linear function** to characterize the relationship.
+
+the `lm` command can be used to create a model object in R:
+
+```{r}
+model <- lm(property_rate~unemploy_rate, data=crimes)
+```
+
+The tilde (~) is used to indicate the relationship between the two variables with the dependent variable on the left hand side. I can then use the `coef` command on this model to get my coefficients (i.e. intercept and slope).
+
+```{r}
+coef(model)
+```
+]
+
+---
+
+## Use `summary` for model TMI
+
+```{r, highlight.output=c(11,12,17)}
+summary(model)
+```
+
+## Add the best-fitting line to your scatterplot
+
+.pull-left[
+```{r add-line-example, fig.show = 'hide'}
+ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
+  geom_point()+
+  geom_smooth(method="lm", se=FALSE)+
+  labs(x="unemployment rate",
+       y="property crimes (per 100,000)")
+```
+* `geom_smooth` with the argument `method="lm"` will add the OLS regression line to your scatterplot.
+* `se=FALSE` will suppress a confidence band which I will show later.
+]
+
+.pull-right[
+```{r ref.label = 'add-line-example', echo = FALSE}
+```
+]
+
+---
+
+## Interpreting the results
+
+$$\hat{\texttt{property_crimes}}_i=1628.4+148.7(\texttt{unemployment_rate}_i)$$
+
+--
+
+.pull-left[
+### Intercept
+
+**The model predicts** that states with **no unemployment** will have a property crime rate of 1628 crimes per 1000,000, **on average**.
+]
+
+--
+
+.pull-right[
+### Slope
+
+**The model predicts** that a **one percent increase** in the unemployment rate **is associated with** an increase of 149 property crimes per 100,000, **on average**.  
+]
+
+---
+
+##   Try interpreting these numbers
+
+Try interpreting these numbers from a regression model where the dependent variable is box office returns (in millions of dollars) and the independent variable is the Tomato Meter (from 0 to 100). 
+
+$$\hat{\texttt{box_office}}_i=18.32+0.56(\texttt{meter}_i)$$
+
+--
+
+.pull-left[
+### Intercept
+
+The model predicts that movies that receive a zero on the Tomato Meter will make $18.32 million, on average.
+]
+
+--
+
+.pull-right[
+### Slope
+
+The model predicts that a one percentage point increase in the Tomato Meter is associated with a $560,000 increase in box office returns, on average.
+]
+
+---
+
+## Nonsensical Intercepts
+
+Try interpreting these numbers from a regression model where the dependent variable is sexual frequency (sexual encounters per year) and the independent variable is age in years. 
+
+$$\hat{\texttt{sex}}_i=107.96-1.30(\texttt{age}_i)$$
+
+--
+
+.pull-left[
+### Intercept
+
+The model predicts that newborns will have sex 107.96 times per year, on average. 
+
+`r emo::ji("open_mouth")` Say what??!!
+]
+
+--
+
+.pull-right[
+```{r echo=FALSE, fig.height=5}
+model <- lm(sexf~age, data=sex)
+ypred <- predict(model, newdata=data.frame(age=c(0,18)))
+ggplot(sex, aes(x=age, y=sexf))+
+  geom_vline(xintercept = 0, linetype=2)+
+  geom_jitter(alpha=0.3, height=20)+
+  geom_smooth(method="lm", se=FALSE, fullrange=TRUE, linewidth=2)+
+  geom_segment(x=0, y=ypred[1], xend=18, yend=ypred[2],
+                arrow=arrow(length=unit(0.1, "inches"), ends = "both"), 
+                color="red", linewidth=2)+
+  annotate("label", 30, 95, label="Outside scope of the data")+
+  labs(x="age", y="sexual frequency (times per year)",
+       title="scope problem")
+```
+
+## Getting meaningful intercepts
+
+.pull-left[
+Lets subtract some constant $a$ from the variable $x$:
+
+$$x^*=x-a$$
+
+The value for zero on our new re-centered $x^*$ will be $a$ on the original scale.
+
+In the formula of the `lm` command in R, we can do this easily by surrounding our math with `I()` which tells R to apply the function inside and treat it as a new variable:
+
+```{r}
+model <- lm(sexf~I(age-18), data=sex)
+round(coef(model), 2)
+```
+]
+
+--
+
+.pull-right[
+```{r echo=FALSE}
+model2 <- lm(sexf~age, data=sex)
+ggplot(sex, aes(x=age, y=sexf))+
+  geom_segment(x=0, y=20, xend=18, yend=20,
+               arrow=arrow(length=unit(0.1, "inches")), 
+               color="grey40")+
+  geom_segment(x=0, y=75, xend=18, yend=75,
+               arrow=arrow(length=unit(0.1, "inches")), 
+               color="grey40")+
+  geom_segment(x=0, y=140, xend=18, yend=140,
+               arrow=arrow(length=unit(0.1, "inches")), 
+               color="grey40")+
+  geom_vline(xintercept = c(0,18), linetype=1)+
+  geom_smooth(method="lm", se=FALSE, fullrange=TRUE)+
+  geom_jitter(alpha=0.3, height=20)+
+  geom_point(x=0, y=coef(model2)[1], color="red", size=3)+
+  geom_point(x=18, y=coef(model)[1], color="red", size=3)+
+  annotate(x=5, y=coef(model2)[1]*1.06, geom="label", label=round(coef(model2)[1],2))+
+  annotate(x=23, y=coef(model)[1]*1.06, geom="label", label=round(coef(model)[1],2))+
+  scale_x_continuous(breaks=seq(from=0,to=90, by=18),
+                     labels=paste(seq(from=0,to=90, by=18),
+                                  seq(from=0,to=90, by=18)-18,
+                                  sep="\n"),
+                     limits = c(0,90))+
+  labs(x="age", y="sexual frequency (times per year)",
+       title="We effectively shift the y-axis")
+```
+]
+
+---
+
+##  Now interpret these numbers
+
+$$\hat{\texttt{sex}}_i=84.58-1.30(\texttt{age}_i-18)$$
+
+--
+
+.pull-left[
+### Intercept
+The model predicts that 18 year old individuals have sex 84.58 times per year, on average.
+]
+
+--
+
+.pull-right[
+### Slope
+The model predicts that a one year increase in age is associated with 1.3 fewer sexual encounters per year, on average.
+]
+
+---
+
+## How good is $x$ as a predictor of $y$?
+
+I pick a random observation from the dataset and ask you to guess the value of $y$. What is your best guess?
+
+--
+.pull-left[
+
+### Choose $\bar{y}$
+
+* Because it is the balancing point, the mean will give you the smallest error, on average.
+* If you repeat this procedure, your average error in prediction will be equal to $s_y$.
+
+
+]
+
+.pull-right[
+```{r echo=FALSE, fig.height=6}
+ggplot(crimes, aes(x=reorder(state, property_rate, median), y=property_rate))+
+  geom_point()+
+  geom_hline(yintercept = mean(crimes$property_rate),
+             col="red", linetype=2)+
+  labs(x=NULL,
+       y="property crimes (per 100,000)",
+       title="The mean is the least wrong number")+
+  coord_flip()+
+  annotate("label", x=49, y=mean(crimes$property_rate), 
+           label="mean of property crime rate", color="red")+
+  theme(axis.text.y = element_text(size=7))
+```
+]
+
+---
+
+## How good is $x$ as a predictor of $y$?
+
+I pick a random observation from the dataset and *tell you its value of $x$*, and then ask you to guess the value of $y$. What is your best guess?
+
+--
+.pull-left[
+
+### Choose $\hat{y}_i$ from the linear model
+
+* Assuming that a linear model is reasonable, the predicted value from this model will be your best guess.
+* The average error in your prediction will be equal to the average residual from the model, $|\hat{y}_i-y_i|$.
+]
+
+.pull-right[
+```{r echo=FALSE, fig.height=5.5}
+ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
+  geom_point()+
+  geom_smooth(method="lm", se=FALSE)+
+  geom_hline(yintercept = mean(crimes$property_rate),
+             col="red", linetype=2)+
+  labs(x="Unemployment rate",
+       y="property crimes (per 100,000)",
+       title="Choose the number on the blue line")+
+  annotate("label", x=4, y=mean(crimes$property_rate), 
+           label="mean of property\ncrime rate", color="red")
+```
+]
+
+---
+
+## How much did we reduce the error?
+
+
+.pull-left[
+```{r, echo=FALSE}
+model <- lm(property_rate~unemploy_rate, data=crimes)
+crimes$fitted <- model$fitted.values
+
+ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
+  geom_smooth(method="lm", se=FALSE, color="grey30")+
+  geom_hline(yintercept = mean(crimes$property_rate), linetype=2)+
+  geom_segment(data=subset(crimes, state=="South Dakota"),
+               aes(x=unemploy_rate-0.05, xend=unemploy_rate-0.05), 
+               yend=mean(crimes$property_rate), 
+               color="red", size=1)+
+  geom_segment(data=subset(crimes, state=="South Dakota"),
+               aes(x=unemploy_rate+0.05, xend=unemploy_rate+0.05,
+                   y=fitted), 
+               yend=mean(crimes$property_rate), 
+               color="goldenrod", size=1)+
+  geom_segment(data=subset(crimes, state=="South Dakota"),
+               aes(x=unemploy_rate+0.05, xend=unemploy_rate+0.05,
+                   y=property_rate, yend=fitted), 
+               color="darkgreen", size=1)+
+  geom_point(alpha=0.2)+
+  geom_point(data=subset(crimes, state=="South Dakota"), size=2)+
+  annotate(geom="text", x=5, y=1750, label="South Dakota")+
+  labs(x="Unemployment rate", y="property crimes per 100,000 population")+
+  theme_bw()
+```
+]
+
+.pull-right[
+
+#### On average, what proportion of the red line is the green line across all observations?
+
+Red: $\sum_{i=1}^n (y_i-\bar{y})^2$
+
+Green: $\sum_{i=1}^n (y_i-\hat{y}_i)^2$
+
+Proportion: $\frac{\sum_{i=1}^n (y_i-\bar{y})^2}{\sum_{i=1}^n (y_i-\hat{y}_i)^2}$
+
+It turns out:
+
+$$\frac{\sum_{i=1}^n (y_i-\bar{y})^2}{\sum_{i=1}^n (y_i-\hat{y}_i)^2}=r^2$$
+
+```{r}
+cor(crimes$unemploy_rate, crimes$property_rate)^2
+```
+ 
+]
+
+---
+
+## R-squared is a measure of goodness of fit
+
+.pull-left[
+```{r}
+cor(crimes$unemploy_rate, crimes$property_rate)^2
+```
+
+About 19.7% of the variation in property crime rates across states can be accounted for by variation in unemployment rates across states.
+]
+
+--
+
+.pull-right[
+```{r highlight.output=17}
+summary(lm(property_rate~unemploy_rate, data=crimes))
+```
+]
+
+## Statistical inference for linear models
+
+
+.pull-left[
+
+The population model is: $$\hat{y}_i=\beta_0+\beta_1(x_i)$$
+
+The null hypothesis of no relationship is given by: $$H_0: \beta_1=0$$
+
+How do we test?
+
+]
+
+--
+
+.pull-right[
+```{r highlight.output=12}
+summary(lm(property_rate~unemploy_rate, data=crimes))
+```
+
+Just look at a `summary` of the model! `r emo::ji("sunglasses")`
+]
+
+---
+
+## `r emo::ji("warning")` Linear models only fit straight lines
+
+```{r echo=FALSE, fig.width=12}
+ggplot(subset(gapminder, year==2007), aes(x=gdpPercap, y=lifeExp))+
+  geom_smooth(method="lm", se=FALSE)+
+  geom_point(alpha=0.5)+
+  labs(x="GDP per capita in US dollars", 
+       y="life expectancy",
+       caption="source: Gapminder, 2007")+
+  ylim(30,90)+
+  annotate("label", x=10000, y=75, label="Underestimate")+
+  annotate("label", x=2000, y=50, label="Overestimate")+
+  annotate("label", x=45000, y=80, label="Overestimate")+
+  scale_x_continuous(labels = scales::dollar)
+```
+
+---
+
+## `r emo::ji("warning")` Outliers can be influential
+
+<iframe src="https://aarongullickson.shinyapps.io/influentialpoints/">
+
+</iframe>
+
+---
+
+## `r emo::ji("warning")` Don't extrapolate beyond range of data
+
+```{r echo=FALSE, fig.width=12}
+model <- lm(sexf~age, data=sex)
+ypred <- predict(model, newdata=data.frame(age=c(0,18)))
+ggplot(sex, aes(x=age, y=sexf))+
+  geom_smooth(method="lm", se=FALSE, fullrange=TRUE, linewidth=2)+
+  geom_vline(xintercept = 0, linetype=2)+
+  geom_jitter(alpha=0.3, height=20)+
+  geom_segment(x=0, y=ypred[1], xend=18, yend=ypred[2],
+                arrow=arrow(length=unit(0.1, "inches"), ends = "both"), 
+                color="red", linewidth=2)+
+  annotate("label", 30, 95, label="Outside scope of the data")+
+  labs(x="age", y="sexual frequency (times per year)",
+       title="scope problem")+
+  theme_bw()
+```
+
+
+# The Power of Controlling for Other Variables {.center background-color="black" background-image="images/jens-johnsson-DHJ71drt-ug-unsplash.jpg"}
+
+## Does getting educated also get you laid?
+
+--
+
+.pull-left[
+```{r}
+model <- lm(sexf~educ, data=sex)
+coef(model)
+```
+
+--
+
+* The model predicts that a one year increase in education is associated with 0.027 more instances of sex per year. 
+
+* Going from a high school diploma to a bachelor's degree gets you laid 0.108 ( $0.027*4$ ) more times per year.
+]
+
+--
+
+.pull-right[
+### `r emo::ji("warning")` Potential spuriousness detected!
+
+```{r}
+cor(sex$age, sex$sexf)
+cor(sex$age, sex$educ)
+```
+
+* Younger people have more sex than older people.
+* Younger people have more education, on average.
+* What if the positive relationship between sexual frequency and education is because younger people have more sex and younger people are more educated?
+]
+
+---
+
+## Age might be a confounding variable
+
+.pull-left[
+### Causal
+```{r echo=FALSE}
+par(mar=c(0,0,0,0))
+plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
+rect(1,5,4,9, col="skyblue")
+text(2.5,7,"years of education", cex=1.2)
+rect(6,5,9,9, col="skyblue")
+text(7.5,7,"sexual frequency", cex=1.2)
+arrows(4,7,6,7, length=0.1)
+text(5,7.5,"+", cex=1.2)
+```
+]
+
+.pull-right[
+### Spurious
+```{r echo=FALSE}
+par(mar=c(0,0,0,0))
+plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
+rect(1,5,4,9, col="skyblue")
+text(2.5,7,"years of education", cex=1.2)
+rect(6,5,9,9, col="skyblue")
+text(7.5,7,"sexual frequency", cex=1.2)
+rect(3.5,0,6.5,4, col="red")
+text(5,2,"age", cex=1.2)
+#arrows(4,7,6,7)
+arrows(5.5,4,6,5, length=0.1)
+text(4.5,4.5,"-", cex=1.2)
+arrows(4.5,4,4,5, code=3, length=0.1)
+text(5.5,4.5,"-", cex=1.2)
+```
+]
+
+---
+
+## Account for a confounding variable
+
+.pull-left[
+Just add the potential confounder to the model:
+
+$$\hat{\texttt{frequency}}_i=b_0+b_1(\texttt{education}_i)+b_2(\texttt{age}_i)$$
+
+`r emo::ji("open_mouth")` Thats right, you can have more than one independent variable in a linear model. But what does it mean?
+]
+
+--
+
+.pull-right[
+```{r echo=FALSE}
+# model <- lm(sexf~age+educ, data=sex)
+# temp <- expand.grid(educ=0:25, age=18:100)
+# fit <- predict(model, temp)
+# fit2 <- matrix(fit, 26, 83)
+# 
+# plot_ly(x=jitter(sex$educ,10), y=jitter(sex$age,10), z=jitter(sex$sexf,10)) %>%
+#   add_markers() %>%
+#   add_surface(x=0:25, y=18:100, z=t(fit2), color=I("grey")) %>%
+#   layout(scene=list(xaxis=list(title="years of education"),
+#                     yaxis=list(title="age"),
+#                     zaxis=list(title="sexual frequency")))
+```
+]
+
+---
+
+## {{< fa calculator >}} Calculating the model
+
+```{r}
+model <- lm(sexf~I(educ-12)+I(age-18), data=sex)
+coef(model)
+```
+
+--
+
+.pull-left[
+### Why these numbers?
+
+Slopes and intercepts are chosen that minimize the sum of the squared residuals, just as for a bivariate OLS regression model.
+]
+
+--
+
+.pull-right[
+### Interpretation
+
+* The model predicts that 18-year old individuals with 12 years of education have sex about 85.9 times per year on average.
+* The model predicts that, **holding constant age**, a one year increase in education is associated with 0.43 *fewer* instances of sex per year, on average.
+* The model predicts that, **holding education constant**, a one year increase in age is associated with 1.30 fewer instances of sex per year, on average.
+
+]
+
+---
+
+## `r emo::ji("thinking_face")` Holding Constant?
+
+Because both independent variables are in the model at the same time, the effect of each variable is net of the indirect effect of the other variable.
+
+We can say this in different ways:
+
+--
+
+* The model predicts that, **among individuals who are the same age**, a one year increase in education is associated with 0.43 fewer instances of sex per year, on average.
+
+--
+
+* The model predicts that, **holding constant age**, a one year increase in education is associated with 0.43 fewer instances of sex per year, on average.
+
+--
+
+* The model predicts that, **controlling for age**, a one year increase in education is associated with 0.43 fewer instances of sex per year, on average.
+
+---
+
+## What is the effect of education on sexual frequency?
+
+--
+
+.pull-left[
+### The relationship seemed positive...
+```{r echo=FALSE, fig.height=4}
+par(mar=c(0,0,0,0))
+plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
+rect(1,5,4,9, col="skyblue")
+text(2.5,7,"years of education", cex=1.2)
+rect(6,5,9,9, col="skyblue")
+text(7.5,7,"sexual frequency", cex=1.2)
+arrows(4,7,6,7, length=0.1)
+text(5,7.5,"+0.027", cex=1.2)
+```
+]
+
+--
+
+.pull-right[
+### but is was negative once we controlled for age!
+```{r echo=FALSE, fig.height=4}
+par(mar=c(0,0,0,0))
+plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
+rect(1,5,4,9, col="skyblue")
+text(2.5,7,"years of education", cex=1.2)
+rect(6,5,9,9, col="skyblue")
+text(7.5,7,"sexual frequency", cex=1.2)
+rect(3.5,0,6.5,4, col="red")
+text(5,2,"age", cex=1.2)
+#arrows(4,7,6,7)
+arrows(5.5,4,6,5, length=0.1)
+text(4.5,4.5,"-", cex=1.2)
+arrows(4.5,4,4,5, code=3, length=0.1)
+text(5.5,4.5,"-", cex=1.2)
+arrows(4,7,6,7, length=0.1)
+text(5,7.5,"-0.43", cex=1.2)
+```
+]
+
+---
+
+## How to present multiple linear models
+
+.pull-left[
+
+.stargazer[
+```{r echo=FALSE, results='asis'}
+model1 <- lm(sexf~I(educ-12), data=sex)
+model2 <- lm(sexf~I(age-18), data=sex)
+model3 <- lm(sexf~I(educ-12)+I(age-18), data=sex)
+htmlreg(list(model1, model2, model3),
+        head.tag = FALSE,
+        doctype = FALSE,
+        custom.coef.names = c("Intercept",
+                              "years of educ.",
+                              "age"),
+        custom.gof.names = c("R-squared","N"),
+        caption="OLS regression models predicting sexual frequency",
+        caption.above=TRUE,
+        digits=2,
+        star.symbol='&#42;',
+        custom.note = "%stars. Standard errors in parenthesis.\nAge centered on 18 years. Education centered on 12 years.",
+        include.adjrs=FALSE, include.rmse=FALSE)
+```
+]
+]
+
+--
+
+.pull-right[
+* The dependent variable is identified in the caption.
+]
+
+---
+
+## How to present multiple linear models
+
+.pull-left[
+
+.stargazer[
+```{r echo=FALSE, results='asis'}
+model1 <- lm(sexf~I(educ-12), data=sex)
+model2 <- lm(sexf~I(age-18), data=sex)
+model3 <- lm(sexf~I(educ-12)+I(age-18), data=sex)
+htmlreg(list(model1, model2, model3),
+        head.tag = FALSE,
+        doctype = FALSE,
+        custom.coef.names = c("Intercept",
+                              "years of educ.",
+                              "age"),
+        custom.gof.names = c("R-squared","N"),
+        caption="OLS regression models predicting sexual frequency",
+        caption.above=TRUE,
+        digits=2,
+        star.symbol='&#42;',
+        custom.note = "%stars. Standard errors in parenthesis.\nAge centered on 18 years. Education centered on 12 years.",
+        include.adjrs=FALSE, include.rmse=FALSE)
+```
+]
+]
+
+
+.pull-right[
+* The dependent variable is identified in the caption.
+* Each model is shown in a column.
+]
+
+---
+
+## How to present multiple linear models
+
+.pull-left[
+
+.stargazer[
+```{r echo=FALSE, results='asis'}
+model1 <- lm(sexf~I(educ-12), data=sex)
+model2 <- lm(sexf~I(age-18), data=sex)
+model3 <- lm(sexf~I(educ-12)+I(age-18), data=sex)
+htmlreg(list(model1, model2, model3),
+        head.tag = FALSE,
+        doctype = FALSE,
+        custom.coef.names = c("Intercept",
+                              "years of educ.",
+                              "age"),
+        custom.gof.names = c("R-squared","N"),
+        caption="OLS regression models predicting sexual frequency",
+        caption.above=TRUE,
+        digits=2,
+        star.symbol='&#42;',
+        custom.note = "%stars. Standard errors in parenthesis.\nAge centered on 18 years. Education centered on 12 years.",
+        include.adjrs=FALSE, include.rmse=FALSE)
+```
+]
+]
+
+
+.pull-right[
+* The dependent variable is identified in the caption.
+* Each model is shown in a column.
+* Independent variables are on the rows. If a cell is blank, then the given variable is not in the model.
+]
+
+---
+
+## How to present multiple linear models
+
+.pull-left[
+
+.stargazer[
+```{r echo=FALSE, results='asis'}
+model1 <- lm(sexf~I(educ-12), data=sex)
+model2 <- lm(sexf~I(age-18), data=sex)
+model3 <- lm(sexf~I(educ-12)+I(age-18), data=sex)
+htmlreg(list(model1, model2, model3),
+        head.tag = FALSE,
+        doctype = FALSE,
+        custom.coef.names = c("Intercept",
+                              "years of educ.",
+                              "age"),
+        custom.gof.names = c("R-squared","N"),
+        caption="OLS regression models predicting sexual frequency",
+        caption.above=TRUE,
+        digits=2,
+        star.symbol='&#42;',
+        custom.note = "%stars. Standard errors in parenthesis.\nAge centered on 18 years. Education centered on 12 years.",
+        include.adjrs=FALSE, include.rmse=FALSE)
+```
+]
+]
+
+
+.pull-right[
+* The dependent variable is identified in the caption.
+* Each model is shown in a column.
+* Independent variables are on the rows. If a cell is blank, then the given variable is not in the model.
+* Within each cell:
+  * The top number is the slope.
+  * The bottom number in parenthesis is the standard error for the slope.
+]
+
+---
+
+## How to present multiple linear models
+
+.pull-left[
+
+.stargazer[
+```{r echo=FALSE, results='asis'}
+model1 <- lm(sexf~I(educ-12), data=sex)
+model2 <- lm(sexf~I(age-18), data=sex)
+model3 <- lm(sexf~I(educ-12)+I(age-18), data=sex)
+htmlreg(list(model1, model2, model3),
+        head.tag = FALSE,
+        doctype = FALSE,
+        custom.coef.names = c("Intercept",
+                              "years of educ.",
+                              "age"),
+        custom.gof.names = c("R-squared","N"),
+        caption="OLS regression models predicting sexual frequency",
+        caption.above=TRUE,
+        digits=2,
+        star.symbol='&#42;',
+        custom.note = "%stars. Standard errors in parenthesis.\nAge centered on 18 years. Education centered on 12 years.",
+        include.adjrs=FALSE, include.rmse=FALSE)
+```
+]
+]
+
+
+.pull-right[
+* The dependent variable is identified in the caption.
+* Each model is shown in a column.
+* Independent variables are on the rows. If a cell is blank, then the given variable is not in the model.
+* Within each cell:
+  * The top number is the slope.
+  * The bottom number in parenthesis is the standard error for the slope.
+* The asterisks give benchmarks of the p-value for rejecting the null hypothesis that a slope is zero.
+]
+
+---
+
+## How to present multiple linear models
+
+.pull-left[
+
+.stargazer[
+```{r echo=FALSE, results='asis'}
+model1 <- lm(sexf~I(educ-12), data=sex)
+model2 <- lm(sexf~I(age-18), data=sex)
+model3 <- lm(sexf~I(educ-12)+I(age-18), data=sex)
+htmlreg(list(model1, model2, model3),
+        head.tag = FALSE,
+        doctype = FALSE,
+        custom.coef.names = c("Intercept",
+                              "years of educ.",
+                              "age"),
+        custom.gof.names = c("R-squared","N"),
+        caption="OLS regression models predicting sexual frequency",
+        caption.above=TRUE,
+        digits=2,
+        star.symbol='&#42;',
+        custom.note = "%stars. Standard errors in parenthesis.\nAge centered on 18 years. Education centered on 12 years.",
+        include.adjrs=FALSE, include.rmse=FALSE)
+```
+]
+]
+
+
+.pull-right[
+* The dependent variable is identified in the caption.
+* Each model is shown in a column.
+* Independent variables are on the rows. If a cell is blank, then the given variable is not in the model.
+* Within each cell:
+  * The top number is the slope.
+  * The bottom number in parenthesis is the standard error for the slope.
+* The asterisks give benchmarks of the p-value for rejecting the null hypothesis that a slope is zero.
+* Summary statistics are shown at the bottom. The $R^2$ value is the variance in the dependent variable accounted for by all the independent variables collectively.
+]
+
+---
+
+## Why stop at two variables?
+
+.pull-left[
+```{r}
+model1 <- lm(box_office~I(runtime-90), 
+             data=movies)
+model2 <- lm(box_office~I(runtime-90)+I(year-2001), 
+             data=movies)
+model3 <- lm(box_office~I(runtime-90)+I(year-2001)
+             +metascore, 
+             data=movies)
+```
+]
+
+.pull-right[
+.stargazer[
+```{r echo=FALSE, results='asis'}
+htmlreg(list(model1, model2, model3),
+        head.tag = FALSE,
+        doctype = FALSE,
+        custom.coef.names = c("Intercept",
+                              "Runtime",
+                              "Year of release",
+                              "Tomato meter"),
+        custom.gof.names = c("R-squared","N"),
+        caption="OLS regression models predicting box office returns",
+        caption.above=TRUE,
+        digits=2,
+        star.symbol='&#42;',
+        custom.note = "%stars. Standard errors in parenthesis",
+        include.adjrs=FALSE, include.rmse=FALSE)
+```
+]
+]
+
+# Including Categorical Variables as Predictors {.center background-color="black" background-image="images/v2osk-c9OfrVeD_tQ-unsplash.jpg"}
+
+## Gender and sexual frequency
+
+```{r}
+tapply(sex$sexf, sex$gender, mean)
+45.94162-48.11560
+```
+
+--
+
+Women report 2.17 fewer sexual encounters per year than men. Note that I use the term *report* here because its not exactly clear why these numbers would be different. The difference could reflect differences by sexual orientation, or it could just be that either men over-report or women under-report sexual frequency. It could also be sampling error.
+
+---
+
+## Make an indicator variable
+
+$$\texttt{female}_i=\begin{cases}
+  1 & \text{if female}\\
+  0 & \text{otherwise}
+  \end{cases}$$
+
+* male is the **reference** category.
+* female is the **indicated** category.
+* It operates like an on/off switch.
+
+--
+
+```{r}
+sex$female <- as.numeric(sex$gender=="Female")
+table(sex$gender, sex$female)
+```
+
+---
+
+# Make a scatterplot with indicator
+
+```{r fig.width=12, echo=FALSE}
+set.seed(1)
+ggplot(sex, 
+       aes(x=female, y=sexf))+
+  geom_jitter(alpha=0.1, width=0.01,
+              height=10)+
+  geom_smooth(method="lm", se=FALSE)+
+  labs(x="female indicator variable", 
+       y="sexual frequency (times/year)",
+       title="Scatterplot of sexual frequency by female indicator variable")+
+  theme_bw()
+```
+
+
+---
+
+# Make a scatterplot with indicator
+
+```{r fig.width=12, echo=FALSE}
+set.seed(1)
+ggplot(sex, 
+       aes(x=female, y=sexf))+
+  geom_jitter(alpha=0.1, width=0.01,
+              height=10)+
+  geom_smooth(method="lm", se=FALSE)+
+  labs(x="female indicator variable", 
+       y="sexual frequency (times/year)",
+       title="Scatterplot of sexual frequency by female indicator variable")+
+  geom_point(data=data.frame(female=c(0,1), 
+                             sexf=tapply(sex$sexf, sex$female, mean)),
+             color="red", size=5)+
+  annotate("label", 0.5, 60, label="best fitting line connects the dots between the two means")+
+  theme_bw()
+```
+
+---
+
+# Make a scatterplot with indicator
+
+```{r fig.width=12, echo=FALSE}
+set.seed(1)
+ggplot(sex, 
+       aes(x=female, y=sexf))+
+  geom_jitter(alpha=0.1, width=0.01,
+              height=10)+
+  geom_smooth(method="lm", se=FALSE)+
+  labs(x="female indicator variable", 
+       y="sexual frequency (times/year)",
+       title="Scatterplot of sexual frequency by female indicator variable")+
+  geom_point(data=data.frame(female=c(0,1), 
+                             sexf=tapply(sex$sexf, sex$female, mean)),
+             color="red", size=5)+
+  annotate("label", 0.5, 60, label="The slope is equal to the mean difference of -5.854")+
+  theme_bw()
+```
+
+---
+
+## `tapply` vs. `lm`
+
+### Two separate means
+
+```{r}
+tapply(sex$sexf, sex$female, mean)
+```
+
+--
+
+.pull-left[
+### Mean and mean difference
+```{r}
+model <- lm(sexf~female, data=sex)
+coef(model)
+```
+* Intercept is the mean for the reference (men)
+* Slope is the mean difference which in this case tells us that women report 5.854 fewer instances of sex per year than men.
+]
+
+--
+
+
+.pull-right[
+### Reverse reference
+```{r}
+sex$male <- as.numeric(sex$gender=="Male")
+model <- lm(sexf~male, data=sex)
+coef(model)
+```
+
+What changes and why?
+]
+
+---
+
+## Categorical variables in `lm`
+
+There is no need to create indicator variables. Just feed in categorical variables directly:
+
+```{r}
+model <- lm(sexf~gender, data=sex)
+coef(model)
+```
+
+--
+
+* *R* knows what to do with the variable. It creates its own indicator variable. 
+
+--
+
+* The reference for the categorical variable is already set as the first category, which in this case is male. You can use the `relevel` command to change the reference:
+
+```{r}
+model <- lm(sexf~relevel(gender, "Female"), data=sex)
+coef(model)
+```
+
+---
+
+## More than two categories
+
+```{r}
+model <- lm(sexf~marital, data=sex)
+coef(model)
+```
+
+--
+
+* Each category gets an indicator variable, **except for one.** Which one is missing here?
+
+--
+
+* Married is the reference category. The category not included is always the reference category.
+
+--
+
+* Each coefficient gives the mean difference between the indicated category and the reference category.
+
+---
+
+## Interpretations
+
+```{r}
+model <- lm(sexf~marital, data=sex)
+coef(model)
+```
+
+--
+
+* Married individuals have sex 56.1 times per year, on average.
+
+--
+
+* Widowed individuals have sex 46.9 fewer times per year than **married individuals**, on average.
+
+--
+
+* Divorced individuals have sex 14.7 fewer times per year than **married individuals**, on average.
+
+--
+
+* Separated individuals have sex -0.4 fewer times per year than **married individuals**, on average.
+
+--
+
+* Never-married individuals have sex 2.5 fewer times per year than **married individuals**, on average.
+
+
+---
+
+## Why?
+
+We can already calculate mean differences. Why do it in a model?
+
+--
+
+In a model, we can control for other variables. 
+
+For example, how much of the differences in sexual frequency by marital status result from differences in age?
+
+--
+
+```{r}
+model <- lm(sexf~marital+I(age-18), data=sex)
+coef(model)
+```
+
+---
+
+## Compare the models
+
+.pull-left[
+.stargazer[
+```{r echo=FALSE, results='asis'}
+model1 <- lm(sexf~marital, data=sex)
+model2 <- lm(sexf~marital+I(age-18), data=sex)
+htmlreg(list(model1, model2),
+        head.tag = FALSE,
+        doctype = FALSE,
+        custom.coef.names = c("Intercept",
+                              "Widowed",
+                              "Divorced",
+                              "Never married",
+                              "Age"),
+        custom.gof.names = c("R-squared","N"),
+        caption="OLS regression models predicting sexual frequency",
+        caption.above=TRUE,
+        digits=2,
+        star.symbol='&#42;',
+        custom.note = "%stars. Standard errors in parenthesis. Age centered on 18 years. Married is reference category for marital status",
+        include.adjrs=FALSE, include.rmse=FALSE)
+```
+]
+]
+
+--
+
+.pull-right[
+
+#### Controlling for age gets rid of the bias between marital groups due to age differences.
+* The difference between widowed and married was reduced from -46.8 to -15.3 once we controlled for age because the widowed are much older than the married.
+* The difference between never married and married increased from -2.5 to -24.3 once we controlled for age because the never married are much younger than the married.
+
+]
+
+# Interaction Terms {.center background-color="black" background-image="images/denys-nevozhai-7nrsVjvALnA-unsplash.jpg"}
+
+## Adding context to a relationship
+
+
+.pull-left[
+#### What if the relationship between number of children and hourly wages varies by gender?
+
+```{r interact-example, fig.show = 'hide'}
+ggplot(earnings, aes(x=nchild, y=wages, 
+                     color=gender))+ #<<
+  geom_jitter(alpha=0.1)+
+  geom_smooth(method="lm", se=FALSE)+
+  labs(x="number of children",
+       y="hourly wages in USD")+
+  theme_bw()
+```
+]
+
+.pull-right[
+```{r ref.label = 'interact-example', echo = FALSE}
+```
+]
+
+---
+
+## Additive models will miss context
+
+```{r}
+model_add <- lm(wages~nchild+gender, data=earnings)
+coef(model_add)
+```
+
+$$\hat{\texttt{wages}}_i=25.24+1.55(\texttt{nchild}_i)-3.97(\texttt{female}_i)$$
+
+What is the relationship between wages and number of children for men and women?
+
+--
+
+.pull-left[
+### Men
+The $\texttt{female}_i$ variable is an indicator variable that is zero for men, so:
+
+$$\begin{eqnarray*}
+\hat{\texttt{wages}}_i & = & 25.24+1.55(\texttt{nchild}_i)-3.97(0)\\
+\hat{\texttt{wages}}_i & = & 25.24+1.55(\texttt{nchild}_i)
+\end{eqnarray*}$$
+
+]
+
+--
+
+.pull-right[
+### Women
+The $\texttt{female}_i$ variable is an indicator variable that is one for women, so:
+
+$$\begin{eqnarray*}
+\hat{\texttt{wages}}_i & = & 25.24+1.55(\texttt{nchild}_i)-3.97(1)\\
+\hat{\texttt{wages}}_i & = & (25.24-3.97)+1.55(\texttt{nchild}_i)\\
+\hat{\texttt{wages}}_i & = & 21.27+1.55(\texttt{nchild}_i)\\
+\end{eqnarray*}$$
+]
+
+---
+
+## Because additive models make parallel lines
+
+.pull-left[
+```{r echo=FALSE}
+temp <- expand.grid(nchild=0:8, gender=c("Male","Female"))
+temp$wages <- predict(model_add, newdata=temp)
+ggplot(earnings, aes(x=nchild, y=wages, 
+                     color=gender))+
+  geom_jitter(alpha=0.1)+
+  geom_line(data=temp, size=2)+
+  labs(x="number of children",
+       y="hourly wages in USD")+
+  theme_bw()
+```
+]
+
+.pull-right[
+$$\hat{\texttt{wages}}_i=25.24+1.55(\texttt{nchild}_i)-3.97(\texttt{female}_i)$$
+
+* The effect of number of children on wages ($1.55) is **forced** to be the same for men and women.
+* The wage difference between men and women ($3.97) is **forced** to be the same at all values of number of children. 
+]
+
+---
+
+## We need a multiplicative model
+
+```{r}
+model_mult <- lm(wages~nchild*gender, data=earnings)
+coef(model_mult)
+```
+
+$$\hat{\texttt{wages}}_i=24.72+1.78(\texttt{nchild}_i)-2.84(\texttt{female}_i)-1.33(\texttt{nchild}_i)(\texttt{female}_i)$$
+
+What is the relationship between wages and number of children for men and women?
+
+--
+
+.pull-left[
+### Men
+The $\texttt{female}_i$ variable is an indicator variable that is zero for men, so:
+
+$$\begin{eqnarray*}
+\hat{\texttt{wages}}_i & = & 24.72+1.78(\texttt{nchild}_i)-2.84(0)-1.33(\texttt{nchild}_i)(0)\\
+\hat{\texttt{wages}}_i & = & 24.72+1.78(\texttt{nchild}_i)
+\end{eqnarray*}$$
+
+]
+
+--
+
+.pull-right[
+### Women
+The $\texttt{female}_i$ variable is an indicator variable that is one for women, so:
+
+$$\begin{eqnarray*}
+\hat{\texttt{wages}}_i & = & 24.72+1.78(\texttt{nchild}_i)-2.84(1)-1.33(\texttt{nchild}_i)(1)\\
+\hat{\texttt{wages}}_i & = & (24.72-2.84)+(1.78-1.33)(\texttt{nchild}_i)\\
+\hat{\texttt{wages}}_i & = & 21.82+0.45(\texttt{nchild}_i)\\
+\end{eqnarray*}$$
+]
+
+---
+
+## Multiplicative models give non-parallel lines
+
+.pull-left[
+```{r echo=FALSE}
+temp <- expand.grid(nchild=0:8, gender=c("Male","Female"))
+temp$wages <- predict(model_mult, newdata=temp)
+ggplot(earnings, aes(x=nchild, y=wages, 
+                     color=gender))+
+  geom_jitter(alpha=0.1)+
+  geom_line(data=temp, size=2)+
+  labs(x="number of children",
+       y="hourly wages in USD")+
+  theme_bw()
+```
+]
+
+
+.pull-right[
+$$\begin{eqnarray*}\hat{\texttt{wages}}_i & = & 24.72+1.78(\texttt{nchild}_i)-2.84(\texttt{female}_i)\\
+& & -1.33(\texttt{nchild}_i)(\texttt{female}_i)\\\end{eqnarray*}$$
+
+* This model shows that men and women get different returns to wages for the number of children with men getting a much greater return ($1.78 to $0.45).
+* This models shows that the wage gap starts at $2.84 when men and women have no children and grows by $1.33 for every child. 
+
+]
+
+---
+
+## Two approaches
+
+--
+
+.pull-left[
+### Separate models
+
+```{r}
+coef(lm(wages~nchild,
+        data=subset(earnings, gender=="Female")))
+```
+
+```{r}
+coef(lm(wages~nchild,
+        data=subset(earnings, gender=="Male")))
+```
+
+* Two intercepts (women and men)
+* Two slopes (women and men)
+
+]
+
+--
+
+.pull-right[
+
+### Interaction term
+
+```{r echo=FALSE}
+options(width=50)
+```
+
+```{r}
+coef(lm(wages~nchild*gender, data=earnings))
+```
+
+```{r echo=FALSE}
+options(width=80)
+```
+
+* One intercept (men) and one difference in intercept (women)
+* One slope (men) and one difference in slope (women)
+
+]
+
+---
+
+## Interaction terms give difference in slopes
+
+| Value                                                          | Separate models | Interaction terms |
+| :------------------------------------------------------------- | --------------: | ----------------: |
+| **Intercept **                                                 |                 |                   |
+| Men's wages with no children                                   |          $24.72 |            $24.72 |
+| Women's wages with no children                                 |          $21.88 |                   |
+| Difference in men's and women's wages with no children         |                 |            -$2.84 |
+| **Slope**                                                      |                 |                   |
+| Men's return for an additional child                           |           $1.78 |             $1.78 |
+| Women's return for an additional child                         |           $0.45 |                   |
+| Difference in men's and women's return for an additional child |                 |            -$1.33 |
+
+---
+
+## Interpretation
+
+```{r}
+coef(lm(wages~nchild*gender, data=earnings))
+```
+
+$$\hat{\texttt{wages}}_i  =  24.72+1.78(\texttt{nchild}_i)-2.84(\texttt{female}_i)-1.33(\texttt{nchild}_i)(\texttt{female}_i)$$
+
+--
+
+* The model predicts that men with no children make $24.72/hour, on average.
+
+--
+
+* The model predicts that **among workers with no children**, women make $2.84 less than men, on average.
+
+--
+
+* The model predicts that **among men**, having an additional child at home is associated with at a $1.78 increase in hourly wages.
+
+--
+
+* The model predicts that the gain in hourly wages from having an additional child at home is $1.33 smaller for women than it is for men. 
+
+--
+
+* The **main effect** of each variable in the interaction term is only the effect when the other variable in the interaction term is zero/the reference category.
+
+---
+
+## Why not always separate models?
+
+--
+
+.pull-left[
+.stargazer[
+```{r echo=FALSE, results='asis'}
+model1 <- lm(wages~nchild*gender, data=earnings)
+model2 <- lm(wages~nchild*gender+I(age-40), 
+             data=earnings)
+htmlreg(list(model1, model2),
+        head.tag = FALSE,
+        doctype = FALSE,
+        custom.coef.names = c("Intercept",
+                              "number of children",
+                              "woman",
+                              "woman x number of children",
+                              "age"),
+        custom.gof.names = c("R-squared","N"),
+        caption="OLS regression models predicting hourly waages",
+        caption.above=TRUE,
+        digits=2,
+        star.symbol='&#42;',
+        custom.note = "%stars. Standard errors in parenthesis.\nAge centered on 40 years.",
+        include.adjrs=FALSE, include.rmse=FALSE)
+```
+]
+]
+
+.pull-right[
+```{r eval=FALSE}
+model1 <- lm(wages~nchild*gender, data=earnings)
+model2 <- lm(wages~nchild*gender+I(age-40), 
+             data=earnings)
+```
+
+* We can add in additional control variables without forcing everything to vary by context.
+* We can do a hypothesis test directly on whether the slopes really are different by looking at the p-value on the interaction term.
+]
+
+---
+
+## Interacting two categorical variables
+
+An additive model:
+```{r}
+coef(lm(wages~gender+education, data=earnings))
+```
+
+--
+
+|                   | LHS |  HS |  AA |  BA | Grad |
+| :---------------- | --: | --: | --: | --: | ---: |
+| Man               |     |     |     |     |      |
+| Woman             |     |     |     |     |      |
+| Gender difference |     |     |     |     |      |
+
+---
+
+## Interacting two categorical variables
+
+An additive model:
+```{r}
+coef(lm(wages~gender+education, data=earnings))
+```
+
+|                   |   LHS |  HS |  AA |  BA | Grad |
+| :---------------- | ----: | --: | --: | --: | ---: |
+| Man               | 16.27 |     |     |     |      |
+| Woman             |       |     |     |     |      |
+| Gender difference |       |     |     |     |      |
+
+---
+
+## Interacting two categorical variables
+
+An additive model:
+```{r}
+coef(lm(wages~gender+education, data=earnings))
+```
+
+|                   |        LHS |  HS |  AA |  BA | Grad |
+| :---------------- | ---------: | --: | --: | --: | ---: |
+| Man               |      16.27 |     |     |     |      |
+| Woman             | 16.27-5.06 |     |     |     |      |
+| Gender difference |      -5.06 |     |     |     |      |
+
+---
+
+## Interacting two categorical variables
+
+An additive model:
+```{r}
+coef(lm(wages~gender+education, data=earnings))
+```
+|                   |        LHS |         HS |  AA |  BA | Grad |
+| :---------------- | ---------: | ---------: | --: | --: | ---: |
+| Man               |      16.27 | 16.27+4.71 |     |     |      |
+| Woman             | 16.27-5.06 |            |     |     |      |
+| Gender difference |      -5.06 |            |     |     |      |
+
+---
+
+## Interacting two categorical variables
+
+An additive model:
+```{r}
+coef(lm(wages~gender+education, data=earnings))
+```
+|                   |        LHS |              HS |  AA |  BA | Grad |
+| :---------------- | ---------: | --------------: | --: | --: | ---: |
+| Man               |      16.27 |      16.27+4.71 |     |     |      |
+| Woman             | 16.27-5.06 | 16.27+4.71-5.06 |     |     |      |
+| Gender difference |      -5.06 |           -5.06 |     |     |      |
+
+---
+
+## Interacting two categorical variables
+
+An additive model:
+```{r}
+coef(lm(wages~gender+education, data=earnings))
+```
+
+|                   |        LHS |              HS |              AA |               BA |             Grad |
+| :---------------- | ---------: | --------------: | --------------: | ---------------: | ---------------: |
+| Man               |      16.27 |      16.27+4.71 |      16.27+8.40 |      16.27+17.13 |      16.27+24.63 |
+| Woman             | 16.27-5.06 | 16.27+4.71-5.06 | 16.27+8.40-5.06 | 16.27+17.13-5.06 | 16.27+24.63-5.06 |
+| Gender difference |      -5.06 |           -5.06 |           -5.06 |            -5.06 |            -5.06 |
+
+--
+
+* Gender differences are **forced** to be the same at every education level
+* Returns to degree are **forced** to be the same for men and women
+
+---
+
+## Interacting two categorical variables:
+
+A multiplicative model:
+```{r}
+coef(lm(wages~gender*education, data=earnings))
+```
+
+
+|                   | LHS |  HS |  AA |  BA | Grad |
+| :---------------- | --: | --: | --: | --: | ---: |
+| Man               |     |     |     |     |      |
+| Woman             |     |     |     |     |      |
+| Gender difference |     |     |     |     |      |
+
+---
+
+## Interacting two categorical variables:
+
+A multiplicative model:
+```{r}
+coef(lm(wages~gender*education, data=earnings))
+```
+
+
+|                   |   LHS |  HS |  AA |  BA | Grad |
+| :---------------- | ----: | --: | --: | --: | ---: |
+| Man               | 15.79 |     |     |     |      |
+| Woman             |       |     |     |     |      |
+| Gender difference |       |     |     |     |      |
+
+---
+
+## Interacting two categorical variables:
+
+A multiplicative model:
+```{r}
+coef(lm(wages~gender*education, data=earnings))
+```
+
+
+|                   |        LHS |  HS |  AA |  BA | Grad |
+| :---------------- | ---------: | --: | --: | --: | ---: |
+| Man               |      15.79 |     |     |     |      |
+| Woman             | 15.79-3.84 |     |     |     |      |
+| Gender difference |      -3.84 |     |     |     |      |
+
+---
+
+## Interacting two categorical variables:
+
+A multiplicative model:
+```{r}
+coef(lm(wages~gender*education, data=earnings))
+```
+
+
+|                   |        LHS |         HS |  AA |  BA | Grad |
+| :---------------- | ---------: | ---------: | --: | --: | ---: |
+| Man               |      15.79 | 15.79+4.82 |     |     |      |
+| Woman             | 15.79-3.84 |            |     |     |      |
+| Gender difference |      -3.84 |            |     |     |      |
+
+---
+
+## Interacting two categorical variables:
+
+A multiplicative model:
+```{r}
+coef(lm(wages~gender*education, data=earnings))
+```
+
+
+|                   |        LHS |                   HS |  AA |  BA | Grad |
+| :---------------- | ---------: | -------------------: | --: | --: | ---: |
+| Man               |      15.79 |           15.79+4.82 |     |     |      |
+| Woman             | 15.79-3.84 | 15.79+4.82-3.84-0.41 |     |     |      |
+| Gender difference |      -3.84 |                -4.25 |     |     |      |
+
+---
+
+## Interacting two categorical variables:
+
+A multiplicative model:
+```{r}
+coef(lm(wages~gender*education, data=earnings))
+```
+
+
+|                   |        LHS |                   HS |                   AA |                    BA |                  Grad |
+| :---------------- | ---------: | -------------------: | -------------------: | --------------------: | --------------------: |
+| Man               |      15.79 |           15.79+4.82 |           15.79+8.58 |           15.79+18.30 |           15.79+25.82 |
+| Woman             | 15.79-3.84 | 15.79+4.82-3.84-0.41 | 15.79+8.58-3.84-0.67 | 15.79+18.30-3.84-2.54 | 15.79+25.82-3.84-2.52 |
+| Gender difference |      -3.84 |                -4.25 |                -4.51 |                 -6.38 |                 -6.36 |
+
+---
+
+## Two ways to view it
+
+
+--
+
+
+.pull-left[
+#### Differences in gender gap by degree
+
+| Degree | Gender gap |
+| :----- | ---------: |
+| None   |      -3.84 |
+| HS     | -3.84-0.41 |
+| AA     | -3.84-0.67 |
+| BA     | -3.84-2.54 |
+| Grad   | -3.84-2.52 |
+]
+
+--
+
+.pull-right[
+#### Differences in returns for men and women
+
+| Degree | Men's return | Women's return |
+| :----- | -----------: | -------------: |
+| HS     |         4.82 |      4.82-0.41 |
+| AA     |         8.58 |      8.58-0.67 |
+| BA     |         18.3 |      18.3-2.54 |
+| Grad   |        25.82 |     25.82-2.52 |
+]
+
+---
+
+## Same underlying reality
+
+```{r echo=FALSE, fig.width=12}
+model <- lm(wages~gender*education, data=earnings)
+temp <- expand.grid(gender=c("Male","Female"),
+                    education=c("No HS Diploma",
+                                "HS Diploma",
+                                "AA Degree",
+                                "Bachelors Degree",
+                                "Graduate Degree"))
+temp$wages <- predict(model, newdata=temp)
+ggplot(earnings, aes(x=education, y=wages, color=gender))+
+  geom_jitter(alpha=0.01)+
+  geom_point(data=temp, size=5)+
+  geom_line(data=temp, aes(group=gender))+
+  labs(x="highest degree", y="hourly wages in USD")+
+  scale_x_discrete(labels=c("None","HS","AA","BA","Grad"))
+```
