@@ -11,7 +11,7 @@ source(here("scripts","set_theme.R"))
 source(here("scripts","load_example_data.R"))
 ```
 
-# What Does Data Look Like? {.center background-color="black" background-image="images/markus-spiske-666905-unsplash.jpg"}
+# What Does Data Look Like? {.center background-color="black" background-image="images/darryl-low-pXqZs5TG2HU-unsplash.jpg"}
 
 ## Most data looks like a spreadsheet {.smaller}
 
@@ -155,7 +155,7 @@ kbl(titanic[c(13, 1238, 2, 306),-1], row.names=FALSE,
 :::
 ::::
 
-# What Can We Do With Data? {.center background-color="black" background-image="images/isaac-smith-1182057-unsplash.jpg}
+# What Can We Do With Data? {.center background-color="black" background-image="images/isaac-smith-1182057-unsplash.jpg"}
 
 ## Look at the distribution of a variable
 
