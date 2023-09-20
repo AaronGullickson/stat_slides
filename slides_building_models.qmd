@@ -763,7 +763,7 @@ cor(crimes$poverty_rate, crimes$percent_lhs)
 ```
 
 * States with a higher poverty rate have higher rates of property crime, on average.
-* States with a higher percent of the population without a high school diploma hava higher poverty rate, on average.
+* States with a higher percent of the population without a high school diploma have a higher poverty rate, on average.
 * What if the positive relationship between percent of the population with no high school diploma and property crime is really operating through this effect on poverty rates?
 
 :::
@@ -1174,7 +1174,7 @@ coef(model)
 
 ## Why use a model?
 
-In a model, we can calculate mean differneces while holding constant other variables. 
+In a model, we can calculate mean differences while holding constant other variables. 
 
 ::: {.fragment}
 
