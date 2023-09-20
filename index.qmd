@@ -3,7 +3,7 @@ title: "Slide Index, Statistical Analysis in Sociology"
 format: html
 ---
 
-These are the slides for the course, [Statistical Analysis in Sociology](https://stat-analysis.netlify.app).
+These are the slides for my course, [Statistical Analysis in Sociology](https://stat-analysis.netlify.app).
 
 | Chapter                |
 |------------------------|
