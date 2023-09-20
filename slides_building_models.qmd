@@ -251,7 +251,7 @@ summary(model)
 ```{r}
 #| label: scatter-best-fitting1
 #| eval: false
-#| fig-height: 10
+#| fig-height: 9
 ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   geom_point()+
   geom_smooth(method="lm", se=FALSE)+
@@ -736,452 +736,256 @@ ggplot(sex, aes(x=age, y=sexf))+
 
 # The Power of Controlling for Other Variables {.center background-color="black" background-image="images/jens-johnsson-DHJ71drt-ug-unsplash.jpg"}
 
-## Does getting educated also get you laid?
+## Does lack of education lead to crime? {.smaller}
 
---
+:::: {.columns}
 
-.pull-left[
+:::{.column .fragment}
+
 ```{r}
-model <- lm(sexf~educ, data=sex)
+model <- lm(property_rate~percent_lhs, data=crimes)
 coef(model)
 ```
 
---
+The model predicts that a one percent increase in the percent of a state's population without a high school diploma is associated with 71.4 more property crimes per 100,000.
 
-* The model predicts that a one year increase in education is associated with 0.027 more instances of sex per year. 
+Why might this be the case?
 
-* Going from a high school diploma to a bachelor's degree gets you laid 0.108 ( $0.027*4$ ) more times per year.
-]
+:::
 
---
+::: {.column .fragment}
 
-.pull-right[
-### `r emo::ji("warning")` Potential spuriousness detected!
+#### `r emo::ji("warning")` Potential spuriousness!
 
 ```{r}
-cor(sex$age, sex$sexf)
-cor(sex$age, sex$educ)
+cor(crimes$poverty_rate, crimes$property_rate)
+cor(crimes$poverty_rate, crimes$percent_lhs)
 ```
 
-* Younger people have more sex than older people.
-* Younger people have more education, on average.
-* What if the positive relationship between sexual frequency and education is because younger people have more sex and younger people are more educated?
-]
+* States with a higher poverty rate have higher rates of property crime, on average.
+* States with a higher percent of the population without a high school diploma hava higher poverty rate, on average.
+* What if the positive relationship between percent of the population with no high school diploma and property crime is really operating through this effect on poverty rates?
 
----
+:::
 
-## Age might be a confounding variable
+::::
 
-.pull-left[
+## Poverty might be a confounding variable
+
+:::: {.columns}
+
+::: {.column .fragment}
+
 ### Causal
-```{r echo=FALSE}
+
+```{r}
+#| label: causal-diagram
+#| echo: false
 par(mar=c(0,0,0,0))
 plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 rect(1,5,4,9, col="skyblue")
-text(2.5,7,"years of education", cex=1.2)
+text(2.5,7,"percent with\no HS diploma", cex=1.2)
 rect(6,5,9,9, col="skyblue")
-text(7.5,7,"sexual frequency", cex=1.2)
+text(7.5,7,"property crime\nrate", cex=1.2)
 arrows(4,7,6,7, length=0.1)
 text(5,7.5,"+", cex=1.2)
 ```
-]
 
-.pull-right[
+:::
+
+::: {.column .fragment}
+
 ### Spurious
-```{r echo=FALSE}
+
+```{r}
+#| label: spurious-diagram
+#| echo: false
 par(mar=c(0,0,0,0))
 plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 rect(1,5,4,9, col="skyblue")
-text(2.5,7,"years of education", cex=1.2)
+text(2.5,7,"percent with\no HS diploma", cex=1.2)
 rect(6,5,9,9, col="skyblue")
-text(7.5,7,"sexual frequency", cex=1.2)
+text(7.5,7,"property crime\nrate", cex=1.2)
 rect(3.5,0,6.5,4, col="red")
-text(5,2,"age", cex=1.2)
+text(5,2,"poverty rate", cex=1.2)
 #arrows(4,7,6,7)
 arrows(5.5,4,6,5, length=0.1)
-text(4.5,4.5,"-", cex=1.2)
+text(4.5,4.5,"+", cex=1.2)
 arrows(4.5,4,4,5, code=3, length=0.1)
-text(5.5,4.5,"-", cex=1.2)
+text(5.5,4.5,"+", cex=1.2)
 ```
-]
 
----
+:::
+
+::::
 
 ## Account for a confounding variable
 
-.pull-left[
 Just add the potential confounder to the model:
 
 $$\hat{\texttt{frequency}}_i=b_0+b_1(\texttt{education}_i)+b_2(\texttt{age}_i)$$
 
+::: {.fragment}
+
 `r emo::ji("open_mouth")` Thats right, you can have more than one independent variable in a linear model. But what does it mean?
-]
 
---
+:::
 
-.pull-right[
-```{r echo=FALSE}
-# model <- lm(sexf~age+educ, data=sex)
-# temp <- expand.grid(educ=0:25, age=18:100)
-# fit <- predict(model, temp)
-# fit2 <- matrix(fit, 26, 83)
-# 
-# plot_ly(x=jitter(sex$educ,10), y=jitter(sex$age,10), z=jitter(sex$sexf,10)) %>%
-#   add_markers() %>%
-#   add_surface(x=0:25, y=18:100, z=t(fit2), color=I("grey")) %>%
-#   layout(scene=list(xaxis=list(title="years of education"),
-#                     yaxis=list(title="age"),
-#                     zaxis=list(title="sexual frequency")))
-```
-]
-
----
-
-## {{< fa calculator >}} Calculating the model
+## Plot in three dimensions
 
 ```{r}
-model <- lm(sexf~I(educ-12)+I(age-18), data=sex)
+#| label: 3d-plot
+#| echo: false
+#| fig-height: 6
+#| fig-width: 10
+model <- lm(property_rate~percent_lhs+poverty_rate, data=crimes)
+temp <- expand.grid(percent_lhs=6:18, poverty_rate=5:16)
+fit <- predict(model, temp)
+fit2 <- matrix(fit, 13, 12)
+plot_ly(x=crimes$percent_lhs, y=crimes$poverty_rate, z=crimes$property_rate) |>
+   add_markers() |>
+   add_surface(x=6:18, y=5:16, z=t(fit2), color=I("grey")) |>
+   layout(scene=list(xaxis=list(title="percent LHS"),
+                     yaxis=list(title="poverty rate"),
+                     zaxis=list(title="property crimes per 100,000")))
+```
+
+## {{< fa calculator >}} Calculating the model {.smaller}
+
+```{r}
+model <- lm(property_rate~percent_lhs+poverty_rate, data=crimes)
 coef(model)
 ```
 
---
+::: {.fragment}
 
-.pull-left[
-### Why these numbers?
+#### Why these numbers?
 
 Slopes and intercepts are chosen that minimize the sum of the squared residuals, just as for a bivariate OLS regression model.
-]
 
---
+:::
 
-.pull-right[
-### Interpretation
+::: {.fragment}
 
-* The model predicts that 18-year old individuals with 12 years of education have sex about 85.9 times per year on average.
-* The model predicts that, **holding constant age**, a one year increase in education is associated with 0.43 *fewer* instances of sex per year, on average.
-* The model predicts that, **holding education constant**, a one year increase in age is associated with 1.30 fewer instances of sex per year, on average.
+#### Interpretation
 
-]
+* The model predicts that, **holding constant the poverty rate**, a one percentage point increase in the percent of the population with no high school diploma is associated with 79.4 *fewer* property crimes per 100,000, on average.
+* The model predicts that, **holding constant the percent of the population with no high school diploma**, a one percentage point increase in the poverty rate is associated is associated with 198.3 *more* crimes per 100,000, on average.
 
----
+:::
 
-## `r emo::ji("thinking_face")` Holding Constant?
+## `r emo::ji("thinking_face")` Holding Constant? {.smaller}
 
 Because both independent variables are in the model at the same time, the effect of each variable is net of the indirect effect of the other variable.
 
 We can say this in different ways:
 
---
+* The model predicts that, **holding constant the poverty rate**, a one percentage point increase in the percent of the population with no high school diploma is associated with 79.4 *fewer* property crimes per 100,000, on average.
+* The model predicts that, **among states with the same poverty rate**, a one percentage point increase in the percent of the population with no high school diploma is associated with 79.4 *fewer* property crimes per 100,000, on average.
+* The model predicts that, **controlling for the poverty rate**, a one percentage point increase in the percent of the population with no high school diploma is associated with 79.4 *fewer* property crimes per 100,000, on average.
 
-* The model predicts that, **among individuals who are the same age**, a one year increase in education is associated with 0.43 fewer instances of sex per year, on average.
+## What is the effect of education on crime?
 
---
+:::: {.columns}
 
-* The model predicts that, **holding constant age**, a one year increase in education is associated with 0.43 fewer instances of sex per year, on average.
+::: {.column .fragment}
 
---
-
-* The model predicts that, **controlling for age**, a one year increase in education is associated with 0.43 fewer instances of sex per year, on average.
-
----
-
-## What is the effect of education on sexual frequency?
-
---
-
-.pull-left[
-### The relationship seemed positive...
-```{r echo=FALSE, fig.height=4}
+#### The relationship seemed positive...
+```{r}
+#| label: causal-diagram-w-numbers
+#| echo: false
+#| fig-height: 8
 par(mar=c(0,0,0,0))
 plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 rect(1,5,4,9, col="skyblue")
-text(2.5,7,"years of education", cex=1.2)
+text(2.5,7,"percent with\no HS diploma", cex=1.2)
 rect(6,5,9,9, col="skyblue")
-text(7.5,7,"sexual frequency", cex=1.2)
+text(7.5,7,"property crime\nrate", cex=1.2)
 arrows(4,7,6,7, length=0.1)
-text(5,7.5,"+0.027", cex=1.2)
+text(5,7.5,"+71.4", cex=1.2)
 ```
-]
 
---
+:::
 
-.pull-right[
-### but is was negative once we controlled for age!
-```{r echo=FALSE, fig.height=4}
+::: {.column .fragment}
+
+#### but is was negative once we controlled for the poverty rate!
+```{r}
+#| label: spurious-diagram-w-numbers
+#| echo: false
+#| fig-height: 8
 par(mar=c(0,0,0,0))
 plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 rect(1,5,4,9, col="skyblue")
-text(2.5,7,"years of education", cex=1.2)
+text(2.5,7,"percent with\no HS diploma", cex=1.2)
 rect(6,5,9,9, col="skyblue")
-text(7.5,7,"sexual frequency", cex=1.2)
+text(7.5,7,"property crime\nrate", cex=1.2)
 rect(3.5,0,6.5,4, col="red")
-text(5,2,"age", cex=1.2)
+text(5,2,"poverty rate", cex=1.2)
 #arrows(4,7,6,7)
 arrows(5.5,4,6,5, length=0.1)
-text(4.5,4.5,"-", cex=1.2)
+text(4.5,4.5,"_", cex=1.2)
 arrows(4.5,4,4,5, code=3, length=0.1)
-text(5.5,4.5,"-", cex=1.2)
+text(5.5,4.5,"_", cex=1.2)
 arrows(4,7,6,7, length=0.1)
-text(5,7.5,"-0.43", cex=1.2)
+text(5,7.5,"-79.4", cex=1.2)
 ```
-]
 
----
+:::
 
-## How to present multiple linear models
+::::
 
-.pull-left[
+## How to present multiple linear models {.smaller}
 
-.stargazer[
-```{r echo=FALSE, results='asis'}
-model1 <- lm(sexf~I(educ-12), data=sex)
-model2 <- lm(sexf~I(age-18), data=sex)
-model3 <- lm(sexf~I(educ-12)+I(age-18), data=sex)
-htmlreg(list(model1, model2, model3),
-        head.tag = FALSE,
-        doctype = FALSE,
-        custom.coef.names = c("Intercept",
-                              "years of educ.",
-                              "age"),
-        custom.gof.names = c("R-squared","N"),
-        caption="OLS regression models predicting sexual frequency",
-        caption.above=TRUE,
-        digits=2,
-        star.symbol='&#42;',
-        custom.note = "%stars. Standard errors in parenthesis.\nAge centered on 18 years. Education centered on 12 years.",
-        include.adjrs=FALSE, include.rmse=FALSE)
-```
-]
-]
+:::: {.columns}
 
---
+::: {.column}
 
-.pull-right[
-* The dependent variable is identified in the caption.
-]
+::: {.tbl-model}
 
----
-
-## How to present multiple linear models
-
-.pull-left[
-
-.stargazer[
-```{r echo=FALSE, results='asis'}
-model1 <- lm(sexf~I(educ-12), data=sex)
-model2 <- lm(sexf~I(age-18), data=sex)
-model3 <- lm(sexf~I(educ-12)+I(age-18), data=sex)
-htmlreg(list(model1, model2, model3),
-        head.tag = FALSE,
-        doctype = FALSE,
-        custom.coef.names = c("Intercept",
-                              "years of educ.",
-                              "age"),
-        custom.gof.names = c("R-squared","N"),
-        caption="OLS regression models predicting sexual frequency",
-        caption.above=TRUE,
-        digits=2,
-        star.symbol='&#42;',
-        custom.note = "%stars. Standard errors in parenthesis.\nAge centered on 18 years. Education centered on 12 years.",
-        include.adjrs=FALSE, include.rmse=FALSE)
-```
-]
-]
-
-
-.pull-right[
-* The dependent variable is identified in the caption.
-* Each model is shown in a column.
-]
-
----
-
-## How to present multiple linear models
-
-.pull-left[
-
-.stargazer[
-```{r echo=FALSE, results='asis'}
-model1 <- lm(sexf~I(educ-12), data=sex)
-model2 <- lm(sexf~I(age-18), data=sex)
-model3 <- lm(sexf~I(educ-12)+I(age-18), data=sex)
-htmlreg(list(model1, model2, model3),
-        head.tag = FALSE,
-        doctype = FALSE,
-        custom.coef.names = c("Intercept",
-                              "years of educ.",
-                              "age"),
-        custom.gof.names = c("R-squared","N"),
-        caption="OLS regression models predicting sexual frequency",
-        caption.above=TRUE,
-        digits=2,
-        star.symbol='&#42;',
-        custom.note = "%stars. Standard errors in parenthesis.\nAge centered on 18 years. Education centered on 12 years.",
-        include.adjrs=FALSE, include.rmse=FALSE)
-```
-]
-]
-
-
-.pull-right[
-* The dependent variable is identified in the caption.
-* Each model is shown in a column.
-* Independent variables are on the rows. If a cell is blank, then the given variable is not in the model.
-]
-
----
-
-## How to present multiple linear models
-
-.pull-left[
-
-.stargazer[
-```{r echo=FALSE, results='asis'}
-model1 <- lm(sexf~I(educ-12), data=sex)
-model2 <- lm(sexf~I(age-18), data=sex)
-model3 <- lm(sexf~I(educ-12)+I(age-18), data=sex)
-htmlreg(list(model1, model2, model3),
-        head.tag = FALSE,
-        doctype = FALSE,
-        custom.coef.names = c("Intercept",
-                              "years of educ.",
-                              "age"),
-        custom.gof.names = c("R-squared","N"),
-        caption="OLS regression models predicting sexual frequency",
-        caption.above=TRUE,
-        digits=2,
-        star.symbol='&#42;',
-        custom.note = "%stars. Standard errors in parenthesis.\nAge centered on 18 years. Education centered on 12 years.",
-        include.adjrs=FALSE, include.rmse=FALSE)
-```
-]
-]
-
-
-.pull-right[
-* The dependent variable is identified in the caption.
-* Each model is shown in a column.
-* Independent variables are on the rows. If a cell is blank, then the given variable is not in the model.
-* Within each cell:
-  * The top number is the slope.
-  * The bottom number in parenthesis is the standard error for the slope.
-]
-
----
-
-## How to present multiple linear models
-
-.pull-left[
-
-.stargazer[
-```{r echo=FALSE, results='asis'}
-model1 <- lm(sexf~I(educ-12), data=sex)
-model2 <- lm(sexf~I(age-18), data=sex)
-model3 <- lm(sexf~I(educ-12)+I(age-18), data=sex)
-htmlreg(list(model1, model2, model3),
-        head.tag = FALSE,
-        doctype = FALSE,
-        custom.coef.names = c("Intercept",
-                              "years of educ.",
-                              "age"),
-        custom.gof.names = c("R-squared","N"),
-        caption="OLS regression models predicting sexual frequency",
-        caption.above=TRUE,
-        digits=2,
-        star.symbol='&#42;',
-        custom.note = "%stars. Standard errors in parenthesis.\nAge centered on 18 years. Education centered on 12 years.",
-        include.adjrs=FALSE, include.rmse=FALSE)
-```
-]
-]
-
-
-.pull-right[
-* The dependent variable is identified in the caption.
-* Each model is shown in a column.
-* Independent variables are on the rows. If a cell is blank, then the given variable is not in the model.
-* Within each cell:
-  * The top number is the slope.
-  * The bottom number in parenthesis is the standard error for the slope.
-* The asterisks give benchmarks of the p-value for rejecting the null hypothesis that a slope is zero.
-]
-
----
-
-## How to present multiple linear models
-
-.pull-left[
-
-.stargazer[
-```{r echo=FALSE, results='asis'}
-model1 <- lm(sexf~I(educ-12), data=sex)
-model2 <- lm(sexf~I(age-18), data=sex)
-model3 <- lm(sexf~I(educ-12)+I(age-18), data=sex)
-htmlreg(list(model1, model2, model3),
-        head.tag = FALSE,
-        doctype = FALSE,
-        custom.coef.names = c("Intercept",
-                              "years of educ.",
-                              "age"),
-        custom.gof.names = c("R-squared","N"),
-        caption="OLS regression models predicting sexual frequency",
-        caption.above=TRUE,
-        digits=2,
-        star.symbol='&#42;',
-        custom.note = "%stars. Standard errors in parenthesis.\nAge centered on 18 years. Education centered on 12 years.",
-        include.adjrs=FALSE, include.rmse=FALSE)
-```
-]
-]
-
-
-.pull-right[
-* The dependent variable is identified in the caption.
-* Each model is shown in a column.
-* Independent variables are on the rows. If a cell is blank, then the given variable is not in the model.
-* Within each cell:
-  * The top number is the slope.
-  * The bottom number in parenthesis is the standard error for the slope.
-* The asterisks give benchmarks of the p-value for rejecting the null hypothesis that a slope is zero.
-* Summary statistics are shown at the bottom. The $R^2$ value is the variance in the dependent variable accounted for by all the independent variables collectively.
-]
-
----
-
-## Why stop at two variables?
-
-.pull-left[
 ```{r}
-model1 <- lm(box_office~I(runtime-90), 
-             data=movies)
-model2 <- lm(box_office~I(runtime-90)+I(year-2001), 
-             data=movies)
-model3 <- lm(box_office~I(runtime-90)+I(year-2001)
-             +metascore, 
-             data=movies)
-```
-]
-
-.pull-right[
-.stargazer[
-```{r echo=FALSE, results='asis'}
+#| label: model-multiple-table
+#| echo: false
+#| results: asis
+model1 <- lm(property_rate~percent_lhs, data=crimes)
+model2 <- lm(property_rate~percent_lhs+poverty_rate, data=crimes)
+model3 <- lm(property_rate~percent_lhs+poverty_rate+unemploy_rate+median_age,
+             data=crimes)
 htmlreg(list(model1, model2, model3),
         head.tag = FALSE,
         doctype = FALSE,
         custom.coef.names = c("Intercept",
-                              "Runtime",
-                              "Year of release",
-                              "Tomato meter"),
+                              "Percent no HS",
+                              "Poverty rate",
+                              "Unemployment rate",
+                              "Median age"),
         custom.gof.names = c("R-squared","N"),
-        caption="OLS regression models predicting box office returns",
+        caption="Linear models predicting property crime rates across states",
         caption.above=TRUE,
         digits=2,
         star.symbol='&#42;',
-        custom.note = "%stars. Standard errors in parenthesis",
+        custom.note = "%stars. Standard errors in parenthesis.",
         include.adjrs=FALSE, include.rmse=FALSE)
 ```
-]
-]
+
+:::
+
+:::
+
+::: {.column}
+
+* The dependent variable is identified in the caption.
+* Each model is shown in a column.
+* Independent variables are on the rows. If a cell is blank, then the given variable is not in the model.
+* Within each cell:
+  * The top number is the slope.
+  * The bottom number in parenthesis is the standard error for the slope.
+* The asterisks give benchmarks of the p-value for rejecting the null hypothesis that a slope is zero.
+* Summary statistics are shown at the bottom.
+
+:::
+
+::::
 
 # Including Categorical Variables as Predictors {.center background-color="black" background-image="images/v2osk-c9OfrVeD_tQ-unsplash.jpg"}
 
@@ -1732,7 +1536,7 @@ htmlreg(list(model1, model2),
                               "woman x number of children",
                               "age"),
         custom.gof.names = c("R-squared","N"),
-        caption="OLS regression models predicting hourly waages",
+        caption="Linear models predicting hourly waages",
         caption.above=TRUE,
         digits=2,
         star.symbol='&#42;',
