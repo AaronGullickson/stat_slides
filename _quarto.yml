@@ -30,3 +30,6 @@ format:
 revealjs-plugins:
   - codefocus
 editor: source
+title-slide-attributes:
+    data-background-image: "images/markus-spiske-666905-unsplash.jpg"
+    data-background-size: cover

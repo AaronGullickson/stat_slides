@@ -44,13 +44,13 @@ $selection-bg: #26351c !default;
   text-align: left;
 
   .title {
-    color: #000000;
+    color: #FFFFFF;
     font-size: 1.4em;
     font-weight: 350;
   }
 
   .subtitle {
-    color: $accent;
+    color: #FFFFFF;
     font-style: italic;
     margin-top: 0em;
   }
@@ -65,7 +65,7 @@ $selection-bg: #26351c !default;
 
   .author,
   .quarto-title-author-name {
-    color: #000000;
+    color: #FFFFFF;
   }
 
   .quarto-title-authors {
