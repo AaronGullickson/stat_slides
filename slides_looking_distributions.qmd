@@ -352,7 +352,7 @@ To calculate the mean we just sum up all the values of $x$ and divide by the num
 sum(movies$runtime)/nrow(movies)
 ```
 
-The mean move runtime is 105.2 minutes.
+The mean move runtime is 106.8 minutes.
 
 ::: {.fragment}
 
@@ -385,10 +385,10 @@ We just need to sort the observations from smallest to largest and pick the exac
 nrow(movies)
 ```
 
-With an odd number of 2553 movies, the exact midpoint is the 1277th movie. We can use the `sort` command to sort and then extract the 1277th movie by using square brackets:
+With an odd number of 4343 movies, the exact midpoint is the 2172nd movie. We can use the `sort` command to sort and then extract the 2172nd movie by using square brackets:
 
 ```{r}
-sort(movies$runtime)[1277]
+sort(movies$runtime)[2172]
 ```
 
 :::
@@ -517,7 +517,7 @@ To calculate the percentile with this command, we need to add a second argument 
 quantile(movies$runtime, probs=c(0.13, 0.76))
 ```
 
-13% of movies  are 90 minutes or shorter and 76% of movies are 116 minutes or shorter.
+13% of movies are 90 minutes or shorter and 76% of movies are 116 minutes or shorter.
 
 :::
 
@@ -750,7 +750,7 @@ sd <- sqrt(variance)
 sd
 ```
 
-The average movie is about 16.7 minutes away from the mean movie runtime.
+The average movie is about 16.3 minutes away from the mean movie runtime.
 
 :::
 
