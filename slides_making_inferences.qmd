@@ -1500,7 +1500,7 @@ diff/se
 
 * What does the value of 1.416426e-07 mean? 
 * The number is so small that R is reporting it using scientific notation: $$1.416426 x 10^{-7}$$
-* That means we need to move the decimal place over 8 spaces to the left. So the number is really 0.0000001416426. So I would interpret my result as: 
+* That means we need to move the decimal place over 7 spaces to the left. So the number is really 0.0000001416426. So I would interpret my result as: 
 
 ::: {.fragment}
 
