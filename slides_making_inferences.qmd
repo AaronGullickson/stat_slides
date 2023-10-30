@@ -1393,7 +1393,7 @@ Is there a difference in sexual frequency between married and divorced individua
 
 $$H_0: \mu_M-\mu_D=0$$
 
-Where $\mu_M$ is the population mean sexual frequency of married individuals and $\mu_D$ is the population mean sexual frequency of never-married individuals.
+Where $\mu_M$ is the population mean sexual frequency of married individuals and $\mu_D$ is the population mean sexual frequency of divorced individuals.
 
 :::: {.columns}
 
@@ -1489,22 +1489,22 @@ n1 <- 3778
 n2 <- 459
 se <- sqrt(p1*(1-p1)/n1+p2*(1-p2)/n2)
 diff/se
-pt(-5.346688, n2-1)
+2*pt(-5.346688, n2-1)
 ```
 
 :::
 
 ::::
 
-## `r emo::ji("thinking_face")` A p-value of 7.082129e-08? {.smaller}
+## `r emo::ji("thinking_face")` A p-value of 1.416426e-07? {.smaller}
 
-* What does the value of 7.082129e-08 mean? 
-* The number is so small that R is reporting it using scientific notation: $$7.082129 x 10^{-8}$$
-* That means we need to move the decimal place over 8 spaces to the left. So the number is really 0.00000007082129. So I would interpret my result as: 
+* What does the value of 1.416426e-07 mean? 
+* The number is so small that R is reporting it using scientific notation: $$1.416426 x 10^{-7}$$
+* That means we need to move the decimal place over 8 spaces to the left. So the number is really 0.0000001416426. So I would interpret my result as: 
 
 ::: {.fragment}
 
-> Assuming that there is no difference in the US population between those who have served in the military and those who have not in support for removing birthright citizenship, there is less than a 0.000007% chance of observing a sample difference in proportion of 13.1% or greater by random chance in a sample of this size. Thus, I **reject** the null hypothesis there there is no difference in support for removing birthright citizenship between those who have served in the military and those who have not. 
+> Assuming that there is no difference in the US population between those who have served in the military and those who have not in support for removing birthright citizenship, there is less than a 0.000002% chance of observing a sample difference in proportion of 13.1% or greater by random chance in a sample of this size. Thus, I **reject** the null hypothesis there there is no difference in support for removing birthright citizenship between those who have served in the military and those who have not. 
 
 :::
 
@@ -1522,7 +1522,7 @@ r
 n <- nrow(earnings)
 se <- sqrt((1-r^2)/(n-2))
 r/se
-pt(-85.46473, n-2)
+2*pt(-85.46473, n-2)
 ```
 
 :::

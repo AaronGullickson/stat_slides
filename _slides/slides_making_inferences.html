@@ -1524,7 +1524,7 @@ Never married       Married      Divorced       Widowed
 <h2>Example: Mean differences</h2>
 <p>Is there a difference in sexual frequency between married and divorced individuals? Formally, my null hypothesis is:</p>
 <p><span class="math display">\[H_0: \mu_M-\mu_D=0\]</span></p>
-<p>Where <span class="math inline">\(\mu_M\)</span> is the population mean sexual frequency of married individuals and <span class="math inline">\(\mu_D\)</span> is the population mean sexual frequency of never-married individuals.</p>
+<p>Where <span class="math inline">\(\mu_M\)</span> is the population mean sexual frequency of married individuals and <span class="math inline">\(\mu_D\)</span> is the population mean sexual frequency of divorced individuals.</p>
 <div class="columns">
 <div class="column fragment">
 <div class="cell">
@@ -1631,24 +1631,24 @@ Never married       Married      Divorced       Widowed
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5.346688</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pt</span>(<span class="sc">-</span><span class="fl">5.346688</span>, n2<span class="dv">-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fl">5.346688</span>, n2<span class="dv">-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 7.082129e-08</code></pre>
+<pre><code>[1] 1.416426e-07</code></pre>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="a-p-value-of-7.082129e-08" class="slide level2 smaller">
-<h2>🤔 A p-value of 7.082129e-08?</h2>
+<section id="a-p-value-of-1.416426e-07" class="slide level2 smaller">
+<h2>🤔 A p-value of 1.416426e-07?</h2>
 <ul>
-<li class="fragment">What does the value of 7.082129e-08 mean?</li>
-<li class="fragment">The number is so small that R is reporting it using scientific notation: <span class="math display">\[7.082129 x 10^{-8}\]</span></li>
-<li class="fragment">That means we need to move the decimal place over 8 spaces to the left. So the number is really 0.00000007082129. So I would interpret my result as:</li>
+<li class="fragment">What does the value of 1.416426e-07 mean?</li>
+<li class="fragment">The number is so small that R is reporting it using scientific notation: <span class="math display">\[1.416426 x 10^{-7}\]</span></li>
+<li class="fragment">That means we need to move the decimal place over 8 spaces to the left. So the number is really 0.0000001416426. So I would interpret my result as:</li>
 </ul>
 <div class="fragment">
 <blockquote>
-<p>Assuming that there is no difference in the US population between those who have served in the military and those who have not in support for removing birthright citizenship, there is less than a 0.000007% chance of observing a sample difference in proportion of 13.1% or greater by random chance in a sample of this size. Thus, I <strong>reject</strong> the null hypothesis there there is no difference in support for removing birthright citizenship between those who have served in the military and those who have not.</p>
+<p>Assuming that there is no difference in the US population between those who have served in the military and those who have not in support for removing birthright citizenship, there is less than a 0.000002% chance of observing a sample difference in proportion of 13.1% or greater by random chance in a sample of this size. Thus, I <strong>reject</strong> the null hypothesis there there is no difference in support for removing birthright citizenship between those who have served in the military and those who have not.</p>
 </blockquote>
 </div>
 </section>
@@ -1669,7 +1669,7 @@ Never married       Married      Divorced       Widowed
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 85.46473</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pt</span>(<span class="sc">-</span><span class="fl">85.46473</span>, n<span class="dv">-2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fl">85.46473</span>, n<span class="dv">-2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
 </div>
