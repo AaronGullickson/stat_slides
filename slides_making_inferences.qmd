@@ -737,7 +737,7 @@ What proportion of voters support removing birthright citizenship?
 Use `prop.table` to get the sample proportion:
 ```{r}
 prop.table(table(politics$brcitizen))
-p <- 0.3171307
+p <- 0.3181496
 ```
 
 ::: {.fragment}
@@ -764,7 +764,7 @@ p-t*se
 
 ::: {.fragment}
 
-I am 95% confident that the true proportion of American adults who support removing birthright citizenship is between 30.3% and 33.1%.
+I am 95% confident that the true proportion of American adults who support removing birthright citizenship is between 30.4% and 33.2%.
 
 :::
 
@@ -781,7 +781,7 @@ What is the difference in sexual frequency between married and never married ind
 Use `tapply` to get means by groups and then calculate the difference you want:
 ```{r}
 tapply(sex$sexf, sex$marital, mean)
-diff <- 56.094106-53.617704
+diff <- 46.44548-53.45574
 ```
 
 :::
@@ -789,11 +789,12 @@ diff <- 56.094106-53.617704
 ::: {.fragment}
 
 Use `tapply` again to calculate standard deviations by group for the SE calculation:
+
 ```{r}
 #use tapply again to get sd by group
 tapply(sex$sexf, sex$marital, sd)
-sd1 <- 49.95361
-sd2 <- 58.81459
+sd1 <- 42.42236
+sd2 <- 48.06519
 ```
 
 :::
@@ -803,10 +804,11 @@ sd2 <- 58.81459
 ::: {.fragment}
 
 Use `table` to get sample size by group:
+
 ```{r}
 table(sex$marital)
-n1 <- 1052
-n2 <- 514
+n1 <- 5374
+n2 <- 3129
 ```
 
 :::
@@ -826,7 +828,7 @@ diff-t*se
 
 ::: {.fragment}
 
-I am 95% confident that, among American adults, married individuals have sex between 8.4 more times per year or 3.45 less times per year than never married individuals, on average. 
+I am 95% confident that, among American adults, married individuals have sex between 4.98 and 9.04 fewer times per year than never married individuals, on average. 
 
 :::
 
@@ -837,10 +839,11 @@ What is the difference in support for removing birthright citizenship between th
 ::: {.fragment}
 
 Use `prop.table` to calculate proportions for each group:
+
 ```{r, highlight.output=5}
 prop.table(table(politics$brcitizen, 
                  politics$military), 2)
-p1 <- 0.3029902
+p1 <- 0.3041292
 p2 <- 0.4335512
 diff <- p2-p1
 ```
@@ -853,7 +856,7 @@ Use `table` to get sample sizes by group:
 
 ```{r}
 table(politics$military)
-n1 <- 3779
+n1 <- 3778
 n2 <- 459
 ```
 
@@ -886,7 +889,7 @@ diff+t*se
 
 ::: {.fragment}
 
-I am 95% confident that the percent in support for removing birthright citizenship is between 8.3% and 17.8% higher among who have served in the military than those who have not. 
+I am 95% confident that the percent in support for removing birthright citizenship is between 8.2% and 17.7% higher among who have served in the military than those who have not. 
 
 :::
 
@@ -897,6 +900,7 @@ What is the correlation between age and wages among US workers?
 ::: {.fragment}
 
 Use `cor` command to get the sample correlation coefficient:
+
 ```{r}
 r <- cor(earnings$age, earnings$wages)
 ```
@@ -906,6 +910,7 @@ r <- cor(earnings$age, earnings$wages)
 ::: {.fragment}
 
 Use `nrow` to get sample size and then calculate standard error and t-statistic.
+
 ```{r}
 n <- nrow(earnings)
 se <- sqrt((1-r^2)/(n-2))
