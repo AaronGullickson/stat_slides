@@ -605,7 +605,7 @@ Green: $\sum_{i=1}^n (y_i-\hat{y}_i)^2$
 
 ::: {.fragment}
 
-Proportion: $\frac{\sum_{i=1}^n (y_i-\bar{y})^2}{\sum_{i=1}^n (y_i-\hat{y}_i)^2}$
+Proportion: $1-\frac{\sum_{i=1}^n (y_i-\hat{y}_i)^2}{\sum_{i=1}^n (y_i-\bar{y})^2}$
 
 :::
 
@@ -613,7 +613,7 @@ Proportion: $\frac{\sum_{i=1}^n (y_i-\bar{y})^2}{\sum_{i=1}^n (y_i-\hat{y}_i)^2}
 
 It turns out:
 
-$$\frac{\sum_{i=1}^n (y_i-\bar{y})^2}{\sum_{i=1}^n (y_i-\hat{y}_i)^2}=r^2$$
+$$1-\frac{\sum_{i=1}^n (y_i-\hat{y}_i)^2}{\sum_{i=1}^n (y_i-\bar{y})^2}=r^2$$
 
 ```{r}
 cor(crimes$unemploy_rate, crimes$property_rate)^2
@@ -784,7 +784,7 @@ cor(crimes$poverty_rate, crimes$percent_lhs)
 par(mar=c(0,0,0,0))
 plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 rect(1,5,4,9, col="skyblue")
-text(2.5,7,"percent with\no HS diploma", cex=1.2)
+text(2.5,7,"percent with\nno HS diploma", cex=1.2)
 rect(6,5,9,9, col="skyblue")
 text(7.5,7,"property crime\nrate", cex=1.2)
 arrows(4,7,6,7, length=0.1)
@@ -803,7 +803,7 @@ text(5,7.5,"+", cex=1.2)
 par(mar=c(0,0,0,0))
 plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 rect(1,5,4,9, col="skyblue")
-text(2.5,7,"percent with\no HS diploma", cex=1.2)
+text(2.5,7,"percent with\nno HS diploma", cex=1.2)
 rect(6,5,9,9, col="skyblue")
 text(7.5,7,"property crime\nrate", cex=1.2)
 rect(3.5,0,6.5,4, col="red")
@@ -823,7 +823,7 @@ text(5.5,4.5,"+", cex=1.2)
 
 Just add the potential confounder to the model:
 
-$$\hat{\texttt{frequency}}_i=b_0+b_1(\texttt{education}_i)+b_2(\texttt{age}_i)$$
+$$\hat{\texttt{crime_rate}}_i=b_0+b_1(\texttt{percent lhs}_i)+b_2(\texttt{poverty rate}_i)$$
 
 ::: {.fragment}
 
