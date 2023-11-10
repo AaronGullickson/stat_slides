@@ -1087,7 +1087,7 @@ ggplot(sex,
   geom_point(data=data.frame(female=c(0,1), 
                              sexf=tapply(sex$sexf, sex$female, mean)),
              color="red", size=5)+
-  annotate("label", 0.5, 60, label="The slope is equal to the mean difference of -5.854", size=10)
+  annotate("label", 0.5, 60, label="The slope is equal to the mean difference of -2.17", size=10)
 ```
 
 ## `tapply` vs. `lm` {.smaller}
@@ -1111,7 +1111,7 @@ model <- lm(sexf~female, data=sex)
 coef(model)
 ```
 * Intercept is the mean for the reference (men)
-* Slope is the mean difference which in this case tells us that women report 5.854 fewer instances of sex per year than men.
+* Slope is the mean difference which in this case tells us that women report 2.17 fewer instances of sex per year than men.
 
 :::
 
@@ -1569,7 +1569,7 @@ model2 <- lm(wages~nchild*gender+I(age-40),
 An additive model:
 
 ```{r}
-coef(lm(wages~gender+education, data=earnings))
+round(coef(lm(wages~gender+education, data=earnings)), 2)
 ```
 
 ::: {.fragment}
@@ -1587,7 +1587,7 @@ coef(lm(wages~gender+education, data=earnings))
 An additive model:
 
 ```{r}
-coef(lm(wages~gender+education, data=earnings))
+round(coef(lm(wages~gender+education, data=earnings)), 2)
 ```
 
 |                   |   LHS |  HS |  AA |  BA | Grad |
@@ -1601,7 +1601,7 @@ coef(lm(wages~gender+education, data=earnings))
 An additive model:
 
 ```{r}
-coef(lm(wages~gender+education, data=earnings))
+round(coef(lm(wages~gender+education, data=earnings)), 2)
 ```
 
 |                   |        LHS |  HS |  AA |  BA | Grad |
@@ -1615,7 +1615,7 @@ coef(lm(wages~gender+education, data=earnings))
 An additive model:
 
 ```{r}
-coef(lm(wages~gender+education, data=earnings))
+round(coef(lm(wages~gender+education, data=earnings)), 2)
 ```
 |                   |        LHS |         HS |  AA |  BA | Grad |
 | :---------------- | ---------: | ---------: | --: | --: | ---: |
@@ -1628,7 +1628,7 @@ coef(lm(wages~gender+education, data=earnings))
 An additive model:
 
 ```{r}
-coef(lm(wages~gender+education, data=earnings))
+round(coef(lm(wages~gender+education, data=earnings)), 2)
 ```
 |                   |        LHS |              HS |  AA |  BA | Grad |
 | :---------------- | ---------: | --------------: | --: | --: | ---: |
@@ -1641,7 +1641,7 @@ coef(lm(wages~gender+education, data=earnings))
 An additive model:
 
 ```{r}
-coef(lm(wages~gender+education, data=earnings))
+round(coef(lm(wages~gender+education, data=earnings)), 2)
 ```
 
 |                   |        LHS |              HS |              AA |               BA |             Grad |
@@ -1658,7 +1658,7 @@ coef(lm(wages~gender+education, data=earnings))
 A multiplicative model:
 
 ```{r}
-coef(lm(wages~gender*education, data=earnings))
+round(coef(lm(wages~gender*education, data=earnings)), 2)
 ```
 
 
@@ -1673,7 +1673,7 @@ coef(lm(wages~gender*education, data=earnings))
 A multiplicative model:
 
 ```{r}
-coef(lm(wages~gender*education, data=earnings))
+round(coef(lm(wages~gender*education, data=earnings)), 2)
 ```
 
 
@@ -1688,7 +1688,7 @@ coef(lm(wages~gender*education, data=earnings))
 A multiplicative model:
 
 ```{r}
-coef(lm(wages~gender*education, data=earnings))
+round(coef(lm(wages~gender*education, data=earnings)), 2)
 ```
 
 
@@ -1705,7 +1705,7 @@ coef(lm(wages~gender*education, data=earnings))
 A multiplicative model:
 
 ```{r}
-coef(lm(wages~gender*education, data=earnings))
+round(coef(lm(wages~gender*education, data=earnings)), 2)
 ```
 
 
@@ -1722,7 +1722,7 @@ coef(lm(wages~gender*education, data=earnings))
 A multiplicative model:
 
 ```{r}
-coef(lm(wages~gender*education, data=earnings))
+round(coef(lm(wages~gender*education, data=earnings)), 2)
 ```
 
 
@@ -1739,7 +1739,7 @@ coef(lm(wages~gender*education, data=earnings))
 A multiplicative model:
 
 ```{r}
-coef(lm(wages~gender*education, data=earnings))
+round(coef(lm(wages~gender*education, data=earnings)), 2)
 ```
 
 
