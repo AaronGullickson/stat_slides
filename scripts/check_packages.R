@@ -8,11 +8,11 @@
 packages = c("here","tidyverse", "broom",
              "ggalt","scales","ggrepel","gganimate","gifski",
              "psych","car","MASS","VGAM","nlme","nnet",
-             "maptools","sp","rgeos","rgdal",
+             "sp",
              "sandwich","lmtest","survey","mice",
              "margins","logistf",
              "gapminder",
-             "texreg", "pander", "kableExtra","gt","plotly",
+             "modelsummary", "pander", "kableExtra","gt","plotly",
              "latex2exp")
 
 package.check <- lapply(packages, FUN = function(x) {
