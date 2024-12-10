@@ -9,6 +9,7 @@ library(here)
 source(here("scripts","check_packages.R"))
 source(here("scripts","set_theme.R"))
 source(here("scripts","load_example_data.R"))
+source(here("scripts", "preamble.R"))
 ```
 
 ## Thinking about association

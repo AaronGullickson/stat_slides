@@ -9,6 +9,7 @@ library(here)
 source(here("scripts","check_packages.R"))
 source(here("scripts","set_theme.R"))
 source(here("scripts","load_example_data.R"))
+source(here("scripts", "preamble.R"))
 ```
 
 # What Does Data Look Like? {.center background-color="black" background-image="images/darryl-low-pXqZs5TG2HU-unsplash.jpg"}

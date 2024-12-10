@@ -9,6 +9,7 @@ library(here)
 source(here("scripts","check_packages.R"))
 source(here("scripts","set_theme.R"))
 source(here("scripts","load_example_data.R"))
+source(here("scripts", "preamble.R"))
 ```
 
 # The OLS Regression Line {.center background-color="black" background-image="images/ridham-nagralawala-kuJkUTxR0z4-unsplash.jpg"}
@@ -951,21 +952,19 @@ model1 <- lm(property_rate~percent_lhs, data=crimes)
 model2 <- lm(property_rate~percent_lhs+poverty_rate, data=crimes)
 model3 <- lm(property_rate~percent_lhs+poverty_rate+unemploy_rate+median_age,
              data=crimes)
-htmlreg(list(model1, model2, model3),
-        head.tag = FALSE,
-        doctype = FALSE,
-        custom.coef.names = c("Intercept",
-                              "Percent no HS",
-                              "Poverty rate",
-                              "Unemployment rate",
-                              "Median age"),
-        custom.gof.names = c("R-squared","N"),
-        caption="Linear models predicting property crime rates across states",
-        caption.above=TRUE,
-        digits=2,
-        star.symbol='&#42;',
-        custom.note = "%stars. Standard errors in parenthesis.",
-        include.adjrs=FALSE, include.rmse=FALSE)
+modelsummary(list("Model 1" = model1, 
+                  "Model 2" = model2, 
+                  "Model 3" = model3),
+             output = "gt",
+             stars = star_standard, 
+             fmt = 1,
+             coef_rename = c("(Intercept)" = "Intercept",
+                             "percent_lhs" = "Percent less than HS", 
+                             "median_age" = "Median age",
+                             "poverty_rate" = "Poverty rate",
+                             "unemploy_rate" = "Unemployment rate"),
+             notes = list("Standard errors in parenthesis."),
+             gof_map = gof_standard)
 ```
 
 :::
@@ -1211,6 +1210,17 @@ These results are very different!
 #| results: asis
 model1 <- lm(sexf~marital, data=sex)
 model2 <- lm(sexf~marital+I(age-18), data=sex)
+modelsummary(list("Model 1" = model1, 
+                  "Model 2" = model2),
+             output = "gt",
+             stars = star_standard, 
+             fmt = 1,
+             coef_rename = c("(Intercept)" = "Intercept",
+                             "percent_lhs" = "Percent less than HS", 
+                             "median_age" = "Median age",
+                             "poverty_rate" = "Poverty rate"),
+             notes = list("Standard errors in parenthesis."),
+             gof_map = gof_standard)
 htmlreg(list(model1, model2),
         head.tag = FALSE,
         doctype = FALSE,
