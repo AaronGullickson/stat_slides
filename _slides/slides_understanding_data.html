@@ -8,7 +8,7 @@
 <link href="slides_understanding_data_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="slides_understanding_data_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="slides_understanding_data_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.326">
+  <meta name="generator" content="quarto-1.4.549">
 
   <meta name="author" content="Aaron Gullickson">
   <title>Understanding Data</title>
@@ -30,7 +30,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="slides_understanding_data_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link rel="stylesheet" href="slides_understanding_data_files/libs/revealjs/dist/theme/quarto.css">
   <link href="slides_understanding_data_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="slides_understanding_data_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="slides_understanding_data_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -159,7 +159,8 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -322,7 +323,6 @@
       margin-right: 0; 
     }
   </style>
-  
   <script src="slides_understanding_data_files/libs/kePrint-0.0.1/kePrint.js"></script>
   <link href="slides_understanding_data_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
@@ -610,13 +610,21 @@ Aaron Gullickson
 <div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_understanding_data_files/figure-revealjs/dist-variable-quant-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_understanding_data_files/figure-revealjs/dist-variable-cat-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -628,13 +636,21 @@ Aaron Gullickson
 <div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_understanding_data_files/figure-revealjs/measure-assoc-quant-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_understanding_data_files/figure-revealjs/measure-assoc-cat-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -646,13 +662,21 @@ Aaron Gullickson
 <div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_understanding_data_files/figure-revealjs/stat-infer-quant-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_understanding_data_files/figure-revealjs/stat-infer-cat-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -703,13 +727,21 @@ Aaron Gullickson
 <div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_understanding_data_files/figure-revealjs/confounders-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_understanding_data_files/figure-revealjs/interactions-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -762,8 +794,10 @@ Aaron Gullickson
 </div>
 </div>
 </div>
+<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p>Sociology 312/412/512, University of Oregon</p>
+</div>
 </div>
 </section></section>
     </div>
@@ -794,7 +828,6 @@ Aaron Gullickson
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -1094,10 +1127,9 @@ Aaron Gullickson
         // clear code selection
         e.clearSelection();
       });
-      function tippyHover(el, contentFn) {
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
-          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -1107,8 +1139,17 @@ Aaron Gullickson
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start'
+          placement: 'bottom-start',
         };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 

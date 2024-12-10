@@ -10,7 +10,7 @@
 <link href="slides_measuring_association_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <link href="slides_measuring_association_files/libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="slides_measuring_association_files/libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.326">
+  <meta name="generator" content="quarto-1.4.549">
 
   <meta name="author" content="Aaron Gullickson">
   <title>Measuring Association</title>
@@ -33,7 +33,7 @@
     }
     /* CSS for syntax highlighting */
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span { line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -62,18 +62,17 @@
       }
     pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
     div.sourceCode
-      { color: #000000; background-color: #f8f8f8; }
+      {  background-color: #f8f8f8; }
     @media screen {
     pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
     }
-    code span { color: #000000; } /* Normal */
     code span.al { color: #ef2929; } /* Alert */
     code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-    code span.at { color: #c4a000; } /* Attribute */
+    code span.at { color: #204a87; } /* Attribute */
     code span.bn { color: #0000cf; } /* BaseN */
     code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
     code span.ch { color: #4e9a06; } /* Char */
-    code span.cn { color: #000000; } /* Constant */
+    code span.cn { color: #8f5902; } /* Constant */
     code span.co { color: #8f5902; font-style: italic; } /* Comment */
     code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
     code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
@@ -82,21 +81,21 @@
     code span.er { color: #a40000; font-weight: bold; } /* Error */
     code span.ex { } /* Extension */
     code span.fl { color: #0000cf; } /* Float */
-    code span.fu { color: #000000; } /* Function */
+    code span.fu { color: #204a87; font-weight: bold; } /* Function */
     code span.im { } /* Import */
     code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
     code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
     code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
     code span.ot { color: #8f5902; } /* Other */
     code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-    code span.sc { color: #000000; } /* SpecialChar */
+    code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
     code span.ss { color: #4e9a06; } /* SpecialString */
     code span.st { color: #4e9a06; } /* String */
     code span.va { color: #000000; } /* Variable */
     code span.vs { color: #4e9a06; } /* VerbatimString */
     code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="slides_measuring_association_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link rel="stylesheet" href="slides_measuring_association_files/libs/revealjs/dist/theme/quarto.css">
   <link href="slides_measuring_association_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="slides_measuring_association_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="slides_measuring_association_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -225,7 +224,8 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -426,7 +426,11 @@ Aaron Gullickson
 <p>The association between two variables could be generated because they are both related to a third variable that is actually the cause.</p>
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_measuring_association_files/figure-revealjs/spuriousness-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div><div class="column fragment">
@@ -435,7 +439,11 @@ Aaron Gullickson
 <p>We may think that one variable causes the other, but it is equally possible that the causal relationship is the other way.</p>
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_measuring_association_files/figure-revealjs/reverse-causality-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -470,8 +478,8 @@ Aaron Gullickson
 <div class="fragment">
 <p>We can create a two-way table in <em>R</em> using the <code>table</code> command but this time we feed in two different variables. Here is an example using sex and survival on the titanic:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(titanic<span class="sc">$</span>sex, titanic<span class="sc">$</span>survival)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>tab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(titanic<span class="sc">$</span>sex, titanic<span class="sc">$</span>survival)</span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>tab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        
          Survived Died
@@ -516,13 +524,13 @@ Aaron Gullickson
 <h2>Calculate maginal distributions</h2>
 <p>A first step in establishing the relationship is to calculate the <strong>marginal distributions</strong> of the row and column variables. The marginal distributions are simply the distributions of each categorical variable separately. We can calculate these from the <code>tab</code> object I created using the <code>margin.table</code> command in <em>R</em>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">margin.table</span>(tab, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">margin.table</span>(tab, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Female   Male 
    466    843 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">margin.table</span>(tab, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">margin.table</span>(tab, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Survived     Died 
@@ -632,8 +640,8 @@ Survived     Died
 <h2>Calculating conditional distributions in <em>R</em></h2>
 <p>You can use <code>prop.table</code> to calculate conditional distributions in <em>R</em>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(titanic<span class="sc">$</span>sex, titanic<span class="sc">$</span>survival)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(tab, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(titanic<span class="sc">$</span>sex, titanic<span class="sc">$</span>survival)</span>
+<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(tab, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        
           Survived      Died
@@ -649,7 +657,7 @@ Survived     Died
 <section id="the-other-conditional-distribution" class="slide level2">
 <h2>The other conditional distribution</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(tab, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(tab, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        
           Survived      Died
@@ -672,14 +680,14 @@ Survived     Died
 <div class="columns">
 <div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(titanic, <span class="fu">aes</span>(<span class="at">x=</span>survival, <span class="at">y=</span>..prop..,</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">group=</span><span class="dv">1</span>))<span class="sc">+</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()<span class="sc">+</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label=</span>scales<span class="sc">::</span>percent)<span class="sc">+</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"percent surviving"</span>, <span class="at">x=</span><span class="cn">NULL</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span><span class="st">"Distribution of Titanic survival by gender"</span>)<span class="sc">+</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sex)<span class="sc">+</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(titanic, <span class="fu">aes</span>(<span class="at">x=</span>survival, <span class="at">y=</span>..prop..,</span>
+<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">group=</span><span class="dv">1</span>))<span class="sc">+</span></span>
+<span id="cb11-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()<span class="sc">+</span></span>
+<span id="cb11-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label=</span>scales<span class="sc">::</span>percent)<span class="sc">+</span></span>
+<span id="cb11-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"percent surviving"</span>, <span class="at">x=</span><span class="cn">NULL</span>,</span>
+<span id="cb11-6"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span><span class="st">"Distribution of Titanic survival by gender"</span>)<span class="sc">+</span></span>
+<span id="cb11-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sex)<span class="sc">+</span></span>
+<span id="cb11-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment" data-code-focus="7">
 <p>The code here is identical to that for a simple barplot except for the addition of <code>facet_wrap</code>. The <code>facet_wrap</code> command allows us to make separate panels of the same graph across the categories of some other variable.</p>
@@ -687,7 +695,11 @@ Survived     Died
 </div><div class="column">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_measuring_association_files/figure-revealjs/comp-barplot-example2-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -698,14 +710,14 @@ Survived     Died
 <div class="columns">
 <div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(titanic, <span class="fu">aes</span>(<span class="at">x=</span>survival, <span class="at">y=</span>..prop..,</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">group=</span>sex, <span class="at">fill=</span>sex))<span class="sc">+</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">"dodge"</span>)<span class="sc">+</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label=</span>scales<span class="sc">::</span>percent)<span class="sc">+</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"percent surviving"</span>, <span class="at">x=</span><span class="cn">NULL</span>,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span><span class="st">"Distribution of Titanic survival by gender"</span>,</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">"gender"</span>)<span class="sc">+</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(titanic, <span class="fu">aes</span>(<span class="at">x=</span>survival, <span class="at">y=</span>..prop..,</span>
+<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">group=</span>sex, <span class="at">fill=</span>sex))<span class="sc">+</span></span>
+<span id="cb12-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">"dodge"</span>)<span class="sc">+</span></span>
+<span id="cb12-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label=</span>scales<span class="sc">::</span>percent)<span class="sc">+</span></span>
+<span id="cb12-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"percent surviving"</span>, <span class="at">x=</span><span class="cn">NULL</span>,</span>
+<span id="cb12-6"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span><span class="st">"Distribution of Titanic survival by gender"</span>,</span>
+<span id="cb12-7"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">"gender"</span>)<span class="sc">+</span></span>
+<span id="cb12-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment" data-code-focus="2">
 <p>We <code>group</code> by sex and also add a <code>fill</code> aesthetic that will apply different colors by sex.</p>
@@ -719,25 +731,29 @@ Survived     Died
 </div><div class="column">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_measuring_association_files/figure-revealjs/comp-barplot-color2-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="fa-user-ninja-presidential-choice-by-education" class="slide level2 smaller">
+<section id="presidential-choice-by-education" class="slide level2 smaller">
 <h2><i class="fa-solid fa-user-ninja" aria-label="user-ninja"></i> Presidential choice by education</h2>
 <div class="columns">
 <div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first command drops non-voters</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">droplevels</span>(<span class="fu">subset</span>(politics, </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                          president<span class="sc">!=</span><span class="st">"No Vote"</span>)) </span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(temp<span class="sc">$</span>educ, temp<span class="sc">$</span>president)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># round and multiply prop.table by 100</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># to get percents</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>props <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">prop.table</span>(tab, <span class="dv">1</span>),<span class="dv">3</span>)<span class="sc">*</span><span class="dv">100</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>props</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># first command drops non-voters</span></span>
+<span id="cb13-2"><a href="" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">droplevels</span>(<span class="fu">subset</span>(politics, </span>
+<span id="cb13-3"><a href="" aria-hidden="true" tabindex="-1"></a>                          president<span class="sc">!=</span><span class="st">"No Vote"</span>)) </span>
+<span id="cb13-4"><a href="" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(temp<span class="sc">$</span>educ, temp<span class="sc">$</span>president)</span>
+<span id="cb13-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># round and multiply prop.table by 100</span></span>
+<span id="cb13-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># to get percents</span></span>
+<span id="cb13-7"><a href="" aria-hidden="true" tabindex="-1"></a>props <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">prop.table</span>(tab, <span class="dv">1</span>),<span class="dv">3</span>)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb13-8"><a href="" aria-hidden="true" tabindex="-1"></a>props</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                     
                       Clinton Trump Other
@@ -750,40 +766,44 @@ Survived     Died
 </div>
 </div><div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">subset</span>(politics, president<span class="sc">!=</span><span class="st">"No Vote"</span>), </span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span>president, <span class="at">y=</span>..prop.., </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">group=</span>educ, <span class="at">fill=</span>educ))<span class="sc">+</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>)<span class="sc">+</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"presidential choice by education"</span>,</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="cn">NULL</span>,</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"percent of education group"</span>,</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">"education"</span>)<span class="sc">+</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label=</span>scales<span class="sc">::</span>percent)<span class="sc">+</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">"YlGn"</span>) <span class="co">#&lt;&lt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">subset</span>(politics, president<span class="sc">!=</span><span class="st">"No Vote"</span>), </span>
+<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span>president, <span class="at">y=</span>..prop.., </span>
+<span id="cb15-3"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">group=</span>educ, <span class="at">fill=</span>educ))<span class="sc">+</span></span>
+<span id="cb15-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>)<span class="sc">+</span></span>
+<span id="cb15-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"presidential choice by education"</span>,</span>
+<span id="cb15-6"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="cn">NULL</span>,</span>
+<span id="cb15-7"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"percent of education group"</span>,</span>
+<span id="cb15-8"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">"education"</span>)<span class="sc">+</span></span>
+<span id="cb15-9"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label=</span>scales<span class="sc">::</span>percent)<span class="sc">+</span></span>
+<span id="cb15-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">"YlGn"</span>) <span class="co">#&lt;&lt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_measuring_association_files/figure-revealjs/vote-educ-barplot-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="fa-user-ninja-super-fancy-three-way-table" class="slide level2 smaller">
+<section id="super-fancy-three-way-table" class="slide level2 smaller">
 <h2><i class="fa-solid fa-user-ninja" aria-label="user-ninja"></i> Super fancy three-way table</h2>
 <div class="columns">
 <div class="column" style="width:45%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">subset</span>(politics, president<span class="sc">!=</span><span class="st">"No Vote"</span> <span class="sc">&amp;</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                gender<span class="sc">!=</span><span class="st">"Other"</span>), </span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span>president, <span class="at">y=</span>..prop.., </span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">group=</span>educ, <span class="at">fill=</span>educ))<span class="sc">+</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>)<span class="sc">+</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"presidential choice by education"</span>,</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="cn">NULL</span>,</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"percent of education group"</span>,</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">"education"</span>)<span class="sc">+</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label=</span>scales<span class="sc">::</span>percent)<span class="sc">+</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">"YlGn"</span>)<span class="sc">+</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>gender)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">subset</span>(politics, president<span class="sc">!=</span><span class="st">"No Vote"</span> <span class="sc">&amp;</span></span>
+<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a>                gender<span class="sc">!=</span><span class="st">"Other"</span>), </span>
+<span id="cb16-3"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span>president, <span class="at">y=</span>..prop.., </span>
+<span id="cb16-4"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">group=</span>educ, <span class="at">fill=</span>educ))<span class="sc">+</span></span>
+<span id="cb16-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>)<span class="sc">+</span></span>
+<span id="cb16-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"presidential choice by education"</span>,</span>
+<span id="cb16-7"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="cn">NULL</span>,</span>
+<span id="cb16-8"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"percent of education group"</span>,</span>
+<span id="cb16-9"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">"education"</span>)<span class="sc">+</span></span>
+<span id="cb16-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label=</span>scales<span class="sc">::</span>percent)<span class="sc">+</span></span>
+<span id="cb16-11"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">"YlGn"</span>)<span class="sc">+</span></span>
+<span id="cb16-12"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>gender)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment" data-code-focus="12">
 <p>Just add a <code>facet_wrap</code> to see how education affected presidential voting differently for men and women.</p>
@@ -791,7 +811,11 @@ Survived     Died
 </div><div class="column" style="width:55%;">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_measuring_association_files/figure-revealjs/three-way-comp-barplot2-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -800,7 +824,7 @@ Survived     Died
 <section id="how-to-compare-differences-in-probabilities" class="slide level2 smaller">
 <h2>How to compare differences in probabilities?</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">prop.table</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>sex, titanic<span class="sc">$</span>survival), <span class="dv">1</span>)<span class="sc">*</span><span class="dv">100</span>,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">prop.table</span>(<span class="fu">table</span>(titanic<span class="sc">$</span>sex, titanic<span class="sc">$</span>survival), <span class="dv">1</span>)<span class="sc">*</span><span class="dv">100</span>,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        
          Survived  Died
@@ -892,15 +916,15 @@ Survived     Died
 <div class="columns">
 <div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(earnings, </span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(race, wages, median), <span class="co">#&lt;&lt;</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y=</span>wages))<span class="sc">+</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill=</span><span class="st">"grey"</span>, <span class="at">outlier.color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label=</span>scales<span class="sc">::</span>dollar)<span class="sc">+</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>, <span class="at">y=</span><span class="st">"hourly wages"</span>,</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span><span class="st">"Comparative boxplots of wages by race"</span>,</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption=</span><span class="st">"Source: CPS 2018"</span>)<span class="sc">+</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(earnings, </span>
+<span id="cb19-2"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(race, wages, median), <span class="co">#&lt;&lt;</span></span>
+<span id="cb19-3"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">y=</span>wages))<span class="sc">+</span></span>
+<span id="cb19-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill=</span><span class="st">"grey"</span>, <span class="at">outlier.color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
+<span id="cb19-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label=</span>scales<span class="sc">::</span>dollar)<span class="sc">+</span></span>
+<span id="cb19-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>, <span class="at">y=</span><span class="st">"hourly wages"</span>,</span>
+<span id="cb19-7"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span><span class="st">"Comparative boxplots of wages by race"</span>,</span>
+<span id="cb19-8"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption=</span><span class="st">"Source: CPS 2018"</span>)<span class="sc">+</span></span>
+<span id="cb19-9"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment" data-code-focus="2">
 <p>We just need to add an <code>x</code> aesthetic (in this case race) to the plot to get a comparative boxplot.</p>
@@ -909,7 +933,11 @@ Survived     Died
 </div><div class="column">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_measuring_association_files/figure-revealjs/comp-boxplot-show2-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -923,7 +951,7 @@ Survived     Died
 <h2>Calculating mean differences</h2>
 <p>Use the <code>tapply</code> command to get the mean income of respondents separately by who they voted for:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(politics<span class="sc">$</span>income, politics<span class="sc">$</span>president, mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(politics<span class="sc">$</span>income, politics<span class="sc">$</span>president, mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Clinton    Trump    Other  No Vote 
 79.40396 77.37831 80.31188 60.69635 </code></pre>
@@ -941,7 +969,7 @@ Survived     Died
 <section id="what-about-median-differences" class="slide level2 smaller">
 <h2>What about median differences?</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(politics<span class="sc">$</span>income, politics<span class="sc">$</span>president, median)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(politics<span class="sc">$</span>income, politics<span class="sc">$</span>president, median)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Clinton   Trump   Other No Vote 
    61.0    64.0    68.5    44.0 </code></pre>
@@ -957,7 +985,11 @@ Survived     Died
 </div><div class="column">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_measuring_association_files/figure-revealjs/income-dist-comp-vote-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -986,11 +1018,11 @@ Survived     Died
 <div class="columns">
 <div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crimes, <span class="fu">aes</span>(<span class="at">x=</span>unemploy_rate, <span class="at">y=</span>property_rate))<span class="sc">+</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"unemployment rate"</span>,</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"property crimes per 100,000 population"</span>,</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span><span class="st">"Property crime rates by unemployment"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crimes, <span class="fu">aes</span>(<span class="at">x=</span>unemploy_rate, <span class="at">y=</span>property_rate))<span class="sc">+</span></span>
+<span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"unemployment rate"</span>,</span>
+<span id="cb24-4"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"property crimes per 100,000 population"</span>,</span>
+<span id="cb24-5"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">title=</span><span class="st">"Property crime rates by unemployment"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment" data-code-focus="1">
 <p>Define <code>x</code> and <code>y</code> variables in aesthetics.</p>
@@ -1004,7 +1036,11 @@ Survived     Died
 </div><div class="column">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_measuring_association_files/figure-revealjs/code-scatter2-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -1016,7 +1052,11 @@ Survived     Died
 <div class="column">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_measuring_association_files/figure-revealjs/code-scatter3-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div><div class="column">
@@ -1047,13 +1087,21 @@ Are there outliers and are they inconsistent with the general trend?
 <div class="column fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_measuring_association_files/figure-revealjs/scatter-overplot-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div><div class="column fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_measuring_association_files/figure-revealjs/scatter-jitter-alpha-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -1064,10 +1112,10 @@ Are there outliers and are they inconsistent with the general trend?
 <div class="columns">
 <div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(earnings, <span class="fu">aes</span>(<span class="at">x=</span>age, <span class="at">y=</span>wages))<span class="sc">+</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.01</span>, <span class="at">width=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"worker age"</span>,</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"hourly wage"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(earnings, <span class="fu">aes</span>(<span class="at">x=</span>age, <span class="at">y=</span>wages))<span class="sc">+</span></span>
+<span id="cb25-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.01</span>, <span class="at">width=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb25-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"worker age"</span>,</span>
+<span id="cb25-4"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"hourly wage"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment" data-code-focus="2">
 <ul>
@@ -1078,24 +1126,28 @@ Are there outliers and are they inconsistent with the general trend?
 </div><div class="column">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_measuring_association_files/figure-revealjs/overplot-commands2-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="fa-user-ninja-adding-a-third-variable-by-color" class="slide level2 smaller">
+<section id="adding-a-third-variable-by-color" class="slide level2 smaller">
 <h2><i class="fa-solid fa-user-ninja" aria-label="user-ninja"></i> Adding a third variable by color</h2>
 <div class="columns">
 <div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(popularity, <span class="fu">aes</span>(<span class="at">x=</span>nsports, <span class="at">y=</span>nominations,</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">color=</span>gender))<span class="sc">+</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.4</span>, <span class="at">width=</span><span class="fl">0.5</span>, <span class="at">height=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">end =</span> <span class="fl">0.75</span>)<span class="sc">+</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"number of sports played"</span>,</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"number of friend nominations"</span>,</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">color=</span><span class="st">"gender"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(popularity, <span class="fu">aes</span>(<span class="at">x=</span>nsports, <span class="at">y=</span>nominations,</span>
+<span id="cb26-2"><a href="" aria-hidden="true" tabindex="-1"></a>                       <span class="at">color=</span>gender))<span class="sc">+</span></span>
+<span id="cb26-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.4</span>, <span class="at">width=</span><span class="fl">0.5</span>, <span class="at">height=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb26-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">end =</span> <span class="fl">0.75</span>)<span class="sc">+</span></span>
+<span id="cb26-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"number of sports played"</span>,</span>
+<span id="cb26-6"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"number of friend nominations"</span>,</span>
+<span id="cb26-7"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">color=</span><span class="st">"gender"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment" data-code-focus="2">
 <p>I just add a third aesthetic to the <code>aes</code> command for <code>color</code>. This will color the points by the category of the variable used (in this case, gender).</p>
@@ -1106,7 +1158,11 @@ Are there outliers and are they inconsistent with the general trend?
 </div><div class="column">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="slides_measuring_association_files/figure-revealjs/scatter-color2-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -1118,20 +1174,20 @@ Are there outliers and are they inconsistent with the general trend?
 <p><span class="math display">\[r=\frac{1}{n-1}\sum^n_{i=1} (\frac{x_i-\bar{x}}{s_x}*\frac{y_i-\bar{y}}{s_y})\]</span></p>
 <div class="fragment">
 <!-- -->
-<h3 id="fa-compact-disc-lets-break-it-down"><i class="fa-solid fa-compact-disc" aria-label="compact-disc"></i> Let’s break it down</h3>
+<h3 id="lets-break-it-down"><i class="fa-solid fa-compact-disc" aria-label="compact-disc"></i> Let’s break it down</h3>
 </div>
 <div class="fragment">
 <p><span class="math inline">\((x_i-\bar{x})\)</span> and <span class="math inline">\((y_i-\bar{y})\)</span>: Subtract the mean from each value of x and y to get distance above and below mean.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>crimes<span class="sc">$</span>x_dist <span class="ot">&lt;-</span> crimes<span class="sc">$</span>unemploy_rate<span class="sc">-</span><span class="fu">mean</span>(crimes<span class="sc">$</span>unemploy_rate)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>crimes<span class="sc">$</span>y_dist <span class="ot">&lt;-</span> crimes<span class="sc">$</span>property_rate<span class="sc">-</span><span class="fu">mean</span>(crimes<span class="sc">$</span>property_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a>crimes<span class="sc">$</span>x_dist <span class="ot">&lt;-</span> crimes<span class="sc">$</span>unemploy_rate<span class="sc">-</span><span class="fu">mean</span>(crimes<span class="sc">$</span>unemploy_rate)</span>
+<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a>crimes<span class="sc">$</span>y_dist <span class="ot">&lt;-</span> crimes<span class="sc">$</span>property_rate<span class="sc">-</span><span class="fu">mean</span>(crimes<span class="sc">$</span>property_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div class="fragment">
 <p><span class="math inline">\((x_i-\bar{x})/s_x\)</span> and <span class="math inline">\((y_i-\bar{y})/s_y\)</span>: Divide the difference by the standard deviation of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>. We now have the number of standard deviations above or below the mean.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>crimes<span class="sc">$</span>x_sd <span class="ot">&lt;-</span> crimes<span class="sc">$</span>x_dist<span class="sc">/</span><span class="fu">sd</span>(crimes<span class="sc">$</span>unemploy_rate)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>crimes<span class="sc">$</span>y_sd <span class="ot">&lt;-</span> crimes<span class="sc">$</span>y_dist<span class="sc">/</span><span class="fu">sd</span>(crimes<span class="sc">$</span>property_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a>crimes<span class="sc">$</span>x_sd <span class="ot">&lt;-</span> crimes<span class="sc">$</span>x_dist<span class="sc">/</span><span class="fu">sd</span>(crimes<span class="sc">$</span>unemploy_rate)</span>
+<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a>crimes<span class="sc">$</span>y_sd <span class="ot">&lt;-</span> crimes<span class="sc">$</span>y_dist<span class="sc">/</span><span class="fu">sd</span>(crimes<span class="sc">$</span>property_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -1144,19 +1200,19 @@ Are there outliers and are they inconsistent with the general trend?
 <div class="fragment">
 <p><span class="math inline">\((\frac{x_i-\bar{x}}{s_x}*\frac{y_i-\bar{y}}{s_y})\)</span>: Multiply x and y values together. The results provides evidence of negative or positive relationship.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>crimes<span class="sc">$</span>evidence <span class="ot">&lt;-</span> crimes<span class="sc">$</span>x_sd<span class="sc">*</span>crimes<span class="sc">$</span>y_sd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a>crimes<span class="sc">$</span>evidence <span class="ot">&lt;-</span> crimes<span class="sc">$</span>x_sd<span class="sc">*</span>crimes<span class="sc">$</span>y_sd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div class="fragment">
 <p><span class="math inline">\(\sum^n_{i=1} (\frac{x_i-\bar{x}}{s_x}*\frac{y_i-\bar{y}}{s_y})\)</span>: Sum up all the evidence, positive and negative.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>sum_evidence <span class="ot">&lt;-</span> <span class="fu">sum</span>(crimes<span class="sc">$</span>evidence)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a>sum_evidence <span class="ot">&lt;-</span> <span class="fu">sum</span>(crimes<span class="sc">$</span>evidence)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div class="fragment">
 <p><span class="math inline">\(\frac{1}{n-1}\sum^n_{i=1} (\frac{x_i-\bar{x}}{s_x}*\frac{y_i-\bar{y}}{s_y})\)</span>: Divide result by sample size to get final correlation coefficient.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>sum_evidence<span class="sc">/</span>(<span class="fu">nrow</span>(crimes)<span class="sc">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a>sum_evidence<span class="sc">/</span>(<span class="fu">nrow</span>(crimes)<span class="sc">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.4010458</code></pre>
 </div>
@@ -1165,7 +1221,7 @@ Are there outliers and are they inconsistent with the general trend?
 <div class="fragment">
 <p>Alternatively, use the <code>cor</code> command: 😎</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(crimes<span class="sc">$</span>unemploy_rate, crimes<span class="sc">$</span>property_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(crimes<span class="sc">$</span>unemploy_rate, crimes<span class="sc">$</span>property_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.4010458</code></pre>
 </div>
@@ -1192,8 +1248,10 @@ The <strong>absolute value</strong> of <span class="math inline">\(r\)</span> in
 <section id="simulated-examples-of-correlation-strength" class="slide level2">
 <h2>Simulated examples of correlation strength</h2>
 
-<img data-src="slides_measuring_association_files/figure-revealjs/scatter-simulated-1.png" width="2304" class="r-stretch"><div class="footer footer-default">
+<img data-src="slides_measuring_association_files/figure-revealjs/scatter-simulated-1.png" width="2304" class="r-stretch"><div class="quarto-auto-generated-content">
+<div class="footer footer-default">
 <p>Sociology 312/412/512, University of Oregon</p>
+</div>
 </div>
 </section></section>
     </div>
@@ -1224,7 +1282,6 @@ The <strong>absolute value</strong> of <span class="math inline">\(r\)</span> in
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -1524,10 +1581,9 @@ The <strong>absolute value</strong> of <span class="math inline">\(r\)</span> in
         // clear code selection
         e.clearSelection();
       });
-      function tippyHover(el, contentFn) {
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
-          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -1537,8 +1593,17 @@ The <strong>absolute value</strong> of <span class="math inline">\(r\)</span> in
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start'
+          placement: 'bottom-start',
         };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
