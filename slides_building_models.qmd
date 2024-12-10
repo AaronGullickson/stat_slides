@@ -945,7 +945,8 @@ text(5,7.5,"-79.4", cex=1.2)
 ::: {.tbl-model}
 
 ```{r}
-#| label: model-multiple-table
+#| label: tbl-model-multiple
+#| tbl-cap: Linear models predicting property crime rate.
 #| echo: false
 #| results: asis
 model1 <- lm(property_rate~percent_lhs, data=crimes)
@@ -1205,37 +1206,23 @@ These results are very different!
 ::: {.tbl-model}
 
 ```{r}
-#| label: model-marital-age
+#| label: tbl-model-marital-age
+#| tbl-cap: Linear models predicting sexual frequency.
 #| echo: false
-#| results: asis
 model1 <- lm(sexf~marital, data=sex)
 model2 <- lm(sexf~marital+I(age-18), data=sex)
 modelsummary(list("Model 1" = model1, 
                   "Model 2" = model2),
              output = "gt",
              stars = star_standard, 
-             fmt = 1,
+             fmt = 2,
              coef_rename = c("(Intercept)" = "Intercept",
-                             "percent_lhs" = "Percent less than HS", 
-                             "median_age" = "Median age",
-                             "poverty_rate" = "Poverty rate"),
-             notes = list("Standard errors in parenthesis."),
+                             "maritalMarried" = "Married", 
+                             "maritalDivorced" = "Divorced",
+                             "maritalWidowed" = "Widowed",
+                             "I(age - 18)" = "age"),
+             notes = list("Standard errors in parenthesis. Age centered on 18 years. Married is reference category for marital status."),
              gof_map = gof_standard)
-htmlreg(list(model1, model2),
-        head.tag = FALSE,
-        doctype = FALSE,
-        custom.coef.names = c("Intercept",
-                              "Married",
-                              "Divorced",
-                              "Widowed",
-                              "Age"),
-        custom.gof.names = c("R-squared","N"),
-        caption="Linear models predicting sexual frequency",
-        caption.above=TRUE,
-        digits=2,
-        star.symbol='&#42;',
-        custom.note = "%stars. Standard errors in parenthesis. Age centered on 18 years. Married is reference category for marital status",
-        include.adjrs=FALSE, include.rmse=FALSE)
 ```
 
 :::
@@ -1247,7 +1234,7 @@ htmlreg(list(model1, model2),
 #### Controlling for age gets rid of the bias between marital groups due to age differences.
 
 * In Model 1, all of the differences are negative, indicating that never-married individuals, on average, have sex more than the other marital categories. 
-* In Model 2, all of the differences are positive, indicating that never-married individuals, on average, have sex less than the other marital categories **when comparing individuals of the same age.
+* In Model 2, all of the differences are positive, indicating that never-married individuals, on average, have sex less than the other marital categories **when comparing individuals of the same age**.
 * The substantially higher sexual frequency of never-married individuals is entirely a function of age.
 
 :::
@@ -1531,27 +1518,26 @@ $$\hat{\texttt{wages}}_i  =  24.72+1.78(\texttt{nchild}_i)-2.84(\texttt{female}_
 ::: {.tbl-model}
 
 ```{r}
-#| label: model-wages-interact
+#| label: tbl-model-wages-interact
+#| tbl-cap: Linear models predicting sexual hourly wages among workers.
 #| echo: false
 #| results: asis
 model1 <- lm(wages~nchild*gender, data=earnings)
 model2 <- lm(wages~nchild*gender+I(age-40), 
              data=earnings)
-htmlreg(list(model1, model2),
-        head.tag = FALSE,
-        doctype = FALSE,
-        custom.coef.names = c("Intercept",
-                              "number of children",
-                              "woman",
-                              "woman x number of children",
-                              "age"),
-        custom.gof.names = c("R-squared","N"),
-        caption="Linear models predicting hourly waages",
-        caption.above=TRUE,
-        digits=2,
-        star.symbol='&#42;',
-        custom.note = "%stars. Standard errors in parenthesis.\nAge centered on 40 years.",
-        include.adjrs=FALSE, include.rmse=FALSE)
+
+modelsummary(list("Model 1" = model1, 
+                  "Model 2" = model2),
+             output = "gt",
+             stars = star_standard, 
+             fmt = 3,
+             coef_rename = c("(Intercept)" = "Intercept",
+                             "nchild" = "Number of children", 
+                             "genderFemale" = "Female",
+                             "I(age - 40)" = "Age",
+                             "nchild:genderFemale" = "Number of children x Female"),
+             notes = list("Standard errors in parenthesis. Age centered on 40 years."),
+             gof_map = gof_standard)
 ```
 
 :::
