@@ -27,6 +27,7 @@ format:
     fig-align: center
     highlight-style: tango
     code-line-numbers: false
+    html-math-method: mathjax
     footer: "Sociology 312/412/512, University of Oregon"
 revealjs-plugins:
   - codefocus
