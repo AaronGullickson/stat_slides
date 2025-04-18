@@ -1285,9 +1285,12 @@ ggplot(movies, aes(x=awards, y=box_office))+
 
 ::::
 
-## Polynomial models
+## Polynomial models  {.smaller}
 
-.pull-left[
+:::: {.columns}
+
+::: {.column width = "40%"}
+
 ### Polynomial expression
 
 A **polynomial** expression is one that adds together terms involving multiple powers of a single variable. 
@@ -1296,25 +1299,30 @@ if we include a squared value of $x$ we get the classic formula for a parabola:
 
 $$y=a+bx+cx^2$$
 
-```{r echo=FALSE, fig.height=4}
+```{r}
+#| echo: false
+#| fig-height: 6
+
+
 x <- 0:100
 y <- 10+5*x-0.04*x^2
 plot(x,y, type="l", lwd=2, las=1)
 text(40, 50, expression(y == 10 + 5*x + 0.04*x^2))
 ```
 
-]
+:::
 
---
+::: {.column .fragment width = "60%"}
 
-.pull-right[
 ### A polynomial model
 
 We can fit such a parabola in a linear model by including a new variable that is simply the square of the original variable:
 
 $$\hat{y}_i=\beta_0+\beta_1x_i+\beta_2x_i^2$$
 
-```{r quadratic-model}
+```{r}
+#| label: quadratic-model
+
 model <- lm(wages~I(age-40)+I((age-40)^2), 
             data=earnings)
 coef(model)
@@ -1325,40 +1333,41 @@ Our model is:
 $$\hat{y}_i=26.9+0.3171(x_i-40)-0.0178(x_i-40)^2$$
 
 How do we interpret the results?
-]
 
----
+:::
 
-## Calculate the marginal effect
+::::
+
+## Calculate the marginal effect {.smaller}
 
 With polynomial terms, the marginal effect of $x$ is more complicated because our $x$ shows up in more than one place in the equation:
 
 $$y_i=\beta_0+\beta_1x_i+\beta_2x_i^2+\epsilon_i$$
 
---
+::: {.fragment}
 
 By calculus, we can mathemagically get the marginal effect for this model as:
 
 $$\frac{\partial y}{\partial x}=\beta_1+2*\beta_2x$$
+:::
 
---
+::: {.fragment}
 
-So, for our case:
-
-$$\hat{y}_i=26.9+0.3171(x_i-40)-0.0178(x_i-40)^2$$
-
-the marginal effect of age on wages is given by:
+So, for our case, the marginal effect of age on wages is given by:
 
 $$0.3171+2*-0.0178(x-40)=0.3171-0.0356(x-40)$$
 
 - At age 40 (the zero value), a one year increase in age is associated with a salary increase of $0.32, on average. 
 - For every year over 40, this increase is smaller by $0.0356. For every age younger than 40, this increase is larger by $0.0356.
 
----
+:::
 
-## Finding the inflection point
+## Finding the inflection point {.smaller}
 
-.pull-left[
+:::: {.columns}
+
+::: {.column}
+
 If the effect of age on wages goes down by $0.0356 for every year over 40, then at some point the positive effect of age on wages will become negative. 
 
 We can figure out the value of age at this **inflection point** by setting the effect to zero and solving for x. In general, this will give us:
@@ -1367,14 +1376,16 @@ $$\beta_1/(-2*\beta_2)$$
 
 In our case, we get: 
 
-$$0.3171/(-2*-0.0178)=0.3171/0.0356=8.91$$
+$$0.3171/(-2*-0.0178)=8.91$$
 
 So the model predicts that the effect of age on wages will shift from positive to negative at age 48.91.
-]
 
+::: 
 
-.pull-right[
-```{r inflection, echo=FALSE}
+::: {.column}
+
+```{r}
+#| echo: false
 age <- 18:65
 marginal <- 0.3171-0.0356*(age-40)
 ggplot(data.frame(age=age, marginal=marginal),
@@ -1386,36 +1397,58 @@ ggplot(data.frame(age=age, marginal=marginal),
        y="marginal effect of age on hourly wages",
        title="marginal effect graph")
 ```
-]
 
----
+:::
+
+::::
 
 ## Plotting a polynomial fit
 
-.pull-left[
-```{r parabola-wages, fig.show="hide"}
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| eval: false
+#| code-line-numbers: "4-5"
+
 ggplot(earnings, aes(x=age, y=wages))+
   geom_jitter(alpha=0.01, width=1)+
   geom_smooth(se=FALSE, 
-              method="lm", #<<
-              formula=y~x+I(x^2))+ #<<
+              method="lm",
+              formula=y~x+I(x^2))+ 
   labs(x="age", y="hourly wages")
 ```
 
 in `geom_smooth`, you can specify a formula for the `lm` method that includes a squared term.
-]
 
-.pull-right[
-```{r ref.label = 'parabola-wages', echo = FALSE}
+:::
+
+::: {.column}
+
+```{r}
+#| echo: false
+
+ggplot(earnings, aes(x=age, y=wages))+
+  geom_jitter(alpha=0.01, width=1)+
+  geom_smooth(se=FALSE, 
+              method="lm", 
+              formula=y~x+I(x^2))+ 
+  labs(x="age", y="hourly wages")
 ```
-]
 
----
+:::
 
-## Higher order terms gives you more wiggle
+::::
 
-.pull-left[
-```{r poly-wiggle, fig.show="hide"}
+## Higher order terms gives you more wiggle {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| eval: false
 ggplot(subset(gapminder, year==2007), 
        aes(x=gdpPercap, y=lifeExp))+
   geom_point()+
@@ -1435,19 +1468,50 @@ ggplot(subset(gapminder, year==2007),
          y="life expectancy")
 ```
 
-]
+:::
 
-.pull-right[
-```{r ref.label = 'poly-wiggle', echo = FALSE}
+::: {.column}
+
+```{r}
+#| echo: false
+ggplot(subset(gapminder, year==2007), 
+       aes(x=gdpPercap, y=lifeExp))+
+  geom_point()+
+  geom_smooth(se=FALSE, 
+              method="lm", 
+              formula=y~x+I(x^2),
+              color="blue")+
+  geom_smooth(se=FALSE, 
+              method="lm", 
+              formula=y~x+I(x^2)+I(x^3),
+              color="red")+
+  geom_smooth(se=FALSE, 
+              method="lm", 
+              formula=y~x+I(x^2)+I(x^3)+I(x^4),
+              color="green")+
+    labs(x="GDP per capita", 
+         y="life expectancy")
 ```
-]
+
+
+
+:::
+
+::::
 
 ---
 
-## Spline models
+## Spline models {.smaller}
 
-.pull-left[
-```{r spline-wages, echo=FALSE}
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: fig-spline-wages
+#| fig-cap: Spline models create hinges or "broken arrows"
+#| echo: false
+
 earnings$age.spline <- ifelse(earnings$age<35, 0, earnings$age-35)
 model <- lm(wages~age+age.spline, data=earnings)
 predict_df <- data.frame(age=18:65)
@@ -1460,17 +1524,18 @@ geom_jitter(alpha=0.01, width = 1)+
   labs(y="hourly wages",
        title="spline model with hinge at age 35")
 ```
-]
 
-.pull-right[
+:::
+
+::: {.column}
+
 - The basic idea of a spline model is to allow the slope of the relationship between $x$ and $y$ to be different at different cutpoints or "hinge" values of $x$. 
-
 - These cutpoints create different linear segments where the effect of x on y is different. 
-
 - We will look at the case of one hinge value which gives us an overall slope that looks like a "broken arrow."
-]
 
----
+:::
+
+::::
 
 ## Creating the spline variable
 
@@ -1481,9 +1546,12 @@ $$spline_i=\begin{cases}
   0 & \text{otherwise}
   \end{cases}$$
 
+::: {.fragment}
+
 We can then add this variable to our model:
   
-```{r spline} 
+```{r}
+#| label: create-spline
 earnings$age.spline <- ifelse(earnings$age<35, 0, earnings$age-35)
 model <- lm(wages~age+age.spline, data=earnings)
 coef(model)
@@ -1491,11 +1559,14 @@ coef(model)
 
 How do we interpret the results?
 
----
+:::
 
-## Interpreting results in spline model
+## Interpreting results in spline model {.smaller}
 
-.pull-left[
+:::: {.columns}
+
+::: {.column}
+
 Up to age 35, the spline term is zero, so our model is given by:
 
 $$\hat{wages}_i=-6.04+0.9472(age_i)$$
@@ -1507,10 +1578,13 @@ After age 35, the spline variable increases by one every time age increases by o
 $$0.9472-09549=-0.0077$$
 
 The model predicts that for individuals over age 35, a one year increase in age is associated with a $0.0077 reduction in wages, on average.
-]
 
-.pull-right[
-```{r spline-interpret, echo=FALSE}
+:::
+
+::: {.column}
+
+```{r}
+#| echo: false
 ggplot(earnings, aes(x=age, y=wages))+
 geom_jitter(alpha=0.005, width = 1)+
   geom_line(data=predict_df, size=1.5, color="blue")+
@@ -1525,22 +1599,26 @@ geom_jitter(alpha=0.005, width = 1)+
            parse=TRUE,
            color="blue")
 ```
-]
 
----
+:::
 
-## {{< fa user-ninja >}} Plotting the spline model
+::::
 
-.pull-left[
+## {{< fa user-ninja >}} Plotting the spline model {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
 We cannot use `geom_smooth` to show the fit of this spline model. However, with some additional effort, we can plot the effect on a graph. 
 
 1. Calculate the predicted value of wages for a range of age values based on the model using the `predict` command.
 2. Feed in these predicted values as a dataset to the `geom_line` function in our `ggplot` graph.
-]
 
---
+:::
 
-.pull-right[
+::: {.column .fragment}
+
 ### The `predict` command
 
 The `predict` command takes two important arguments:
@@ -1548,7 +1626,11 @@ The `predict` command takes two important arguments:
 1. The model object for which we want predicted values of the dependent variable.
 2. A new dataset that contains all the same independent variables that are in the model.
 
-```{r use-predict-spline}
+::: {.fragment}
+
+```{r}
+#| label: use-predict-spline
+
 model <- lm(wages~age+age.spline, data=earnings)
 pre_df <- data.frame(age=18:65)
 pre_df$age.spline <- ifelse(pre_df$age<35, 0,
@@ -1557,14 +1639,40 @@ pre_df$wages <- predict(model,
                         newdata=pre_df)
 head(pre_df, n=3)
 ```
-]
 
----
+:::
+
+:::
+
+::::
 
 ## Adding the spline fit to ggplot
 
-.pull-left[
-```{r spline-wages-predict, fig.show="hide"}
+:::: {.columns}
+
+::: {.column}
+
+
+```{r}
+#| eval: false
+#| code-line-numbers: "3"
+
+ggplot(earnings, aes(x=age, y=wages))+
+  geom_jitter(alpha=0.01, width = 1)+
+  geom_line(data=predict_df,
+            color="blue", 
+            size=1.5)
+```
+
+To add the spline fit, we just add a `geom_line` command and specify our `pre_df` dataset through the `data` argument so that it uses the predicted values rather than the actual `earnings` dataset to graph the line.
+
+:::
+
+::: {.column}
+
+```{r}
+#| echo: false
+
 ggplot(earnings, aes(x=age, y=wages))+
   geom_jitter(alpha=0.01, width = 1)+
   geom_line(data=predict_df, #<<
@@ -1572,11 +1680,7 @@ ggplot(earnings, aes(x=age, y=wages))+
             size=1.5)
 ```
 
-To add the spline fit, we just add a `geom_line` command and specify our `pre_df` dataset through the `data` argument so that it uses the predicted values rather than the actual `earnings` dataset to graph the line.
-]
+:::
 
-.pull-right[
-```{r ref.label = 'spline-wages-predict', echo = FALSE}
-```
-]
+::::
 
