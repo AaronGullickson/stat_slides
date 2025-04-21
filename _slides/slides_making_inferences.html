@@ -6,11 +6,10 @@
 <script src="slides_making_inferences_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="slides_making_inferences_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="slides_making_inferences_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="slides_making_inferences_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="slides_making_inferences_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="slides_making_inferences_files/libs/quarto-html/quarto-syntax-highlighting-9e1f2a4632985dffc2c80318c992baf5.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <link href="slides_making_inferences_files/libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="slides_making_inferences_files/libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.4.549">
+  <meta name="generator" content="quarto-1.6.40">
 
   <meta name="author" content="Aaron Gullickson">
   <title>Making Inferences</title>
@@ -44,7 +43,7 @@
     }
     @media print {
     pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
     }
     pre.numberSource code
       { counter-reset: source-line 0; }
@@ -95,7 +94,7 @@
     code span.vs { color: #4e9a06; } /* VerbatimString */
     code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="slides_making_inferences_files/libs/revealjs/dist/theme/quarto.css">
+  <link rel="stylesheet" href="slides_making_inferences_files/libs/revealjs/dist/theme/quarto-4911d2f5eb786d6d95cb091d6b3cdfd5.css">
   <link href="slides_making_inferences_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="slides_making_inferences_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="slides_making_inferences_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -103,204 +102,6 @@
   <link href="slides_making_inferences_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="slides_making_inferences_files/libs/revealjs/plugin/reveal-code-focus/codefocus.css" rel="stylesheet">
   <link href="slides_making_inferences_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-  <style type="text/css">
-
-  .callout {
-    margin-top: 1em;
-    margin-bottom: 1em;  
-    border-radius: .25rem;
-  }
-
-  .callout.callout-style-simple { 
-    padding: 0em 0.5em;
-    border-left: solid #acacac .3rem;
-    border-right: solid 1px silver;
-    border-top: solid 1px silver;
-    border-bottom: solid 1px silver;
-    display: flex;
-  }
-
-  .callout.callout-style-default {
-    border-left: solid #acacac .3rem;
-    border-right: solid 1px silver;
-    border-top: solid 1px silver;
-    border-bottom: solid 1px silver;
-  }
-
-  .callout .callout-body-container {
-    flex-grow: 1;
-  }
-
-  .callout.callout-style-simple .callout-body {
-    font-size: 1rem;
-    font-weight: 400;
-  }
-
-  .callout.callout-style-default .callout-body {
-    font-size: 0.9rem;
-    font-weight: 400;
-  }
-
-  .callout.callout-titled.callout-style-simple .callout-body {
-    margin-top: 0.2em;
-  }
-
-  .callout:not(.callout-titled) .callout-body {
-      display: flex;
-  }
-
-  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
-    padding-left: 1.6em;
-  }
-
-  .callout.callout-titled .callout-header {
-    padding-top: 0.2em;
-    margin-bottom: -0.2em;
-  }
-
-  .callout.callout-titled .callout-title  p {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-    
-  .callout.callout-titled.callout-style-simple .callout-content  p {
-    margin-top: 0;
-  }
-
-  .callout.callout-titled.callout-style-default .callout-content  p {
-    margin-top: 0.7em;
-  }
-
-  .callout.callout-style-simple div.callout-title {
-    border-bottom: none;
-    font-size: .9rem;
-    font-weight: 600;
-    opacity: 75%;
-  }
-
-  .callout.callout-style-default  div.callout-title {
-    border-bottom: none;
-    font-weight: 600;
-    opacity: 85%;
-    font-size: 0.9rem;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  .callout.callout-style-default div.callout-content {
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  .callout.callout-style-simple .callout-icon::before {
-    height: 1rem;
-    width: 1rem;
-    display: inline-block;
-    content: "";
-    background-repeat: no-repeat;
-    background-size: 1rem 1rem;
-  }
-
-  .callout.callout-style-default .callout-icon::before {
-    height: 0.9rem;
-    width: 0.9rem;
-    display: inline-block;
-    content: "";
-    background-repeat: no-repeat;
-    background-size: 0.9rem 0.9rem;
-  }
-
-  .callout-title {
-    display: flex
-  }
-    
-  .callout-icon::before {
-    margin-top: 1rem;
-    padding-right: .5rem;
-  }
-
-  .callout.no-icon::before {
-    display: none !important;
-  }
-
-  .callout.callout-titled .callout-body > .callout-content > :last-child {
-    padding-bottom: 0.5rem;
-    margin-bottom: 0;
-  }
-
-  .callout.callout-titled .callout-icon::before {
-    margin-top: .5rem;
-    padding-right: .5rem;
-  }
-
-  .callout:not(.callout-titled) .callout-icon::before {
-    margin-top: 1rem;
-    padding-right: .5rem;
-  }
-
-  /* Callout Types */
-
-  div.callout-note {
-    border-left-color: #4582ec !important;
-  }
-
-  div.callout-note .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
-  }
-
-  div.callout-note.callout-style-default .callout-title {
-    background-color: #dae6fb
-  }
-
-  div.callout-important {
-    border-left-color: #d9534f !important;
-  }
-
-  div.callout-important .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-important.callout-style-default .callout-title {
-    background-color: #f7dddc
-  }
-
-  div.callout-warning {
-    border-left-color: #f0ad4e !important;
-  }
-
-  div.callout-warning .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-warning.callout-style-default .callout-title {
-    background-color: #fcefdc
-  }
-
-  div.callout-tip {
-    border-left-color: #02b875 !important;
-  }
-
-  div.callout-tip .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-tip.callout-style-default .callout-title {
-    background-color: #ccf1e3
-  }
-
-  div.callout-caution {
-    border-left-color: #fd7e14 !important;
-  }
-
-  div.callout-caution .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
-  }
-
-  div.callout-caution.callout-style-default .callout-title {
-    background-color: #ffe5d0
-  }
-
-  </style>
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -446,7 +247,6 @@ Aaron Gullickson
 <div class="columns">
 <div class="column">
 <div class="fragment">
-<!-- -->
 <h3 id="parameters">Parameters</h3>
 </div>
 <ul>
@@ -454,7 +254,6 @@ Aaron Gullickson
 <li class="fragment">Parameters are represented by Greek letters (e.g.&nbsp;the population mean is <span class="math inline">\(\mu\)</span>)</li>
 </ul>
 <div class="fragment">
-<!-- -->
 <h3 id="statistics">Statistics</h3>
 </div>
 <ul>
@@ -462,7 +261,7 @@ Aaron Gullickson
 <li class="fragment">Statistics are represented by roman letters (e.g.&nbsp;the sample mean <span class="math inline">\(\bar{x}\)</span>)</li>
 </ul>
 </div><div class="column fragment">
-<table>
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: center;">Measure</th>
@@ -488,14 +287,12 @@ Aaron Gullickson
 </tr>
 </tbody>
 </table>
-</div>
-</div>
+</div></div>
 </section>
 <section id="when-samples-go-bad" class="slide level2 smaller">
 <h2>When samples go bad 👿</h2>
 <div class="columns">
 <div class="column fragment">
-<!-- -->
 <h3 id="systematic-bias">Systematic Bias</h3>
 <p><img data-src="images/systematic_darts.png"></p>
 <p>Something about our data collection procedure biases our results systematically.</p>
@@ -504,7 +301,6 @@ Aaron Gullickson
 <li class="fragment">Statistical inference cannot fix this mistake.</li>
 </ul>
 </div><div class="column fragment">
-<!-- -->
 <h3 id="random-bias">Random Bias</h3>
 <p><img data-src="images/random_darts.png"></p>
 <p>Just by random chance we happened to draw a sample that is very different from the population on the parameter we care about.</p>
@@ -512,8 +308,7 @@ Aaron Gullickson
 <li class="fragment">We didn’t do anything wrong! We just had bad luck.</li>
 <li class="fragment">Statistical inference addresses this form of bias.</li>
 </ul>
-</div>
-</div>
+</div></div>
 <aside class="notes">
 <ul>
 <li>Even though we know random bias <em>might</em> have caused our sample statistic to be different from the population mean, we can’t know for sure if this happened or not because we don’t know the true population parameter!</li>
@@ -541,7 +336,6 @@ Aaron Gullickson
 <p>You draw a simple random sample of 100 people from the US population and calculate their mean years of education (<span class="math inline">\(\mu\)</span>). There are three kinds of distributions involved in this process:</p>
 <div class="columns">
 <div class="column fragment" style="width:33%;">
-<!-- -->
 <h4 id="population-distribution">Population Distribution</h4>
 <ul>
 <li class="fragment">The distribution of years of education for the whole US population.</li>
@@ -549,7 +343,6 @@ Aaron Gullickson
 <li class="fragment">The population mean and distribution are unknown.</li>
 </ul>
 </div><div class="column fragment" style="width:33%;">
-<!-- -->
 <h4 id="sample-distribution">Sample Distribution</h4>
 <ul>
 <li class="fragment">The distribution of years of education in your sample.</li>
@@ -557,14 +350,12 @@ Aaron Gullickson
 <li class="fragment">The mean and distribution are known and hopefully approximate the population distribution.</li>
 </ul>
 </div><div class="column fragment" style="width:33%;">
-<!-- -->
 <h4 id="sampling-distribution">Sampling Distribution</h4>
 <ul>
 <li class="fragment">The distribution of the sample mean <span class="math inline">\(\bar{x}\)</span> in all possible samples of size 100.</li>
 <li class="fragment">We can’t know this distribution exactly, but it turns out that we know its general shape.</li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="example-height-in-our-class" class="slide level2">
 <h2>Example: Height in our class</h2>
@@ -584,8 +375,7 @@ Aaron Gullickson
 </div>
 </div>
 </div>
-</div>
-</div>
+</div></div>
 </section>
 <section id="how-many-samples-of-size-2-are-possible" class="slide level2 smaller">
 <h2>How many samples of size 2 are possible?</h2>
@@ -611,7 +401,7 @@ Aaron Gullickson
 <h2>What is the mean of the sampling distributions?</h2>
 <div class="cell">
 <div class="cell-output-display">
-<table>
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Distribution</th>
@@ -675,13 +465,12 @@ Aaron Gullickson
 <li class="fragment">With a spread (standard deviation) of <span class="math inline">\(\sigma/\sqrt{n}\)</span>, where <span class="math inline">\(\sigma\)</span> is the standard deviation in the population.</li>
 <li class="fragment">The center of the sampling distribution is the true value of the parameter and the spread of the sampling distribution shrinks as the sample grows larger.</li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="the-standard-error" class="slide level2 smaller">
 <h2>The Standard Error</h2>
 <p>There are three different kinds of standard deviations involved here, one that corresponds to each of the types of distributions.</p>
-<table>
+<table class="caption-top">
 <colgroup>
 <col style="width: 41%">
 <col style="width: 25%">
@@ -732,8 +521,7 @@ Aaron Gullickson
 <li class="fragment">When we draw a sample and calculate the sample mean we are effectively drawing a value from the sampling distribution for the sample mean.</li>
 <li class="fragment">If we know what that distribution looks like then we can know the probability of drawing a sample close to or far from the true population parameter.</li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="but-there-is-a-catch" class="slide level2 smaller">
 <h2>But there is a catch!</h2>
@@ -747,21 +535,18 @@ Aaron Gullickson
 </ul>
 <div class="columns">
 <div class="column fragment">
-<!-- -->
 <h3 id="first-fix">First Fix <i class="fa-solid fa-wrench" aria-label="wrench"></i></h3>
 <ul>
 <li class="fragment">We can substitute the sample standard deviation <span class="math inline">\(s\)</span> from our sample for the population standard deviation <span class="math inline">\(\sigma\)</span>.</li>
 <li class="fragment">This has consequences. Because we are using a sample value which can also be subject to random bias, this substitution creates greater uncertainty in our estimate which we will address later.</li>
 </ul>
 </div><div class="column fragment">
-<!-- -->
 <h3 id="second-fix">Second Fix <i class="fa-solid fa-wrench" aria-label="wrench"></i></h3>
 <ul>
 <li class="fragment"><strong>Confidence Intervals</strong>: Provide a range of values within which you feel confident that the true population mean resides.</li>
 <li class="fragment"><strong>Hypothesis tests</strong>: Play a game of make believe. If the true population mean was a given value, what is the probability that I would get the sample mean value that I actually did?</li>
 </ul>
-</div>
-</div>
+</div></div>
 </section></section>
 <section>
 <section id="confidence-intervals" class="title-slide slide level1 center" data-background-color="black" data-background-image="images/yogi-purnama-en7G3hTSjBQ-unsplash.jpg">
@@ -782,7 +567,6 @@ Aaron Gullickson
 </div>
 </div>
 </div><div class="column fragment">
-<!-- -->
 <h3 id="reverse-the-logic">Reverse the Logic</h3>
 <p>If I construct the following interval:</p>
 <p><span class="math display">\[\bar{x}\pm1.96*\sigma/\sqrt{n}\]</span> 95% of <em>all possible samples</em> that I could have drawn will contain the true population mean <span class="math inline">\(\mu\)</span> within this interval.</p>
@@ -797,15 +581,13 @@ Aaron Gullickson
 </div>
 </div>
 </div>
-</div>
-</div>
+</div></div>
 </section>
 <section id="confidence" class="slide level2 smaller">
 <h2>Confidence?</h2>
 <p>We call the interval of <span class="math inline">\(\bar{x}\pm1.96*\sigma/\sqrt{n}\)</span> the <strong>confidence interval</strong>. What does it mean?</p>
 <div class="columns">
 <div class="column fragment">
-<!-- -->
 <h3 id="not-a-probability">Not a probability</h3>
 <ul>
 <li class="fragment">It is tempting to claim that there is a 95% probability that the true population mean is in this interval, but according to classic views of probability this is INCORRECT.</li>
@@ -815,21 +597,18 @@ Aaron Gullickson
 </div><div class="column fragment">
 <p><img data-src="images/super_confused.jpg"></p>
 <p>If this seems confusing, you are normal.</p>
-</div>
-</div>
+</div></div>
 </section>
 <section id="calculating-the-confidence-interval" class="slide level2 smaller">
 <h2><i class="fa-solid fa-calculator" aria-label="calculator"></i> Calculating the confidence interval</h2>
 <p>The confidence interval is given by <span class="math inline">\(\bar{x}\pm1.96*\sigma/\sqrt{n}\)</span>.</p>
 <p>But we don’t know <span class="math inline">\(\sigma\)</span> because this is the population standard deviation. What can we do?</p>
 <div class="fragment">
-<!-- -->
 <h3 id="substitute-the-sample-standard-deviation">Substitute the sample standard deviation</h3>
 <p>We <em>can</em> calculate <span class="math inline">\(\bar{x}\pm1.96*s/\sqrt{n}\)</span>.</p>
 <p>However, this equation is no longer correct because we need to adjust for the added uncertainty of using a sample statistic where we should use a population parameter.</p>
 </div>
 <div class="fragment">
-<!-- -->
 <h3 id="use-the-t-statistic-as-a-fudge-factor">Use the t-statistic as a fudge factor</h3>
 <p>The actual formula we want is:</p>
 <p><span class="math display">\[\bar{x} \pm t*s/\sqrt{n}\]</span></p>
@@ -901,8 +680,7 @@ Aaron Gullickson
 <div class="fragment">
 <p>We are 95% confident that the true mean property crime rate across states is between 2278.1 and 2647.4 crimes per 100,000.</p>
 </div>
-</div>
-</div>
+</div></div>
 </section>
 <section id="wait-does-that-even-make-sense" class="slide level2">
 <h2>🤔 Wait, Does that even make sense?</h2>
@@ -921,7 +699,6 @@ Aaron Gullickson
 <h2>Statistical inference only makes sense for samples</h2>
 <div class="columns">
 <div class="column fragment">
-<!-- -->
 <h4 id="proper-sample">Proper sample</h4>
 <div>
 <ul>
@@ -932,7 +709,6 @@ Aaron Gullickson
 </ul>
 </div>
 </div><div class="column fragment">
-<!-- -->
 <h4 id="not-a-sample">Not a sample</h4>
 <div>
 <ul>
@@ -941,8 +717,7 @@ Aaron Gullickson
 <li>Movies</li>
 </ul>
 </div>
-</div>
-</div>
+</div></div>
 </section>
 <section id="example-sexual-frequency" class="slide level2 smaller">
 <h2>Example: Sexual frequency</h2>
@@ -958,7 +733,7 @@ Aaron Gullickson
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<table>
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: left;"></th>
@@ -1005,8 +780,7 @@ Aaron Gullickson
 <div class="fragment">
 <p>I am 95% confident that the mean sexual frequency in the US is between 46.1 and 47.7 times per year.</p>
 </div>
-</div>
-</div>
+</div></div>
 </section>
 <section id="general-form-of-the-confidence-interval" class="slide level2 smaller">
 <h2>General form of the confidence interval</h2>
@@ -1026,7 +800,7 @@ Aaron Gullickson
 </section>
 <section id="cheat-sheet-for-se-and-df" class="slide level2 smaller">
 <h2>Cheat sheet for SE and df</h2>
-<table>
+<table class="caption-top">
 <colgroup>
 <col style="width: 18%">
 <col style="width: 63%">
@@ -1106,8 +880,7 @@ Aaron Gullickson
 <div class="fragment">
 <p>I am 95% confident that the true proportion of American adults who support removing birthright citizenship is between 30.4% and 33.2%.</p>
 </div>
-</div>
-</div>
+</div></div>
 </section>
 <section id="mean-difference-example" class="slide level2 smaller">
 <h2>Mean difference example</h2>
@@ -1283,8 +1056,7 @@ Never married       Married      Divorced       Widowed
 <li class="fragment">If assumption is correct, what is the probability that I would have gotten the sample statistic that I got?</li>
 <li class="fragment">If this probability is really low, then I reject my assumption.</li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="an-almost-true-story" class="slide level2">
 <h2>An almost true story</h2>
@@ -1297,8 +1069,7 @@ Never married       Married      Divorced       Widowed
 <li class="fragment">When I was a busy assistant professor trying to get tenure, I bought 100 bottles of Coke from the downstairs vending machine and only got 5 winners (5%). (The number is not true, but it is nice and round)</li>
 <li class="fragment">Does the difference between my winning percentage and that claimed by Coca-Cola show that they were lying?</li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="lets-set-up-a-null-hypothesis" class="slide level2 smaller">
 <h2>Lets set up a null hypothesis</h2>
@@ -1308,7 +1079,6 @@ Never married       Married      Divorced       Widowed
 <li class="fragment">I assume that Coca-Cola is telling the truth, until I can prove them wrong, so my null hypothesis is that the true percentage of winning bottlecaps is 8.3%.</li>
 </ul>
 <div class="fragment">
-<!-- -->
 <h3 id="mathematical-symbols">Mathematical symbols</h3>
 <p><span class="math display">\[H_0: \rho=0.083\]</span></p>
 <p>I use the Greek <span class="math inline">\(\rho\)</span> to indicate the population proportion of winners. I will use <span class="math inline">\(\hat{p}\)</span> later to represent the proportion observed in my sample.</p>
@@ -1328,8 +1098,7 @@ Never married       Married      Divorced       Widowed
 </div>
 </div>
 <p>]</p>
-</div>
-</div>
+</div></div>
 </section>
 <section id="assuming-h_0-is-true-what-is-the-sampling-distribution-of-my-sample-proportion-1" class="slide level2 smaller">
 <h2>Assuming <span class="math inline">\(H_0\)</span> is true, what is the sampling distribution of my sample proportion?</h2>
@@ -1346,8 +1115,7 @@ Never married       Married      Divorced       Widowed
 </div>
 </div><div class="column">
 <p>With a sample size of 100, it should be normally distributed.</p>
-</div>
-</div>
+</div></div>
 </section>
 <section id="assuming-h_0-is-true-what-is-the-sampling-distribution-of-my-sample-proportion-2" class="slide level2 smaller">
 <h2>Assuming <span class="math inline">\(H_0\)</span> is true, what is the sampling distribution of my sample proportion?</h2>
@@ -1365,8 +1133,7 @@ Never married       Married      Divorced       Widowed
 </div><div class="column">
 <p>With a sample size of 100, it should be normally distributed.</p>
 <p>The center of the distribution is the true population parameter assuming <span class="math inline">\(H_0\)</span> is true. In this case, that is 0.083.</p>
-</div>
-</div>
+</div></div>
 </section>
 <section id="assuming-h_0-is-true-what-is-the-sampling-distribution-of-my-sample-proportion-3" class="slide level2 smaller">
 <h2>Assuming <span class="math inline">\(H_0\)</span> is true, what is the sampling distribution of my sample proportion?</h2>
@@ -1385,8 +1152,7 @@ Never married       Married      Divorced       Widowed
 <p>With a sample size of 100, it should be normally distributed.</p>
 <p>The center of the distribution is the true population parameter assuming <span class="math inline">\(H_0\)</span> is true. In this case, that is 0.083.</p>
 <p>As we learned in the previous section, the standard error is given by: <span class="math display">\[\sqrt\frac{0.083*(1-0.083)}{100}=0.0276\]</span></p>
-</div>
-</div>
+</div></div>
 </section>
 <section id="is-the-actual-sample-proportion-unusual" class="slide level2">
 <h2>Is the actual sample proportion unusual?</h2>
@@ -1407,8 +1173,7 @@ Never married       Married      Divorced       Widowed
 <li class="fragment">If our sample proportion is far way and unlikely to be drawn, then we <strong>reject the null hypothesis</strong>.</li>
 <li class="fragment">If our sample proportion is not far away and reasonably likely to be drawn, then we <strong>fail to reject the null hypothesis</strong>.</li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="how-far-is-far-enough" class="slide level2 smaller">
 <h2>How far is far enough?</h2>
@@ -1426,8 +1191,7 @@ Never married       Married      Divorced       Widowed
 </div><div class="column">
 <p>We determine how far our sample proportion is from the center in terms of the number of standard errors.</p>
 <p><span class="math display">\[\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18\]</span></p>
-</div>
-</div>
+</div></div>
 </section>
 <section id="how-far-is-far-enough-1" class="slide level2 smaller">
 <h2>How far is far enough?</h2>
@@ -1446,8 +1210,7 @@ Never married       Married      Divorced       Widowed
 <p>We determine how far our sample proportion is from the center in terms of the number of standard errors.</p>
 <p><span class="math display">\[\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18\]</span></p>
 <p>What proportion of sample proportions are this low or lower?</p>
-</div>
-</div>
+</div></div>
 </section>
 <section id="how-far-is-far-enough-2" class="slide level2 smaller">
 <h2>How far is far enough?</h2>
@@ -1467,8 +1230,7 @@ Never married       Married      Divorced       Widowed
 <p><span class="math display">\[\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18\]</span></p>
 <p>What proportion of sample proportions are this low or lower?</p>
 <p>We also need to take account of sample proportions this far away in the opposite direction. This is called a <strong>two-tailed test</strong>.</p>
-</div>
-</div>
+</div></div>
 </section>
 <section id="how-far-is-far-enough-3" class="slide level2 smaller">
 <h2>How far is far enough?</h2>
@@ -1489,14 +1251,12 @@ Never married       Married      Divorced       Widowed
 <p>What proportion of sample proportions are this low or lower?</p>
 <p>We also need to take account of sample proportions this far away in the opposite direction. This is called a <strong>two-tailed test</strong>.</p>
 <p>The area in the tails is called the <strong>p-value</strong>.</p>
-</div>
-</div>
+</div></div>
 </section>
 <section id="the-p-value-is-the-endgame" class="slide level2 smaller">
 <h2>The p-value is the endgame</h2>
 <div class="columns">
 <div class="column fragment">
-<!-- -->
 <h3 id="interpretation">Interpretation</h3>
 <p>The p-value tells you the probability of getting a statistic this far away or farther from the the assumed true population parameter, assuming the null hypothesis is true.</p>
 <div class="fragment">
@@ -1506,7 +1266,6 @@ Never married       Married      Divorced       Widowed
 </blockquote>
 </div>
 </div><div class="column fragment">
-<!-- -->
 <h3 id="calculation"><i class="fa-solid fa-calculator" aria-label="calculator"></i> Calculation</h3>
 <p>We use the <code>pt</code> command to get the area in the lower tail and multiply by two to get both tails:</p>
 <div class="cell">
@@ -1519,8 +1278,7 @@ Never married       Married      Divorced       Widowed
 <li class="fragment">The first argument is always the <strong>negative version</strong> of the number of standard errors away because this command will always give you the area below the value.</li>
 <li class="fragment">The second argument is the degrees of freedom to adjust for the fact that we use sample standard deviations to get standard errors.</li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="the-critical-value" class="slide level2 smaller">
 <h2>The critical value</h2>
@@ -1538,8 +1296,7 @@ Never married       Married      Divorced       Widowed
 <li class="fragment">The standard but entirely arbitrary critical value used across the sciences is 0.05 (5%).</li>
 <li class="fragment">For the Coca-Cola bottlecap case, the p-value is 0.24, so we fail to reject the null hypothesis that Coca-Cola’s claim was truthful.</li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="the-general-procedure-of-hypothesis-testing" class="slide level2">
 <h2>The general procedure of hypothesis testing</h2>
@@ -1558,7 +1315,6 @@ Never married       Married      Divorced       Widowed
 <li class="fragment">Correlation coefficient: is the correlation coefficient in the population non-zero?</li>
 </ul>
 <div class="fragment">
-<!-- -->
 <h3 id="statistical-significance">Statistical Significance</h3>
 <div class="columns">
 <div class="column" style="width:30%;">
@@ -1568,8 +1324,7 @@ Never married       Married      Divorced       Widowed
 <li class="fragment">If you reject the null hypothesis of “no association,” then the association you observe in the sample is said to be <strong>statistically significant</strong>.</li>
 <li class="fragment">Don’t confuse statistical and substantive significance. In a large sample, even very small substantive associations can be found to be statistically significant. On the flip side, in small samples, very large substantive associations can fail to be statistically significant.</li>
 </ul>
-</div>
-</div>
+</div></div>
 </div>
 </section>
 <section id="example-mean-differences" class="slide level2 smaller">
@@ -1614,8 +1369,7 @@ Never married       Married      Divorced       Widowed
 <span id="cb69-2"><a href="" aria-hidden="true" tabindex="-1"></a>n2 <span class="ot">&lt;-</span> <span class="dv">2319</span></span>
 <span id="cb69-3"><a href="" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(sd1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n1<span class="sc">+</span>sd2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-</div>
+</div></div>
 </section>
 <section id="example-mean-differences-continued" class="slide level2 smaller">
 <h2>Example: Mean differences, continued</h2>
@@ -1688,8 +1442,7 @@ Never married       Married      Divorced       Widowed
 <pre><code>[1] 1.416426e-07</code></pre>
 </div>
 </div>
-</div>
-</div>
+</div></div>
 </section>
 <section id="a-p-value-of-1.416426e-07" class="slide level2 smaller">
 <h2>🤔 A p-value of 1.416426e-07?</h2>
@@ -1730,16 +1483,15 @@ Never married       Married      Divorced       Widowed
 <blockquote>
 <p>Assuming no association between a person’s age and their wage in the US, there is almost 0% chance of observing a correlation coefficient between age and wages of 0.219 or larger in absolute magnitude in a sample of this size. Therefore, I <strong>reject</strong> the null hypothesis that there is no relationship between a person’s age and their wages in the US population.</p>
 </blockquote>
-</div>
-</div>
-<div class="quarto-auto-generated-content">
+</div></div>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
 <p>Sociology 312/412/512, University of Oregon</p>
 </div>
-</div>
-</section></section>
-    </div>
-  </div>
+</div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
   <script src="slides_making_inferences_files/libs/revealjs/dist/reveal.js"></script>
@@ -1770,7 +1522,8 @@ Never married       Married      Divorced       Widowed
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'chalkboard': {"buttons":true},
 'smaller': false,
  
@@ -1925,7 +1678,7 @@ Never married       Married      Divorced       Widowed
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -2021,18 +1774,7 @@ Never married       Married      Divorced       Widowed
         }
         return false;
       }
-      const clipboard = new window.ClipboardJS('.code-copy-button', {
-        text: function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
-            }
-          }
-          return codeEl.innerText;
-        }
-      });
-      clipboard.on('success', function(e) {
+      const onCopySuccess = function(e) {
         // button target
         const button = e.trigger;
         // don't keep focus
@@ -2064,7 +1806,45 @@ Never married       Married      Divorced       Widowed
         }, 1000);
         // clear code selection
         e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
       });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
       function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
@@ -2101,7 +1881,11 @@ Never married       Married      Divorced       Widowed
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          return note.innerHTML;
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
         });
       }
       const findCites = (el) => {

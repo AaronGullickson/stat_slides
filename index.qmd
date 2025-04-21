@@ -12,3 +12,5 @@ These are the slides for my course, [Statistical Analysis in Sociology](https://
 | [Measuring Association](slides_measuring_association.html)   |
 | [Making Inferences](slides_making_inferences.html)      |
 | [Building Models](slides_building_models.html)       |
+| [Model Complications](slides_model_complications.html)       |
+
