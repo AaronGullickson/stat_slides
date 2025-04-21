@@ -13,6 +13,7 @@ source(here("scripts","set_theme.R"))
 source(here("scripts","load_example_data.R"))
 source(here("scripts", "preamble.R"))
 load(here("data", "gss_relig.RData"))
+set.seed(42)
 ```
 
 # The Linear Model Revisited {.center background-color="black" background-image="images/jeremy-bishop-FzrlPh20l7Q-unsplash.jpg"}
@@ -1687,55 +1688,70 @@ ggplot(earnings, aes(x=age, y=wages))+
 
 # Sample Design and Weighting {.center background-color="black" background-image="images/cyril-saulnier-TsVN31Dzyv4-unsplash.jpg"}
 
-##  The reality of survey sampling
+##  The reality of survey sampling {.smaller}
 
-.pull-left[
+:::: {.columns}
+
+::: {.column}
+
 ### The simple random sample
 
-.center[![](images/srs.png)]
+![](images/srs.png)
 
 - We have treated all of our sample data as if it was collected using simple random sampling (SRS). 
 - In an SRS of size $n$, every possible combination of $n$ observations from the population has an equally likely chance of being drawn.
-- In an SRS, every statistic (e.g. mean, proportions, linear slopes) should be representative of the population, except for random sampling bias.
-]
+- Eevery statistic from an SRS should be representative of the population, except for random sampling bias.
 
---
+:::
 
-.pull-right[
+::: {.column .fragment}
+
 ### Reality
 
-.center[![](images/strat_sample.png)]
+![](images/strat_sample.png)
 
 - In practice, large-scale surveys never use SRS for pragmatic and design reasons. 
 - For correct statistical inference, we typically need to make adjustments for sample design.
 - The primary ways in which sample design affects estimation are**clustering**, **stratification**, and **weighting**.
-]
 
-##  Cluster/Multistage sampling
+:::
 
-.left-column[
+::::
+
+##  Cluster/Multistage sampling {.smaller}
+
+::::
+
+::: {.column width = "30%"}
+
 ![](images/multistage.png)
-]
+:::
 
-.right-column[
+::: {.column width = "70%"}
+
 Potential observations are aggregated into larger groupings identified as the Primary Sampling Unit (PSU) and then we sample some of these PSUs before sampling individual observations within the sampled PSUs.
 
 - Cluster sampling is about efficiency and cost. Clusters are typically defined geographically, which then minimizes the cost of sampling individual observations. 
-
 - If PSUs are sampled with probabilities proportional to cluster size, then every unit in the population has an equal likelihood of being selected. In this case, summary statistics on the sample should be representative. 
-
 - When the variable of interest is distributed differently across clusters, the sampling variability will be higher than an SRS even if every observation has an equally likely chance of being drawn. 
-]
 
-##  What percent of the US population is Mormon?
+:::
 
-.pull-left[
+::::
+
+##  What percent of the US population is Mormon? {.smaller}
+
+:::: {.columns}
+
+::: {.column}
 The General Social Survey uses Metropolitan Statistical Areas (MSA) and clusters of non-metropolitan counties as the PSU. In each year, it draws a sample of these areas and then samples respondents within each sampled PSU.
 
 Because Mormons are heavily concentrated in certain places, percent Mormon in the GSS varies substantially from year to year by whether certain PSUs were sampled or not. Red band indicates expected 95% interval for sampling variability without clustering, assuming the average percent across all years (dotted line).
-]
 
-.pull-right[
+:::
+
+::: {.column}
+
 ```{r}
 #| label: fig-mormons
 #| fig-cap: The variance in the proportion across years is higher than we would expect if we were drawing an SRS
@@ -1767,9 +1783,12 @@ temp |>
        y="sample percent Mormon",
        caption="Data: General Social Survey")
 ```
-]
 
-##  Stratification 
+:::
+
+::::
+
+##  Stratification {.smaller}
 
 Stratification in sampling operates in a manner somewhat similar to cluster sampling except that once the observations are aggregated into strata by some characteristic (e.g. income, race, age), observations are sampled from *every* stratum. 
 
@@ -1780,7 +1799,7 @@ Stratification in sampling operates in a manner somewhat similar to cluster samp
 - If strata are sampled with different probabilities, then summary statistics for the full sample will not be representative without weight adjustments. 
 - Unlike clustering, greater similarity on a characteristic of interest within strata can actually **reduce** the sampling variability for that characteristic relative to an SRS. 
 
-##  Weighting 
+##  Weighting {.smaller}
 
 - Numerous factors can lead to a sample being unrepresentative such as sampling strata with different probabilities, differential non-response rates, and a lack of fit between sample frame and population.
 - **Sampling weights** allow researchers to correct summary statistics from the sample so that they are representative of the population. 
@@ -1789,13 +1808,18 @@ Stratification in sampling operates in a manner somewhat similar to cluster samp
 - When sampling weights are present in a dataset, they must be used to generate statistics representative of the population.
 - Variation in sampling weights will increase sampling variability above and beyond that expected for an SRS.
 
-##  Weights in Sneetchville
+##  Weights in Sneetchville {.smaller}
 
-.left-column[
+:::: {.columns}
+
+::: {.column width = "30%"}
+
 ![sneetches](images/sneetches.jpg)
-]
 
-.right-column[
+:::
+
+::: {.column width = "70%"}
+
 In Sneetchville, there are 3 star-bellied and 7 regular sneetches. Lets say I take a stratified sample of two star-bellied and two regular sneetches. Here is the population data:
 
 ```{r}
@@ -1805,7 +1829,10 @@ sneetches <- tibble(type = factor(c(rep("Star-bellied", 3), rep("Regular", 7))),
                     prob = c(rep(2/3, 3), rep(2/7, 7)))
 gt(sneetches)
 ```
-]
+
+:::
+
+::::
 
 ##  Weights in Sneetchville 
 
@@ -1822,7 +1849,7 @@ weighted.mean(sneetch_sample$income, sneetch_sample$weight)
 sum(sneetch_sample$income*sneetch_sample$weight)/sum(sneetch_sample$weight)
 ```
 
-##   The consequences of survey design
+##   The consequences of survey design {.smaller}
 
 
 | Design issue     |  Representative?                                                                |  Design effect (change to SE)               | 
@@ -1833,38 +1860,58 @@ sum(sneetch_sample$income*sneetch_sample$weight)/sum(sneetch_sample$weight)
 
 ##  Correcting for survey design 
 
+::: {.fragment}
+
 ### Basic Weighting
 
 R has syntax in many commands to apply sampling weights to get representative statistics (e.g. `weighted.mean`, the `weight` option in the `lm` command), but this approach will not correctly adjust standard errors for design effects. 
+
+:::
+
+::: {.fragment}
 
 ### Robust standard errors
 
 Robust standard errors will correct standard errors for differential weights, but not for clustering and stratification design effects. 
 
+:::
+
+::: {.fragment}
+
 ### Survey package
 
 The `survey` package in R will allow you to specify design and correctly adjust standard errors. 
 
-## Add Health survey design 
+:::
 
+## Add Health survey design {.smaller}
 
-.pull-left[
+::::
+
+::: {.column width = "30%"}
+
 ![](images/addhealthdesign.jpeg)
-]
 
-.pull-right[
+:::
+
+::: {.column width = "70%"}
+
 - Schools were the primary PSU in a cluster sampling technique, but were also stratified by region, urbanicity, school type, ethnic mix, and size. 
 - Students within schools were stratified by grade and sex and then sampled.
 - Several oversamples were conducted of ethnic groups and genetically related pairs of students, as well as saturated samples from 16 schools. 
 - Post-stratification adjustments were made to sampling weights to account for region of the country. 
 - The Add Health documentation indicates that the REGION variable should be applied as a stratification variable but this variable is not available in the public release data so we will focus on the design effects of weights and clustering. 
-]
 
----
+:::
 
-##  Sample design variables
+::::
 
-.pull-left[
+##  Sample design variables {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
 ```{r}
 #| label: addhealth-design-var
 
@@ -1873,11 +1920,12 @@ addhealth |>
 ```
 - `cluster` is a numeric id indicating the school the student was sampled from.
 - `sweight` is the inverse of the probability of being sampled.
-]
 
+:::
 
-.pull-right[
-```{r addhealthweight-dist, echo=FALSE}
+::: {.column .fragment}
+
+```{r}
 #| label: fig-addhealthweight-dist
 #| fig-cap: Some observations count more than others
 #| echo: false
@@ -1885,13 +1933,20 @@ addhealth |>
 ggplot(addhealth, aes(x=sweight))+
   geom_histogram(fill="darkgreen", color="grey20")+
   labs(x="sampling weight",
-       title="Distribution of sampling weights in Add Health data")
+       title="Sampling weight distribution in Add Health data")
 ```
-]
 
-##  Add Health example, naive approach
+:::
 
-Lets start with a model that makes no adjustment.
+::::
+
+##  Add Health example, naive approach {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+### Basic model
 
 ```{r}
 #| label: model-no-weight
@@ -1900,9 +1955,18 @@ model_basic <- lm(nominations~nsports, data = addhealth)
 summary(model_basic)$coef
 ```
 
---
+- Estimates will be biased by differential probability of being sampled
+- Standard errors are underestimated due to:
+   - variability in sampling weights
+   - the use of a cluster sampling design
 
-Because I am not using weights, this value will not be representative of all American high school students in 1994-95. I can add the weights provided by Add Health to make this representative:
+:::
+
+::: {.column .fragment}
+
+### Adjusting for weights
+
+I can add the weights provided by Add Health to make this representative:
 
 ```{r}
 #| label: model-weights
@@ -1911,9 +1975,15 @@ model_weight <- update(model_basic, weight = sweight)
 summary(model_weight)$coef
 ```
 
-##  Add Health example, robust SE approach
+- The slope estimates in this model are unbiased but I have not accounted for weight variability in my standard error estimates.
 
-Adding weights to the `lm` command gives me representative values for the slope and intercept, but my SEs do not correct for the substantial variation in weights. I can correct for this design issue by using robust standard errors:
+:::
+
+::::
+
+##  Add Health example, robust SE approach {.smaller}
+
+I can correct for sampling weight variability by using robust standard errors:
 
 ```{r}
 #: label: model-weight-robust
@@ -1924,9 +1994,9 @@ model_robust <- coeftest(model_weight, vcov = vcovHC(model_weight, "HC1"))
 model_robust
 ```
 
-Estimates are identical but standard errors are slightly larger. However, this technique still does not correct for clustering.
+- Estimates are identical to the weighted `lm` but standard errors are slightly larger. However, this technique still does not correct for clustering.
 
-##  Add Health example, using `survey` library
+##  Add Health example, using `survey` library {.smaller}
 
 I can use the `svydesign` command in the `survey` package to correctly specify both the weights and the clustering in Add Health. The `ids` argument expects a variable name that identifies the clusters by id (in this case, the school id) and the `weight` argument expects a variable name for the weights used. 
 
@@ -1939,13 +2009,14 @@ model_svy <- svyglm(nominations~nsports, design = addhealth_svy)
 summary(model_svy)$coef
 ```
 
-Estimates are identical to the weighted regression model before, but standard errors have increased due to variation in weights and the cluster design effect. 
+- Estimates are identical to the weighted model before, but standard errors have increased due to variation in weights **and** the cluster design effect. 
 
-##  Comparison of methods
+##  Comparison of methods {.smaller}
 
-```{r addhealthweight-compare, echo=FALSE, message=FALSE, error=FALSE, results="asis"}
+```{r}
 #| label: tbl-sdesign-compare
 #| tbl-cap: Comparison of modeling techniques for dealing with sampling design
+#| echo: false
 
 addhealth_svy_jweight <- svydesign(ids = ~1, weight = ~sweight, data = addhealth)
 model_svy_jweight <- svyglm(nominations~nsports, design=addhealth_svy_jweight)
@@ -1961,5 +2032,5 @@ modelsummary(list("unweighted" = model_basic,
 
 
 - All models except the unweighted version produce the same estimates of slope and intercept based on the weights.
-- The survey weighted and robust SE models both produce the same standard errors. This is because both models account for the design effect of weight heterogeneity but not clustering. 
+- The survey weighted and robust SE models both produce the same standard errors. This is because both models account for the design effect of weight variance but not clustering. 
 
