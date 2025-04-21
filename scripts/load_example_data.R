@@ -2,6 +2,7 @@ load(url("https://github.com/AaronGullickson/stat_data/raw/main/output/titanic.R
 load(url("https://github.com/AaronGullickson/stat_data/raw/main/output/movies.RData"))
 load(url("https://github.com/AaronGullickson/stat_data/raw/main/output/sex.RData"))
 load(url("https://github.com/AaronGullickson/stat_data/raw/main/output/popularity.RData"))
+load(url("https://github.com/AaronGullickson/stat_data/raw/main/output/addhealth.RData"))
 load(url("https://github.com/AaronGullickson/stat_data/raw/main/output/earnings.RData"))
 load(url("https://github.com/AaronGullickson/stat_data/raw/main/output/crimes.RData"))
 load(url("https://github.com/AaronGullickson/stat_data/raw/main/output/politics.RData"))
