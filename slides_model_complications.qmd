@@ -2293,13 +2293,16 @@ summary(model_svy)$coef
 
 addhealth_svy_jweight <- svydesign(ids = ~1, weight = ~sweight, data = addhealth)
 model_svy_jweight <- svyglm(nominations~nsports, design=addhealth_svy_jweight)
-modelsummary(list("unweighted" = model_basic, 
-                  "weighted" = model_weight, 
+modelsummary(list("unweighted OLS" = model_basic, 
+                  "weighted OLS" = model_weight, 
                   "robust SE" = model_robust, 
-                  "survey: weights only" = model_svy_jweight, 
-                  "survey: weights+cluster" = model_svy),
+                  "svy: weights" = model_svy_jweight, 
+                  "svy: weights+cluster" = model_svy),
+             output = "gt",
              fmt = 3,
              stars = TRUE,
+             coef_map = c("(Intercept)" = "Intercept",
+                          "nsports" = "Number of sports played"),
              gof_map = c("nobs", "r.squared"))
 ```
 
