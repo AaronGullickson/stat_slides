@@ -13,7 +13,8 @@ source(here("scripts","set_theme.R"))
 source(here("scripts","load_example_data.R"))
 source(here("scripts", "preamble.R"))
 load(here("data", "gss_relig.RData"))
-set.seed(42)
+load(here("data", "births_nyc.RData"))
+set.seed(71)
 ```
 
 # The Linear Model Revisited {.center background-color="black" background-image="images/jeremy-bishop-FzrlPh20l7Q-unsplash.jpg"}
@@ -1708,22 +1709,20 @@ $$y_i=\underbrace{\beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\ldots+\beta_px_{ip}}_{\ha
 ### Serial autocorrelation
 
 ```{r}
-#| label: longley
+#| label: time-series
 #| echo: false
+#| fig-height: 7
 
-longley$year <- rownames(longley)
-ggplot(longley, 
-       aes(x=GNP,
-           y=Unemployed))+
-  geom_point()+
+ggplot(births_nyc, aes(x = date, y = births))+
   geom_line()+
-  geom_smooth(method="lm", se=FALSE)+
-  geom_text_repel(aes(label=year))+
-  labs(x="Gross National Product, US",
-       y="Number Unemployed, US")
+  geom_smooth(method = "lm", se = FALSE)+
+  scale_x_date(breaks = seq(from = date("1948-01-01"), to = date("1959-01-01"), by = "year"),
+               labels = paste(1948:1959))+
+  labs(x = "date", y = "monthly birth rate in NYC")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-In time series data, sequential observations in time are likely to either be highly positively or negatively correlated. In this case, when one year has a higher or lower than expected value, the next and previous years are also likely to have a higher or lower than expected value. 
+In time series data, sequential observations in time are likely to either be highly positively or negatively correlated. In this case, we can see clear seasonal fluctutation in birth rates.
 
 :::
 
@@ -1747,16 +1746,15 @@ When observations are drawn repeatedly from a sample of some larger units (i.e. 
 
 ```{r}
 #| eval: false
-model <- lm(Employed~GNP, data=longley)
-temp <- augment(model)$.resid
-temp <- data.frame(x=temp[1:15], y=temp[2:16])
-ggplot(temp, aes(x=x, y=y))+
+model <- lm(births~month, data=births_nyc)
+augment(model) |>
+  ggplot(aes(x = .resid, 
+             y = lag(.resid, 1)))+
   geom_point()+
   geom_smooth(method="lm", se=FALSE)+
   geom_hline(yintercept = 0, linetype=2)+
-  labs(x="residuals from 1947-1961",
-       y="residuals from 1948-1962")+
-  annotate("text",0.25, 0.5, label="r=0.16")
+  labs(x="residuals",
+       y="residuals (lagged one month")
 ```
 
 As an example of serial autocorrelation, I will use the `longley` time series dataset in R to fit the following model predicting the number of people employed by GNP from 1947 to 1962 (n=16):
@@ -1769,16 +1767,16 @@ I can then plot the residuals values from years 1947 to 1961  by the residual va
 
 ```{r}
 #| echo: false
-model <- lm(Employed~GNP, data=longley)
-temp <- augment(model)$.resid
-temp <- data.frame(x=temp[1:15], y=temp[2:16])
-ggplot(temp, aes(x=x, y=y))+
+model <- lm(births~month, data=births_nyc)
+augment(model) |>
+  ggplot(aes(x = .resid, 
+             y = lag(.resid, 1)))+
   geom_point()+
   geom_smooth(method="lm", se=FALSE)+
   geom_hline(yintercept = 0, linetype=2)+
-  labs(x="residuals from 1947-1961",
-       y="residuals from 1948-1962")+
-  annotate("text",0.25, 0.5, label="r=0.16")
+  labs(x="residuals",
+       y="residuals (lagged one month")+
+  annotate("text", -2, 2, label="r=0.31", size = 2)
 ```
 
 :::
@@ -1894,13 +1892,14 @@ The exact form of this weighting matrix depends on the nature of the iid violati
 
 ##  GLS Example {.smaller}
 
-We can use the `gls` command in the `nmle` package to adjust for serial autocorrelation in the prior model.We will assume that the autocorrelation follows an "AR1" pattern in which each subsequent residual is only correlated with its immediate predecessor (AR1 stands for auto-regressive 1, where 1 indicates the lag). 
+We can use the `gls` command in the `nmle` package to adjust for serial autocorrelation in the prior model.We will assume that the autocorrelation follows an "AR2" pattern in which each subsequent residual is correlated with its two immediate predecessors (AR2 stands for auto-regressive 2, where 2 indicates the lag). 
 
 ```{r}
-summary(lm(Employed~GNP+Population, data=longley))$coef
 library(nlme)
-model.ar1 <- gls(Employed~GNP+Population, correlation=corAR1(form=~Year),data=longley)
-summary(model.ar1)$tTable
+summary(lm(births~month, data=births_nyc))$coef
+model_ar2 <- gls(births~month, correlation = corARMA(form=~month, p = 2),
+                 data = births_nyc)
+summary(model_ar2)$tTable
 ```
 
 ## Robust Standard Errors {.smaller}
@@ -1973,8 +1972,7 @@ When the dependent variable is logged to remove heteroscedasticity, the differen
 
 ![](images/srs.png)
 
-- We have treated all of our sample data as if it was collected using simple random sampling (SRS). 
-- In an SRS of size $n$, every possible combination of $n$ observations from the population has an equally likely chance of being drawn.
+- In a simple random sample (SRS) of size $n$, every possible combination of $n$ observations from the population has an equally likely chance of being drawn.
 - Eevery statistic from an SRS should be representative of the population, except for random sampling bias.
 
 :::
@@ -1987,7 +1985,7 @@ When the dependent variable is logged to remove heteroscedasticity, the differen
 
 - In practice, large-scale surveys never use SRS for pragmatic and design reasons. 
 - For correct statistical inference, we typically need to make adjustments for sample design.
-- The primary ways in which sample design affects estimation are**clustering**, **stratification**, and **weighting**.
+- The primary ways in which sample design affects estimation are **clustering**, **stratification**, and **weighting**.
 
 :::
 
@@ -1995,7 +1993,7 @@ When the dependent variable is logged to remove heteroscedasticity, the differen
 
 ##  Cluster/Multistage sampling {.smaller}
 
-::::
+:::: {.columns}
 
 ::: {.column width = "30%"}
 
@@ -2161,7 +2159,7 @@ The `survey` package in R will allow you to specify design and correctly adjust 
 
 ## Add Health survey design {.smaller}
 
-::::
+:::: {.columns}
 
 ::: {.column width = "30%"}
 
@@ -2261,7 +2259,7 @@ summary(model_weight)$coef
 I can correct for sampling weight variability by using robust standard errors:
 
 ```{r}
-#: label: model-weight-robust
+#| label: model-weight-robust
 
 library(sandwich)
 library(lmtest)
