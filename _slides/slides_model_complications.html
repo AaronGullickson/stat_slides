@@ -7287,6 +7287,1159 @@ nsports            0.46421849 0.46691115 0.46652235 0.4663078 0.46830941</code><
 </div>
 </div>
 </div>
+</section></section>
+<section>
+<section id="multicollinearity-and-scale-creation" class="title-slide slide level1 center" data-background-color="black" data-background-image="images/nareeta-martin-z7LRp54Yulw-unsplash.jpg">
+<h1>Multicollinearity and Scale Creation</h1>
+
+</section>
+<section id="the-problem-of-multicollinearity" class="slide level2 smaller">
+<h2>The problem of multicollinearity</h2>
+<ul>
+<li class="fragment">Given that adding more independent variables to your model allows you to account for potential omitted variable bias, why wouldn’t you just put in as many variables as you can?</li>
+<li class="fragment">Because of <strong>multicollinearity</strong>. Multicollinearity occurs when there is collectively a high correlation between the independent variables in the model.</li>
+<li class="fragment">Intuitively, its easy to understand why multicollinearity is a problem. When two independent variables are highly correlated with one another, it becomes hard to separate out their effect on the dependent variable.</li>
+<li class="fragment">Technically, the effect of multicollinearity is to inflate standard errors and make coefficient estimates highly unstable across different combinations of highly collinear terms in the model.</li>
+</ul>
+</section>
+<section id="two-kinds-of-multicollinearity" class="slide level2">
+<h2>Two kinds of multicollinearity</h2>
+<div class="columns">
+<div class="column fragment">
+<h3 id="structural-multicollinearity">Structural multicollinearity</h3>
+<p>Structural multicollinearity occurs when one independent variable is completely determined by another independent variable or set of independent variables. This really isn’t an issue with the data, but rather a specification error by the researcher.</p>
+</div><div class="column fragment">
+<h3 id="data-based-multicollinearity">Data-based multicollinearity</h3>
+<p>Data-based multicollinearity occurs when a set of variables are highly but not perfectly correlated with one another in the empirical data. It is a hazard of using observational data where the characteristics for which you want to get separate effects are difficult to separate.</p>
+</div></div>
+</section>
+<section id="example-of-structural-multicollinearity" class="slide level2">
+<h2>Example of structural multicollinearity</h2>
+<p>Lets predict violent crime by percent female <strong>and</strong> percent male.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="" aria-hidden="true" tabindex="-1"></a>crimes<span class="sc">$</span>percent_female <span class="ot">&lt;-</span> <span class="dv">100</span><span class="sc">-</span>crimes<span class="sc">$</span>percent_male</span>
+<span id="cb115-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(violent_rate<span class="sc">~</span>percent_male<span class="sc">+</span>percent_female, <span class="at">data =</span> crimes))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = violent_rate ~ percent_male + percent_female, data = crimes)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-275.24 -104.25  -40.38   61.07  695.41 
+
+Coefficients: (1 not defined because of singularities)
+               Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)     2067.27    1482.04   1.395    0.169
+percent_male     -34.11      30.00  -1.137    0.261
+percent_female       NA         NA      NA       NA
+
+Residual standard error: 177.2 on 49 degrees of freedom
+Multiple R-squared:  0.0257,    Adjusted R-squared:  0.005817 
+F-statistic: 1.293 on 1 and 49 DF,  p-value: 0.2611</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="singularity-not-as-cool-as-it-sounds." class="slide level2">
+<h2>Singularity! Not as cool as it sounds.</h2>
+<div class="columns">
+<div class="column" style="width:25%;">
+<p><img data-src="images/picard_facepalm.gif"></p>
+</div><div class="column" style="width:75%;">
+<p>One of the terms was dropped from the model because the terms are perfectly collinear.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(crimes<span class="sc">$</span>percent_female, crimes<span class="sc">$</span>percent_male)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1</code></pre>
+</div>
+</div>
+<p>This is not a problem of the model, but our thinking. Either term by itself will give you full information.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(violent_rate<span class="sc">~</span>percent_male, <span class="at">data =</span> crimes))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> (Intercept) percent_male 
+  2067.26563    -34.10628 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(violent_rate<span class="sc">~</span>percent_female, <span class="at">data =</span> crimes))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   (Intercept) percent_female 
+   -1343.36192       34.10628 </code></pre>
+</div>
+</div>
+</div></div>
+</section>
+<section id="detecting-data-based-multicollinearity" class="slide level2">
+<h2>Detecting data-based multicollinearity</h2>
+<div class="columns">
+<div class="column" style="width:25%;">
+<p><img data-src="images/detective.jpg"></p>
+</div><div class="column" style="width:75%;">
+<ul>
+<li class="fragment">Look for weirdness across nested models:
+<ul>
+<li class="fragment">Standard errors increase substantially across nested models with more covariates</li>
+<li class="fragment">Model coefficients are highly unstable across nested models</li>
+</ul></li>
+<li class="fragment">Examine the correlation matrix for high correlations</li>
+<li class="fragment">Calculate variance inflation factors</li>
+</ul>
+</div></div>
+</section>
+<section id="multicollinearity-example-nyc-non-profits" class="slide level2 smaller">
+<h2>Multicollinearity example: NYC non-profits</h2>
+<div class="columns">
+<div class="column">
+<p>We will look at data collected by myself and Nicole Marwell on the spatial distribution of money contracted out to organization for social services by the City of New York from 1997-2001. The unit of analysis is a NYC health area, which can loosely be thought of as a neighborhood. The variables are:</p>
+<div>
+<ul>
+<li><strong>amountcapita</strong>: The dollar amount of money provided to the health area divided by the population size of the health area. We will log it due to skewness.</li>
+<li><strong>poverty</strong>: percent of population below the poverty line.</li>
+<li><strong>unemployed</strong>: unemployment rate.</li>
+<li><strong>income</strong>: median household income. We will log it due to skewness.</li>
+</ul>
+</div>
+</div><div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-nyc-map" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-nyc-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="slides_model_complications_files/figure-revealjs/fig-nyc-map-1.png" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nyc-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Per capita services contracted out in NYC by health area, 1997-2001
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="model-results-nyc-example" class="slide level2">
+<h2>Model results, NYC example</h2>
+<div class="cell">
+<div id="tbl-model-nyc-multicol" class="cell quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-tbl">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-model-nyc-multicol-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7: Linear models predicting per-capita social service spending (logged)
+</figcaption>
+<div aria-describedby="tbl-model-nyc-multicol-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div id="zeumdiiehu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#zeumdiiehu table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#zeumdiiehu thead, #zeumdiiehu tbody, #zeumdiiehu tfoot, #zeumdiiehu tr, #zeumdiiehu td, #zeumdiiehu th {
+  border-style: none;
+}
+
+#zeumdiiehu p {
+  margin: 0;
+  padding: 0;
+}
+
+#zeumdiiehu .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#zeumdiiehu .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#zeumdiiehu .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#zeumdiiehu .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#zeumdiiehu .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zeumdiiehu .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zeumdiiehu .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zeumdiiehu .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#zeumdiiehu .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#zeumdiiehu .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#zeumdiiehu .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#zeumdiiehu .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#zeumdiiehu .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#zeumdiiehu .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#zeumdiiehu .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zeumdiiehu .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#zeumdiiehu .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#zeumdiiehu .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#zeumdiiehu .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zeumdiiehu .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#zeumdiiehu .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#zeumdiiehu .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#zeumdiiehu .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zeumdiiehu .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#zeumdiiehu .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#zeumdiiehu .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zeumdiiehu .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zeumdiiehu .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#zeumdiiehu .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zeumdiiehu .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#zeumdiiehu .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zeumdiiehu .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zeumdiiehu .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zeumdiiehu .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zeumdiiehu .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zeumdiiehu .gt_left {
+  text-align: left;
+}
+
+#zeumdiiehu .gt_center {
+  text-align: center;
+}
+
+#zeumdiiehu .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#zeumdiiehu .gt_font_normal {
+  font-weight: normal;
+}
+
+#zeumdiiehu .gt_font_bold {
+  font-weight: bold;
+}
+
+#zeumdiiehu .gt_font_italic {
+  font-style: italic;
+}
+
+#zeumdiiehu .gt_super {
+  font-size: 65%;
+}
+
+#zeumdiiehu .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#zeumdiiehu .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#zeumdiiehu .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#zeumdiiehu .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#zeumdiiehu .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#zeumdiiehu .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#zeumdiiehu .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#zeumdiiehu .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#zeumdiiehu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table do-not-create-environment cell caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="a-" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"></th>
+<th id="a(1)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(1)</th>
+<th id="a(2)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(2)</th>
+<th id="a(3)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(3)</th>
+<th id="a(4)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(4)</th>
+<th id="a(5)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(5)</th>
+<th id="a(6)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(6)</th>
+<th id="a(7)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(7)</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers=" ">intercept</td>
+<td class="gt_row gt_center" headers="(1)">4.142***</td>
+<td class="gt_row gt_center" headers="(2)">4.135***</td>
+<td class="gt_row gt_center" headers="(3)">10.238***</td>
+<td class="gt_row gt_center" headers="(4)">4.121***</td>
+<td class="gt_row gt_center" headers="(5)">-24.699***</td>
+<td class="gt_row gt_center" headers="(6)">3.078</td>
+<td class="gt_row gt_center" headers="(7)">-29.597***</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers=" "></td>
+<td class="gt_row gt_center" headers="(1)">(0.172)</td>
+<td class="gt_row gt_center" headers="(2)">(0.231)</td>
+<td class="gt_row gt_center" headers="(3)">(2.052)</td>
+<td class="gt_row gt_center" headers="(4)">(0.226)</td>
+<td class="gt_row gt_center" headers="(5)">(4.941)</td>
+<td class="gt_row gt_center" headers="(6)">(3.272)</td>
+<td class="gt_row gt_center" headers="(7)">(5.309)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers=" ">poverty rate</td>
+<td class="gt_row gt_center" headers="(1)">0.039***</td>
+<td class="gt_row gt_center" headers="(2)"></td>
+<td class="gt_row gt_center" headers="(3)"></td>
+<td class="gt_row gt_center" headers="(4)">0.038***</td>
+<td class="gt_row gt_center" headers="(5)">0.127***</td>
+<td class="gt_row gt_center" headers="(6)"></td>
+<td class="gt_row gt_center" headers="(7)">0.124***</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers=" "></td>
+<td class="gt_row gt_center" headers="(1)">(0.007)</td>
+<td class="gt_row gt_center" headers="(2)"></td>
+<td class="gt_row gt_center" headers="(3)"></td>
+<td class="gt_row gt_center" headers="(4)">(0.010)</td>
+<td class="gt_row gt_center" headers="(5)">(0.017)</td>
+<td class="gt_row gt_center" headers="(6)"></td>
+<td class="gt_row gt_center" headers="(7)">(0.017)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers=" ">unemployment rate</td>
+<td class="gt_row gt_center" headers="(1)"></td>
+<td class="gt_row gt_center" headers="(2)">0.091***</td>
+<td class="gt_row gt_center" headers="(3)"></td>
+<td class="gt_row gt_center" headers="(4)">0.005</td>
+<td class="gt_row gt_center" headers="(5)"></td>
+<td class="gt_row gt_center" headers="(6)">0.100**</td>
+<td class="gt_row gt_center" headers="(7)">0.080*</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers=" "></td>
+<td class="gt_row gt_center" headers="(1)"></td>
+<td class="gt_row gt_center" headers="(2)">(0.024)</td>
+<td class="gt_row gt_center" headers="(3)"></td>
+<td class="gt_row gt_center" headers="(4)">(0.033)</td>
+<td class="gt_row gt_center" headers="(5)"></td>
+<td class="gt_row gt_center" headers="(6)">(0.036)</td>
+<td class="gt_row gt_center" headers="(7)">(0.033)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers=" ">median income (logged)</td>
+<td class="gt_row gt_center" headers="(1)"></td>
+<td class="gt_row gt_center" headers="(2)"></td>
+<td class="gt_row gt_center" headers="(3)">-0.493*</td>
+<td class="gt_row gt_center" headers="(4)"></td>
+<td class="gt_row gt_center" headers="(5)">2.516***</td>
+<td class="gt_row gt_center" headers="(6)">0.091</td>
+<td class="gt_row gt_center" headers="(7)">2.912***</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers=" " style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000"></td>
+<td class="gt_row gt_center" headers="(1)" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000"></td>
+<td class="gt_row gt_center" headers="(2)" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000"></td>
+<td class="gt_row gt_center" headers="(3)" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000">(0.191)</td>
+<td class="gt_row gt_center" headers="(4)" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000"></td>
+<td class="gt_row gt_center" headers="(5)" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000">(0.431)</td>
+<td class="gt_row gt_center" headers="(6)" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000">(0.282)</td>
+<td class="gt_row gt_center" headers="(7)" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000">(0.458)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers=" ">Num.Obs.</td>
+<td class="gt_row gt_center" headers="(1)">341</td>
+<td class="gt_row gt_center" headers="(2)">341</td>
+<td class="gt_row gt_center" headers="(3)">341</td>
+<td class="gt_row gt_center" headers="(4)">341</td>
+<td class="gt_row gt_center" headers="(5)">341</td>
+<td class="gt_row gt_center" headers="(6)">341</td>
+<td class="gt_row gt_center" headers="(7)">341</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers=" ">R2</td>
+<td class="gt_row gt_center" headers="(1)">0.080</td>
+<td class="gt_row gt_center" headers="(2)">0.041</td>
+<td class="gt_row gt_center" headers="(3)">0.019</td>
+<td class="gt_row gt_center" headers="(4)">0.080</td>
+<td class="gt_row gt_center" headers="(5)">0.164</td>
+<td class="gt_row gt_center" headers="(6)">0.041</td>
+<td class="gt_row gt_center" headers="(7)">0.178</td>
+</tr>
+</tbody><tfoot class="gt_sourcenotes">
+<tr class="odd">
+<td colspan="8" class="gt_sourcenote">+ p &lt; 0.1, * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001</td>
+</tr>
+</tfoot>
+
+</table>
+
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</section>
+<section id="the-correlation-matrix-as-diagnostic" class="slide level2 smaller">
+<h2>The correlation matrix as diagnostic</h2>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="" aria-hidden="true" tabindex="-1"></a>nyc <span class="sc">|&gt;</span></span>
+<span id="cb123-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lincome =</span> <span class="fu">log</span>(income)) <span class="sc">|&gt;</span></span>
+<span id="cb123-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(poverty, unemployed, lincome) <span class="sc">|&gt;</span></span>
+<span id="cb123-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              poverty unemployed    lincome
+poverty     1.0000000  0.6982579 -0.9120680
+unemployed  0.6982579  1.0000000 -0.7419472
+lincome    -0.9120680 -0.7419472  1.0000000</code></pre>
+</div>
+</div>
+<p>The correlation between the three variables is very high, suggesting strong multicollinearity.</p>
+<p>Note that, while the correlation matrix is often helpful, it may not reveal the full extent of multicollinearity because it only looks at bivariate relationships between the variables.</p>
+</div><div class="column fragment">
+<p>You can also visualize the correlation matrix as a <em>correlogram</em>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrgram)</span>
+<span id="cb125-2"><a href="" aria-hidden="true" tabindex="-1"></a>nyc <span class="sc">|&gt;</span></span>
+<span id="cb125-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(poverty, unemployed, lincome) <span class="sc">|&gt;</span></span>
+<span id="cb125-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">corrgram</span>(<span class="at">upper.panel=</span><span class="st">"panel.cor"</span>, <span class="at">lower.panel=</span><span class="st">"panel.pts"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides_model_complications_files/figure-revealjs/corrgram-nyc-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="variance-inflation-factors" class="slide level2 smaller">
+<h2>Variance inflation factors</h2>
+<p>The <strong>variance inflation factor</strong> (VIF) is the multiplicative factor by which the variance in the estimation of any one coefficient from the current model is increased due to multicollinearity relative to a model in which the variables are uncorrelated. The square root of the VIF is roughly the expected factor increase in the standard error. It can be shown that the VIF for the <span class="math inline">\(i\)</span>th variable is given by:</p>
+<p><span class="math display">\[VIF_i=\frac{1}{1-R_i^2}\]</span></p>
+<p>Where <span class="math inline">\(R_i^2\)</span> is the r-squared value when the given independent variable is predicted by all of the other independent variables in the model. For example, we could calculate the VIF for poverty in the full model by:</p>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">summary</span>(<span class="fu">lm</span>(poverty<span class="sc">~</span>unemployed<span class="sc">+</span>lincome, <span class="at">data =</span> nyc))<span class="sc">$</span>r.squared)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.984485</code></pre>
+</div>
+</div>
+<p>The square root of this VIF is 2.45, indicating that the standard error for poverty is more than doubled due to multicollinearity in the full model.</p>
+</div>
+</section>
+<section id="estimating-vif-with-the-vif-command" class="slide level2">
+<h2>Estimating VIF with the <code>vif</code> command</h2>
+<p>We can also use the <code>vif</code> function in the <code>car</code> package to quickly estimate all VIFs for a given model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb128"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb128-2"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(amtcapita)<span class="sc">~</span>poverty<span class="sc">+</span>unemployed<span class="sc">+</span>lincome, <span class="at">data =</span> nyc)</span>
+<span id="cb128-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   poverty unemployed    lincome 
+  5.984485   2.238379   6.822173 </code></pre>
+</div>
+</div>
+<p>The general rule of thumb is that a VIF over four is problematic enough that it needs to be addressed in some manner. Clearly, multicollinearity is a big problem here.</p>
+</section>
+<section id="you-have-multicollinearity-now-what" class="slide level2 smaller">
+<h2>You have multicollinearity, now what?</h2>
+<div class="fragment">
+<h3 id="remove-variables">Remove variables</h3>
+<p>A simple approach is to remove some of the highly correlated covariates. However, because the variables are not perfectly correlated, you are basically throwing out some information.</p>
+</div>
+<div class="fragment">
+<h3 id="separate-models">Separate models</h3>
+<p>Another approach is to run separate models with only one of the highly collinear variables in each model. This can also be unsatisfying because each of the models is underestimating the total effect of the variables collectively.</p>
+</div>
+<div class="fragment">
+<h3 id="create-a-scale">Create a scale</h3>
+<p>In cases where the collinear variables are all thought to represent the same underlying conceptual variable, we can combine them into a single synthetic scale.</p>
+</div>
+</section>
+<section id="standardization-and-reverse-ordering" class="slide level2 smaller">
+<h2>Standardization and reverse ordering</h2>
+<div class="columns">
+<div class="column">
+<ul>
+<li class="fragment">In many cases, the variables that are thought to make up a scale might be measured in the same manner.</li>
+<li class="fragment">When variables are measured differently (as in our example), then they must be standardized in some way to make them comparable before scale construction and evaluation. The most common way to do this is by creating <strong>z-scores</strong> by subtracting by the mean and dividing by the standard deviation of each variable.</li>
+<li class="fragment">Some variables may be positively related to the underlying concept while others may be negatively related. It may be necessary to reverse the coding of a variable to make all variables positively related to the underlying concept.</li>
+</ul>
+</div><div class="column fragment">
+<p>Lets write a quick function to standarize numeric variables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb130"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb130-1"><a href="" aria-hidden="true" tabindex="-1"></a>standardize <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb130-2"><a href="" aria-hidden="true" tabindex="-1"></a>  (x <span class="sc">-</span> <span class="fu">mean</span>(x)) <span class="sc">/</span> <span class="fu">sd</span>(x)</span>
+<span id="cb130-3"><a href="" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now lets apply the function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb131"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb131-1"><a href="" aria-hidden="true" tabindex="-1"></a>nyc <span class="ot">&lt;-</span> nyc <span class="sc">|&gt;</span></span>
+<span id="cb131-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">poverty.z =</span> <span class="fu">standardize</span>(poverty),</span>
+<span id="cb131-3"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">unemployed.z =</span> <span class="fu">standardize</span>(unemployed),</span>
+<span id="cb131-4"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">lincome.z =</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">*</span> <span class="fu">standardize</span>(lincome))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li class="fragment">Note that I am multiplying the <code>lincome</code> result by -1 to reverse code it.</li>
+</ul>
+<div class="fragment fade-up">
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>You can also use the built in base R <code>scale</code> command to do this, but it annoyingly saves the result as something other than a vector, making it a pain to use.</p>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="cronbachs-alpha" class="slide level2 smaller">
+<h2>Cronbach’s alpha</h2>
+<p>Cronbach’s <span class="math inline">\(\alpha\)</span> is a statistic developed in psychology to test the degree to which different variables measure the same underlying concept.</p>
+<ul>
+<li class="fragment">Cronbach’s <span class="math inline">\(\alpha\)</span> is often thought of as a test of the <strong>internal reliability</strong> of a scale.</li>
+<li class="fragment">You can think about Cronbach’s <span class="math inline">\(\alpha\)</span> as a summary measure of the correlation matrix we saw earlier. It goes from 0 to 1, with 0 indicating no shared correlation, and 1 indicating perfect correlation between all items.</li>
+</ul>
+<div class="fragment">
+<p>The <code>pysch</code> package includes and <code>alpha</code> command that will calculate <span class="math inline">\(\alpha\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb132"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb132-1"><a href="" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>(nyc[,<span class="fu">c</span>(<span class="st">"poverty.z"</span>,<span class="st">"unemployed.z"</span>,<span class="st">"lincome.z"</span>)])<span class="sc">$</span>total</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> raw_alpha std.alpha   G6(smc) average_r      S/N         ase          mean
+ 0.9159293 0.9159293 0.9013009  0.784091 10.89474 0.008313234 -1.373942e-16
+        sd  median_r
+ 0.9252355 0.7419472</code></pre>
+</div>
+</div>
+<p>The <span class="math inline">\(\alpha\)</span> of 0.916 indicates a very high level of shared covariance between the three variables.</p>
+</div>
+</section>
+<section id="summated-scale" class="slide level2 smaller">
+<h2>Summated scale</h2>
+<p>Once I have standardized and (if necessary) reverse coded all of the variables for my scale, I can create a simple <strong>summated scale</strong> by adding them up. I am also going to re-standarzie this variable after summation so that it has a mean of zero and a standard deviation of one.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="" aria-hidden="true" tabindex="-1"></a>nyc <span class="ot">&lt;-</span> nyc <span class="sc">|&gt;</span></span>
+<span id="cb134-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">deprivation_summated =</span> <span class="fu">standardize</span>(poverty.z<span class="sc">+</span>unemployed.z<span class="sc">+</span>lincome.z))</span>
+<span id="cb134-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(nyc<span class="sc">$</span>deprivation_summated)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+-2.2056 -0.6893 -0.1816  0.0000  0.7127  3.0565 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb136"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb136-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(nyc<span class="sc">$</span>deprivation_summated)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>Now lets use the summated scale in a model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(amtcapita)<span class="sc">~</span>deprivation_summated, <span class="at">data =</span> nyc)</span>
+<span id="cb138-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)<span class="sc">$</span>coef</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      Estimate Std. Error   t value      Pr(&gt;|t|)
+(Intercept)          4.9474224 0.08807143 56.175114 8.329185e-174
+deprivation_summated 0.3747882 0.08820085  4.249258  2.775153e-05</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(model))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         (Intercept) deprivation_summated 
+          140.811538             1.454683 </code></pre>
+</div>
+</div>
+<p>A one standard deviation increase on my deprivation scale is associated with a 45% increase in the amount for social services in a neighborhood.</p>
+</div>
+</section>
+<section id="factor-analysis" class="slide level2 smaller">
+<h2>Factor analysis</h2>
+<p>Another approach to creating a scale is <strong>factor analysis</strong>. Factor analysis is a method to extract the underlying latent variables (the factors) from a set of observed variables. We will start with an example where we assume a single underlying latent factor.</p>
+<div class="fragment">
+<p>Lets say we have three variables <span class="math inline">\(z_1\)</span>, <span class="math inline">\(z_2\)</span>, and <span class="math inline">\(z_3\)</span> all measured as z-scores. We can construct a system of equations that relate each of these variables to a common shared factor <span class="math inline">\(F\)</span> (also on a standard scale with a mean of 0 and SD of 1) and three unique factors, <span class="math inline">\(Q_1\)</span>, <span class="math inline">\(Q_2\)</span>, and <span class="math inline">\(Q_3\)</span>.</p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[z_{i1}=b_1F_i+u_1Q_{i1}\]</span> <span class="math display">\[z_{i2}=b_2F_i+u_2Q_{i2}\]</span> <span class="math display">\[z_{i3}=b_3F_i+u_3Q_{i3}\]</span></p>
+<p>The <span class="math inline">\(F_i\)</span> are called the <strong>factor scores</strong> and are the values of the common factor for each observation. The <span class="math inline">\(b\)</span> values are called the <strong>factor loadings</strong> and give the correlation between each observed variable and the common factor. The unique factor components are not actually estimated in factor analysis but serve as the “residual” components.</p>
+</div>
+</section>
+<section id="estimation-in-factor-analysis" class="slide level2 smaller">
+<h2>Estimation in factor analysis</h2>
+<div class="columns">
+<div class="column">
+<p>The factor scores and factor loadings for a factor analysis can be estimated by mathematical manipulation of the observed correlation matrix between variables, but we won’t get into the mathematical details here.</p>
+<ul>
+<li class="fragment">The <code>factanal</code> command in base R will estimate a factor analysis by maximum likelihood estimation (a technique we will learn in the next module).</li>
+<li class="fragment">The <code>fa</code> command in the <code>psych</code> package will also estimate factor analysis using a variety of techniques. It also has some nice additional tools that will make it more useful.</li>
+</ul>
+</div><div class="column fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="" aria-hidden="true" tabindex="-1"></a>factor_nyc <span class="ot">&lt;-</span> nyc <span class="sc">|&gt;</span></span>
+<span id="cb142-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(poverty, unemployed, lincome) <span class="sc">|&gt;</span></span>
+<span id="cb142-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fa</span>(<span class="dv">1</span>, <span class="at">rotate=</span><span class="st">"oblimin"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li class="fragment">The second argument specifies that we want only one common factor.</li>
+<li class="fragment">We also need to specify a technique of <em>rotation</em> for the factor loadings because there are an infinite number of possible ways to express them. The oblimin method is a standard approach that helps to maximize differences between factors without forcing them to be uncorrelated.</li>
+</ul>
+</div></div>
+</section>
+<section id="factor-loadings" class="slide level2 smaller">
+<h2>Factor loadings</h2>
+<div class="columns">
+<div class="column fragment">
+<h3 id="extract-loadings">Extract loadings</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb143"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb143-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">loadings</span>(factor_nyc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Loadings:
+           MR1   
+poverty     0.926
+unemployed  0.754
+lincome    -0.984
+
+                 MR1
+SS loadings    2.396
+Proportion Var 0.799</code></pre>
+</div>
+</div>
+<p>The bottom part shows that 79.9% of the variation in the three variables is accounted for by the common factor.</p>
+<p>The loadings themselves show the correlation coefficient between each observed variable and the common factor.</p>
+</div><div class="column fragment">
+<h3 id="visualize-factor-loadings">Visualize factor loadings</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb145"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb145-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">fa.diagram</span>(factor_nyc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-factor-loading" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-factor-loading-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="slides_model_complications_files/figure-revealjs/fig-factor-loading-1.png" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-factor-loading-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: Visual display of factor loadings
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="factor-scores" class="slide level2">
+<h2>Factor Scores</h2>
+<p>I can easily extract my factor scores from the the factor analysis object and use them as my scale measure of deprivation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="" aria-hidden="true" tabindex="-1"></a>nyc<span class="sc">$</span>deprivation_factor <span class="ot">&lt;-</span> factor_nyc<span class="sc">$</span>scores[,<span class="st">"MR1"</span>]</span>
+<span id="cb146-2"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(amtcapita)<span class="sc">~</span>deprivation_factor, <span class="at">data=</span>nyc)</span>
+<span id="cb146-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)<span class="sc">$</span>coef</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    Estimate Std. Error   t value      Pr(&gt;|t|)
+(Intercept)        4.9474224 0.08908910 55.533419 2.797390e-172
+deprivation_factor 0.2849722 0.09036319  3.153631  1.756654e-03</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb148-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(model))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       (Intercept) deprivation_factor 
+        140.811538           1.329725 </code></pre>
+</div>
+</div>
+<p>A one standard deviation increase on my deprivation scale is associated with a 33% increase in the amount for social services in a neighborhood.</p>
+</section>
+<section id="whats-the-difference" class="slide level2 smaller">
+<h2>Whats the difference?</h2>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-compare-scores" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-compare-scores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="slides_model_complications_files/figure-revealjs/fig-compare-scores-1.png" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-compare-scores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: comparison of the summated scale vs.&nbsp;factor score
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<ul>
+<li class="fragment">The summated scale uses all the variation in the three variables to generate the score.</li>
+<li class="fragment">The factor analysis only uses the shared component to generate the score. The unique component is left out.</li>
+<li class="fragment">A closely related technique to factor analysis called <strong>principal component analysis</strong> uses all of the variation in the items and will produce results virtually identical to the summated score.</li>
+</ul>
+</div></div>
+</section>
+<section id="factor-analysis-with-multiple-factors" class="slide level2 smaller">
+<h2>Factor analysis with multiple factors</h2>
+<p>The previous example only used one factor and produced results that were very similar to a simple summated scale. However, it is also possible to use factor analysis to identify more than one common factor shared among a set of variables.</p>
+<div class="fragment">
+<p>The formulas for factor analysis above can be generalized to a set of <span class="math inline">\(J\)</span> observed variables and <span class="math inline">\(m\)</span> factors by a set of <span class="math inline">\(J\)</span> equations. For the <span class="math inline">\(j\)</span>th observed variable:</p>
+<p><span class="math display">\[z_{ji}=b_{j1}F_{1i}+b_{j2}F_{2i}+\ldots+b_{jm}F_{ji}+u_jQ_{ji}\]</span></p>
+<p>There will be a set of <span class="math inline">\(J\)</span> factor loadings for each of the <span class="math inline">\(m\)</span> factors. The key question with this technique is what are the appropriate number of factors? This is typically determined by an analysis of:</p>
+</div>
+<ul>
+<li class="fragment">how much total variation is explained by a given number of factors.</li>
+<li class="fragment">whether the factor loadings for a given number of factors make theoretical sense.</li>
+</ul>
+</section>
+<section id="example-social-conservatism-among-muslims" class="slide level2 smaller">
+<h2>Example: social conservatism among Muslims</h2>
+<div class="columns">
+<div class="column">
+<p>Between 2008-12, The Pew Research Center surveyed Muslims from numerous countries around the world and (in addition to other questions) asked respondents about the moral acceptability of these practices:</p>
+<div>
+<ul>
+<li>divorce</li>
+<li>polygamy</li>
+<li>fertility control</li>
+<li>alcohol</li>
+<li>euthanasia</li>
+<li>suicide</li>
+<li>abortion</li>
+<li>prostitution</li>
+<li>premarital sex</li>
+<li>homosexuality</li>
+</ul>
+</div>
+</div><div class="column">
+<p>The data are coded as an ordinal response:</p>
+<div>
+<ul>
+<li>Morally acceptable</li>
+<li>Depends/Not a moral issue</li>
+<li>Morally wrong</li>
+</ul>
+</div>
+<p>I re-code the data on a numeric scale from 1 to 3.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="" aria-hidden="true" tabindex="-1"></a>pew <span class="ot">&lt;-</span> pew <span class="sc">|&gt;</span></span>
+<span id="cb150-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"moral_"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb150-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_all</span>(as.numeric)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></div>
+</section>
+<section id="using-the-correlation-matrix-as-data" class="slide level2">
+<h2>Using the correlation matrix as data</h2>
+<ul>
+<li class="fragment">Factor analysis only needs the correlation matrix between variables rather than the original data itself.</li>
+<li class="fragment">This is one case where available-case analysis makes sense. I can maximize the number of cases on each pairwise correlation coefficient to use all of the available data. The <code>use="pairwise.complete.obs"</code> argument in the <code>cor</code> function will use available-case analysis when it computes the correlation coefficient between each pair of variables.</li>
+</ul>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb151"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb151-1"><a href="" aria-hidden="true" tabindex="-1"></a>morality_r <span class="ot">&lt;-</span> <span class="fu">cor</span>(pew, <span class="at">use=</span><span class="st">"pairwise.complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="correlogram-of-responses" class="slide level2">
+<h2>Correlogram of responses</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">corrgram</span>(morality_r, <span class="at">upper.panel=</span>panel.cor, <span class="at">order=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="slides_model_complications_files/figure-revealjs/fig-correlogram-moral-1.png" width="2304" class="r-stretch quarto-figure-center" id="fig-correlogram-moral"><p class="caption">
+Figure&nbsp;16: Correlogram of morality variables from Pew data
+</p></section>
+<section id="try-factor-analysis-with-up-to-three-factors" class="slide level2">
+<h2>Try factor analysis with up to three factors</h2>
+</section>
+<section id="comparing-different-number-of-factors" class="slide level2 smaller">
+<h2>Comparing different number of factors</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb153"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb153-1"><a href="" aria-hidden="true" tabindex="-1"></a>morality_fa1 <span class="ot">&lt;-</span> <span class="fu">fa</span>(morality_r, <span class="dv">1</span>, <span class="at">rotate=</span><span class="st">"oblimin"</span>)</span>
+<span id="cb153-2"><a href="" aria-hidden="true" tabindex="-1"></a>morality_fa2 <span class="ot">&lt;-</span> <span class="fu">fa</span>(morality_r, <span class="dv">2</span>, <span class="at">rotate=</span><span class="st">"oblimin"</span>)</span>
+<span id="cb153-3"><a href="" aria-hidden="true" tabindex="-1"></a>morality_fa3 <span class="ot">&lt;-</span> <span class="fu">fa</span>(morality_r, <span class="dv">3</span>, <span class="at">rotate=</span><span class="st">"oblimin"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fig-factor-morality" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-factor-morality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-factor-morality" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div id="fig-factor-morality-1" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-subfloat-fig">
+<div aria-describedby="fig-factor-morality-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="slides_model_complications_files/figure-revealjs/fig-factor-morality-1.png" data-ref-parent="fig-factor-morality" width="2304">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-factor-morality-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Single factor
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-factor-morality" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div id="fig-factor-morality-2" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-subfloat-fig">
+<div aria-describedby="fig-factor-morality-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="slides_model_complications_files/figure-revealjs/fig-factor-morality-2.png" data-ref-parent="fig-factor-morality" width="2304">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-factor-morality-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Two factors
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-factor-morality" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div id="fig-factor-morality-3" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-subfloat-fig">
+<div aria-describedby="fig-factor-morality-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="slides_model_complications_files/figure-revealjs/fig-factor-morality-3.png" data-ref-parent="fig-factor-morality" width="2304">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-factor-morality-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) Three factors
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-factor-morality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17: Factor analysis of morality data
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="extending-factor-analysis" class="slide level2">
+<h2>Extending factor analysis</h2>
+<p>Factor analysis is part of a larger family of methods that are often described as <strong>data reduction</strong> techniques: How can you reduce the amount of information in a given set of variables into a smaller set of variables?</p>
+<h3 id="latent-class-analysis">Latent class analysis</h3>
+<p>An important cousin of factor analysis that can be used for categorical variables.</p>
+<h3 id="structural-equation-modeling">Structural equation modeling</h3>
+<p>The idea of factor analysis can be generalized to construct entire systems of equations that involve both latent and observed variables.</p>
 
 </section></section>
     </div>
