@@ -14,7 +14,7 @@ source(here("scripts","load_example_data.R"))
 source(here("scripts", "preamble.R"))
 load(here("data", "gss_relig.RData"))
 load(here("data", "births_nyc.RData"))
-set.seed(71)
+set.seed(666)
 ```
 
 # The Linear Model Revisited {.center background-color="black" background-image="images/jeremy-bishop-FzrlPh20l7Q-unsplash.jpg"}
@@ -2309,4 +2309,642 @@ modelsummary(list("unweighted OLS" = model_basic,
 
 - All models except the unweighted version produce the same estimates of slope and intercept based on the weights.
 - The survey weighted and robust SE models both produce the same standard errors. This is because both models account for the design effect of weight variance but not clustering. 
+
+# Missing Data {.center background-color="black" background-image="images/kyaw-tun-UvL9JrLkagM-unsplash.jpg"}
+
+##  The reality of missing data {.smaller}
+
+Missing data exists in most real-world data sets. Therefore, its important to know how to handle missing data in order to know how to properly conduct an analysis.
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+### Valid Skip
+
+![](images/baby_boss.jpg)
+
+Valid skips most arise when a follow-up question is only asked of respondents who gave a certain response to the initial question. If you construct a variable correctly, valid skips should not be considered missing values.
+
+:::
+
+::: {.column .fragment}
+
+### Item non-response
+
+![](images/slamming-door-shutting-door.gif)
+
+Item non-response occurs when respondents fail to respond to a specific question. This may be because they don't know the correct response or they do not feel comfortable answering the question. 
+
+:::
+
+::::
+
+##  Example of a valid skip {.smaller}
+
+The General Social Survey uses three variables to determine respondents' religious affiliation. 
+
+- `relig` asks for major religious affiliations such as Catholic, Protestant, Jewish, Muslim, etc.
+- **If and only if** respondents indicate they are Protestant, they are asked a follow up question recorded in `denom` which asks for their specific denomination. 
+- `denom` only lists major Protestant denominations. If the respondent checks "other", their specific write-in response is recorded in a third variable titled `other`. 
+
+::: {.fragment}
+
+```{r}
+#| label: gss-denom
+
+relig |> select(relig, denom, other) |> summary()
+```
+
+:::
+
+::: {.fragment}
+
+There are a lot of missing values for `denom` and `other`, but these are all valid skips based on prior responses. The only true missing values in this set of variables are the 23 respondents who did not respond to the initial question on `relig`.  
+
+:::
+
+##  Kinds of missingness {.smaller}
+
+:::: {.columns}
+
+::: {.column width = "25%"}
+
+![](images/coffee_spill.jpg)
+
+:::
+
+::: {.column width = "75%"}
+
+::: {.fragment}
+
+### Missing Completely at Random (MCAR)
+Every observation has the same probability of missingness and the missingness of a variable has no relationship to other observed or unobserved variables. If this is true, then removing observations with missing values will not bias results.
+
+:::
+
+::: {.fragment}
+
+### Missing at Random (MAR)
+
+The different probabilities of missingness can be fully accounted for by other observed variables in the dataset. If this is true, then various techniques can be used to produce unbiased results by **imputing** values for the missing values. 
+
+:::
+
+::: {.fragment}
+
+### Not Missing at Random (NMAR)
+
+The different probabilities of missingness depend both on observed and unobserved variables. In this case, we cannot fully correct for bias that might result from missing data. 
+
+:::
+
+:::
+
+::::
+
+##  Add Health income example
+
+As an example, I will use parental income from the Add Health data to predict popularity. Income is recorded in thousands of dollars, and I have top-coded the values to $200,000. Income is notorious as a variable that will typically have a high non-response rate. The Add Health data are no different:
+
+```{r addhealth_incomesummary}
+#| label: addhealth-income-summary
+
+summary(addhealth$parent_income)
+mean(is.na(addhealth$parent_income))
+```
+
+Income is missing for 1027 cases which is roughly a quarter of the dataset. 
+
+## Two basic approaches to missing values {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+![](images/throw_away.png)
+
+### Remove cases
+
+- Case deletion is easy to implement.
+- Case deletion assumes MCAR.
+- Case deletion may result in a substantial reduction is sample size.
+
+:::
+
+::: {.column .fragment}
+
+![](images/rabbit.jpg)
+
+### Impute cases
+
+- Imputation is more difficult to implement.
+- If done properly, imputation assumes MAR.
+- Imputation will not reduce sample size.
+
+:::
+
+::::
+
+##  Two kinds of case deletion {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+### Complete-case analysis (listwise deletion)
+
+- All cases that have missing values on any of the variables that will be used at some point in the analysis are removed from the start. 
+- This ensures that all results are based on the same sample.
+
+:::
+
+::: {.column .fragment}
+
+### Available-case analysis (pairwise deletion)
+
+- Cases are removed model by model or statistic by statistic when the variables used in that particular statistic or model have missing values. 
+- This is by default what will happen in R across different `lm` models with different variables.
+- This approach allows the researcher to use more data, but different statistics and models will use different subsets of the full data which makes comparability problematic. 
+
+:::
+
+::::
+
+##  Removing cases, Add Health example  {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+### Available-case analysis
+
+This is what happens by default when you just run nested models in R
+
+```{r}
+#| label: models-available-case
+
+model1.avail <- lm(nominations~nsports, data = addhealth)
+model2.avail <- update(model1.avail, .~.+alcohol_use+smoker)
+model3.avail <- update(model2.avail, .~.+parent_income)
+```
+
+:::
+
+::: {.column .fragment}
+
+### Complete-case analysis
+
+To do this, we need to use `drop_na` on the Add Health variables that will be in the most complex model to make sure all models work with the same subset. 
+
+```{r}
+addhealth_complete <- addhealth |>
+  select(nominations, nsports, alcohol_use, smoker, 
+         parent_income) |>
+  drop_na()
+model1.complete <- lm(nominations~nsports,  
+                      data = addhealth_complete)
+model2.complete <- update(model1.complete, 
+                          .~.+alcohol_use+smoker)
+model3.complete <- update(model2.complete, 
+                          .~.+parent_income)
+```
+
+:::
+
+:::
+
+##  What is different?
+
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: tbl-available-results
+#| tbl-cap: Models predicting number of friend nominations, available cases
+#| echo: false
+
+cm <- c("(Intercept)" = "Intercept",
+        "nsports" =  "Number of sports",
+        "alcohol_useDrinker" = "Drinker",
+        "smokerSmoker" = "Smoker",
+        "parent_income" = "Parental income (1000s USD)",
+        "parent_income_missingTRUE" = "Parent income imputed",
+        "parent_income.meani" = "Parental income (1000s USD)",
+        "parent_income.chosen" = "Parental income (1000s USD)") 
+
+modelsummary(list(model1.avail, model2.avail, model3.avail),
+        coef_map = cm,
+        output = "gt",
+        stars = TRUE,
+        gof_map = c("nobs", "r.squared"))
+```
+:::
+
+::: {.column}
+
+```{r}
+#| label: tbl-complete-case
+#| tbl-cap: Models predicting number of friend nominations, complete cases
+#| echo: false
+modelsummary(list(model1.complete, model2.complete, model3.complete),
+        coef_map = cm,
+        output = "gt",
+        stars = TRUE,
+        gof_map = c("nobs", "r.squared"))
+```
+
+:::
+
+::::
+
+##  Imputation {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+### Predictive or non-Predictive?
+
+- Imputations vary by whether or not they use other predictors in the data to assign imputed values to missing values. 
+- Predictive imputation is done via a statistical model. 
+- Predictive imputation moves the assumption from MAR to MCAR if the model is good.
+- Non-predictive imputation will systematically bias correlation between variables downward.
+
+:::
+
+::: {.column .fragment}
+
+### Inject Randomness?
+
+- Imputations vary by whether or not they include a random component or are purely deterministic. 
+- Deterministic imputation techniques will underestimate variance in the imputed variable and will therefore underestimate standard errors. 
+- The use of randomization leads to another source of variation called **imputation variation** which can only be fully addressed through the technique of **multiple imputation**.
+
+:::
+
+::::
+
+##  Non-Predictive Imputation
+
+A very simple (and poor) technique would be just to substitute the mean for valid responses for all missing values. 
+
+```{r}
+#| label: mean-impute
+addhealth <- addhealth |>
+  mutate(parent_income_missing = is.na(parent_income),
+         parent_income.meani = ifelse(parent_income_missing, 
+                                     mean(parent_income, na.rm = TRUE),
+                                     parent_income))
+```
+
+::: {.fragment}
+
+Another similar technique that allows for more randomness is just to sample a random valid response on the same variable for each missing value. 
+
+```{r}
+#| label: random-impute
+
+addhealth$parent_income.randi <- addhealth$parent_income
+random_values <- sample(na.omit(addhealth$parent_income), 
+                        sum(is.na(addhealth$parent_income)))
+addhealth$parent_income.randi[is.na(addhealth$parent_income)] <- random_values
+```
+
+:::
+
+##  Mean and random imputation, Add Health
+
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: plot_mean_impute
+#| echo: false
+
+ggplot(addhealth, aes(x=parent_income.meani, y=nominations, 
+                      color=parent_income_missing))+
+  geom_point(alpha=0.6)+
+  scale_color_manual(values=c("grey20","red"))+
+  labs(x="parental income ($1000s)", y="number of friend nominations",
+       color="Income value imputed")+
+  theme(legend.position = "bottom")
+```
+
+:::
+
+::: {.column .fragment}
+
+```{r}
+#| label: plot_random_impute
+#| echo: false
+
+ggplot(addhealth, aes(x=parent_income.randi, y=nominations, 
+                      color=parent_income_missing))+
+  geom_point(alpha=0.6)+
+  geom_smooth(method="lm", se=FALSE)+
+  scale_color_manual(values=c("grey20","red"))+
+  labs(x="parental income ($1000s)", y="number of friend nominations",
+       color="Income value imputed")+
+  theme(legend.position = "bottom")
+```
+
+:::
+
+::::
+
+##  Non-predictive imputation == Bad
+
+| Sample              | $r$ (nominations and income) | SD (income)        |
+|:--------------------|--------------------------:|-------------------:|
+| Valid cases         |  `r round(cor(addhealth$parent_income, addhealth$nominations, use="complete.obs"), 3)` | `r round(sd(addhealth$parent_income, na.rm=TRUE), 1)`|
+| Valid cases +mean imputed |  `r round(cor(addhealth$parent_income.meani, addhealth$nominations, use="complete.obs"), 3)` | `r round(sd(addhealth$parent_income.meani, na.rm=TRUE), 1)`|
+| Valid cases +random imputed |  `r round(cor(addhealth$parent_income.randi, addhealth$nominations, use="complete.obs"), 3)` | `r round(sd(addhealth$parent_income.randi, na.rm=TRUE), 1)`|
+
+- Both techniques will systematically underestimate correlation.
+- Mean imputation will underestimate the variance of the imputed variable. 
+
+##  Quick and dirty method {.smaller}
+
+If I do a mean imputation, I can also add a boolean variable for missingness as a predictor in my model. The effect of the imputed variable will be the same as if if I had thrown out missing values (because we are controlling for missingness), but I get to use the full data. 
+
+```{r}
+#| label: tbl-missing-dummy
+#| tbl-cap: Models predicting friend nominations
+#| echo: false
+modelsummary(
+  list(
+    "Drop missing" = lm(nominations~parent_income, data=addhealth),
+    "Missing dummy" = lm(nominations~parent_income.meani+parent_income_missing, data=addhealth)
+  ),
+  coef_map = cm,
+  output = "gt",
+  stars = TRUE,
+  gof_map = c("nobs", "r.squared")
+)
+
+```
+
+- This model still assumes MCAR and reduces variance in the independent variable. 
+- Its primary advantage is that it is a quick method to avoid having to throw out cases that have valid data on other important variables.
+
+##  Regression imputation {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+- I will predict the value of parental income by other independent variables (but never the dependent variable) using a linear model. 
+- In this case, I will transform parental income by the square root as well since it is heavily right skewed. 
+
+::: {.fragment}
+
+```{r}
+#| label: model-impute-step1
+model <- lm(sqrt(parent_income)~race+pseudo_gpa+
+              honor_society+alcohol_use+smoker+
+              bandchoir+nsports, 
+            data=addhealth)
+```
+
+:::
+
+:::
+
+::: {.column .fragment}
+
+Then, I use the `predict` command to get predicted values for all observations and impute the predicted values (or their square, technically) for missing values. 
+
+```{r}
+#| label: regimpute-step2
+
+predicted <- predict(model, addhealth)
+addhealth$parent_income.regi <- addhealth$parent_income
+incmiss <- is.na(addhealth$parent_income)
+addhealth$parent_income.regi[incmiss] <- predicted[incmiss]^2
+summary(addhealth$parent_income.regi)
+```
+
+
+I still have some missing values, because there were missing values on the variables I used to predict parental income.
+
+:::
+
+::::
+
+##  Random regression imputation
+
+The previous model is deterministic, and will underestimate variance in parental income but I can add a random component to this by sampling from a normal distribution with a mean of zero and standard deviation equal to that of the model residuals. 
+
+```{r}
+#| label: random-reg-impute
+
+addhealth$parent_income.rregi <- addhealth$parent_income
+addhealth$parent_income.rregi[incmiss] <- (predicted[incmiss]+
+                                             rnorm(sum(incmiss), 0, sigma(model)))^2
+sd(addhealth$parent_income, na.rm=TRUE)
+sd(addhealth$parent_income.regi, na.rm=TRUE)
+sd(addhealth$parent_income.rregi, na.rm=TRUE)
+```
+
+##  Regression imputation, Add Health
+
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| echo: false
+ggplot(addhealth, aes(x=parent_income.regi, y=nominations,
+                      color=parent_income_missing))+
+  geom_point(alpha=0.4)+
+  geom_smooth(method = "lm", se = FALSE)+
+  scale_color_manual(values=c("grey","red"))+
+  labs(x="parental income ($1000s)" , 
+       y="number of friend nominations received",
+       color="Income value imputed",
+       title = "Regression Imputation")+
+  theme(legend.position = "bottom")
+```
+
+:::
+
+::: {.column}
+
+```{r}
+#| echo: false
+ggplot(addhealth, aes(x=parent_income.rregi, y=nominations, 
+                      color=parent_income_missing))+
+  geom_point(alpha=0.4)+
+  geom_smooth(method = "lm", se = FALSE)+
+  scale_color_manual(values=c("grey","red"))+
+  labs(x="parental parental income", y="actual or imputed parental income",
+       color="Income value imputed",
+       title = "Random Regression Imputation")+
+  theme(legend.position = "bottom")
+```
+
+:::
+
+::::
+
+## Chained equations {.smaller}
+
+As you saw above, predictive imputation still leads to some missing values if the variables used for prediction also contain missing values. We can get around this via an iterative procedure called **chained equations**:
+
+1. All missing values are given some placeholder value. This might be the mean value, for example.
+2. For one variable, the placeholder values are removed and missing values put back in. These missing values are then predicted and imputed by some model for this variable.
+3. Step 2 is repeated for all variables with missing values. When all variables have been imputed, we have completed one iteration.
+4. Steps 2-3 are then repeated again for some number of iterations. The number of iterations necessary may vary by data, but five iterations is typical.
+
+##  Using `mice` to impute a single dataset
+
+The `mice` command will use chained equations to impute missing values on *all* variables when a dataset is fed in. I can then use the `complete` command to extract a full dataset with no missing values. 
+
+```{r}
+#| label: chained-equations
+
+library(mice)
+imputed <- addhealth |>
+  select(nominations, race, gender, grade, pseudo_gpa, honor_society, alcohol_use,
+         smoker, bandchoir, nsports, parent_income) |>
+  mice(m = 1, print = FALSE)
+addhealth_full <- complete(imputed, 1)
+apply(is.na(addhealth_full), 2, sum)
+```
+
+##  Comparison of methods
+
+```{r}
+#| label: tbl-impute-compare
+#| tbl-cap: Models predicting friend nominations with different methods for missing values
+#| echo: false
+
+addhealth$parent_income.chosen <- addhealth$parent_income
+model_delete <- lm(nominations~parent_income.chosen+smoker+alcohol_use+nsports, 
+                  data=addhealth)
+addhealth$parent_income.chosen <- addhealth$parent_income.meani
+model_meani <- lm(nominations~parent_income.chosen+smoker+alcohol_use+nsports, 
+                  data=addhealth)
+model_meandummy <- update(model_meani, .~.+parent_income_missing)
+addhealth$parent_income.chosen <- addhealth$parent_income.randi
+model_randi <- lm(nominations~parent_income.chosen+smoker+alcohol_use+nsports, 
+                  data=addhealth)
+addhealth$parent_income.chosen <- addhealth$parent_income.regi
+model_regi <- lm(nominations~parent_income.chosen+smoker+alcohol_use+nsports, 
+                 data=addhealth)
+addhealth$parent_income.chosen <- addhealth$parent_income.rregi
+model_rregi <- lm(nominations~parent_income.chosen+smoker+alcohol_use+nsports, 
+                 data=addhealth)
+addhealth_full$parent_income.chosen <- addhealth_full$parent_income
+model_ce <- lm(nominations~parent_income.chosen+smoker+alcohol_use+nsports, 
+                 data=addhealth_full)
+
+modelsummary(
+  list(
+    "deletion" = model_delete,
+    "mean" = model_meani,
+    "mean + dummy" = model_meandummy,
+    "random" = model_randi,
+    "regression" = model_regi,
+    "random regression" = model_rregi,
+    "chained equations" = model_ce
+    ),
+  coef_map = cm,
+  output = "gt",
+  stars = TRUE,
+  gof_map = c("nobs", "r.squared")
+)
+```
+
+##  Imputation variability
+
+- The methods of random imputation have the benefit of preserving the standard deviation of the imputed variable and therefore calculating correct standard errors, but they also introduce a new source of uncertainty. 
+- Each time I do an imputation with a random component (e.g. random regression, chained equation), I will get a somewhat different set of values. 
+- Therefore, we now have **imputation variability** to add to our inferential concerns alongside **sampling variability**. 
+- We can use **multiple imputation** to adjust our results for **imputation variability**.
+
+## Multiple imputation process {.smaller}
+
+1. Use imputation process with random component to impute missing values and repeat this process to produce $m$ separate **complete datasets**. Each of these datasets will be somewhat different due to the randomization of imputation. Usually $m=5$ is sufficient.
+2. Run $m$ separate parallel models on each imputed **complete dataset**. As a result, you will have $m$ sets of regression coefficients and standard errors. 
+3. Pool the regression coefficients across datasets by taking the mean across all $m$ datasets. 
+4. Pool standard errors by taking the mean across all $m$ datasets *plus* the between model standard deviation in coefficients. The formula for the overall standard error is:
+
+::: {.fragment}
+
+$$SE_{\beta}=\sqrt{W+(B+\frac{B}{m})}$$
+Where $W$ is the squared mean standard error across all $m$ datasets, and $B$ is the variance in coefficient estimates calculated across all $m$ models.
+
+:::
+
+## Multiple imputation with the `mice` package
+
+To get multiple complete datasets with `mice` we just need to specify the number of distinct complete datasets to create in the second argument:
+
+```{r}
+#| echo: false
+
+addhealth <- addhealth |>
+  select(grade, race, gender, nominations, alcohol_use, smoker, pseudo_gpa,
+         honor_society, bandchoir, nsports, parent_income)
+```
+
+```{r}
+#| label: mice-imputations
+
+imputations <- mice(addhealth, 5, printFlag=FALSE)
+```
+
+- The imputations object now contains five fully complete imputed datasets. Its possible to extract any one of these datasets with the command `complete(imputations, i)` where `i` is replaced by a number between 1 and 5. 
+- We can now conduct our parallel analysis on these five datasets and combine results. There is an easy and a hard way to do this. Its useful to know both. 
+
+##  Easy way: let `mice` do the hard work
+
+The `mice` package has a lot of nice features, including an object specific function for the `with` command and a `pool` command that make multiple imputation as easy as falling off a log:
+
+```{r easyway_mi}
+#| label: easyway-mi
+model_mi <- pool(with(imputations, 
+                      lm(nominations~parent_income+smoker+alcohol_use+nsports)))
+summary(model_mi)
+```
+
+##  Hard way: for-loop {.smaller}
+
+The hard way isn't really that hard. It is useful to know for cases where the easy way won't work, such as when you need to run complicated models (using `svydesign` would be an example).
+
+```{r}
+#| label: forloop-mi
+b <- se <- NULL
+for(i in 1:5) {
+  imputation <- complete(imputations, i)
+  model <- lm(nominations~parent_income+smoker+alcohol_use+nsports, 
+              data=imputation)
+  b <- cbind(b, coef(model))
+  se <- cbind(se, summary(model)$coef[,2])
+}
+b
+```
+
+The `b` and `se` objects are matrices that contain the coefficients and standard errors, respectively, for each model on the column.
+
+##  Hard way: pool the results
+
+Now we can pool the results using the `b` and `se` matrices and some creative use of `apply` commands. 
+
+```{r}
+#| label: pool-forloop-mi
+
+b.pool <- apply(b,1,mean)
+between.var <- apply(b,1,var)
+within.var <- apply(se^2,1,mean)
+se.pool <- sqrt(within.var+between.var+between.var/5)
+t.pool <- b.pool/se.pool
+pvalue.pool <- (1-pnorm(abs(t.pool)))*2
+tibble(b.pool, se.pool, t.pool, pvalue.pool) |>
+  gt()
+```
 
