@@ -7,6 +7,7 @@
 #add new packages to the chain here
 packages = c("here","tidyverse", "broom",
              "ggalt","scales","ggrepel","gganimate","gifski", "ggforce",
+             "sf",
              "psych","car","MASS","VGAM","nlme","nnet",
              "sp",
              "sandwich","lmtest","survey","mice",
