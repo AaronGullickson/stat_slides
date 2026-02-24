@@ -192,7 +192,7 @@ intercept
 
 ::: {.fragment}
 
-$$\hat{\texttt{property_crimes}}_i=1238.1+220.8(\texttt{unemployment_rate}_i)$$
+$$\hat{\text{property crimes}}_i=1238.1+220.8(\text{unemployment rate}_i)$$
 
 :::
 
@@ -289,7 +289,7 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
 
 ## Interpreting the results
 
-$$\hat{\texttt{property_crimes}}_i=1238.1+220.8(\texttt{unemploy_rate}_i)$$
+$$\hat{\text{property crimes}}_i=1238.1+220.8(\text{unemployment rate}_i)$$
 
 :::: {.columns}
 
@@ -327,7 +327,7 @@ on average
 
 Try interpreting these numbers from a regression model where the dependent variable is box office returns (in millions of dollars) and the independent variable is the metascore (from 0 to 100 in "points"). 
 
-$$\hat{\texttt{box_office}}_i=4.98+0.77(\texttt{metascore}_i)$$
+$$\hat{\text{box office}}_i=4.98+0.77(\text{metascore}_i)$$
 
 :::: {.columns}
 
@@ -353,7 +353,7 @@ The model predicts that a one point increase in the metascore rating is associat
 
 Try interpreting these numbers from a regression model where the dependent variable is sexual frequency (sexual encounters per year) and the independent variable is age in years. 
 
-$$\hat{\texttt{sex}}_i=88.32-0.83(\texttt{age}_i)$$
+$$\hat{\text{sex}}_i=88.32-0.83(\text{age}_i)$$
 
 :::: {.columns}
 
@@ -456,7 +456,7 @@ ggplot(sex, aes(x=age, y=sexf))+
 
 ##  Now interpret these numbers
 
-$$\hat{\texttt{sex}}_i=73.45-0.83(\texttt{age}_i-18)$$
+$$\hat{\text{sex}}_i=73.45-0.83(\text{age}_i-18)$$
 
 :::: {.columns}
 
@@ -824,7 +824,7 @@ text(5.5,4.5,"+", cex=1.2)
 
 Just add the potential confounder to the model:
 
-$$\hat{\texttt{crime_rate}}_i=b_0+b_1(\texttt{percent lhs}_i)+b_2(\texttt{poverty rate}_i)$$
+$$\hat{\text{crime rate}}_i=b_0+b_1(\text{percent lhs}_i)+b_2(\text{poverty rate}_i)$$
 
 ::: {.fragment}
 
@@ -1010,7 +1010,7 @@ Note that I use the term *report* here because its not exactly clear why these n
 
 ## Make an indicator variable
 
-$$\texttt{female}_i=\begin{cases}
+$$\text{female}_i=\begin{cases}
   1 & \text{if female}\\
   0 & \text{otherwise}
   \end{cases}$$
@@ -1288,7 +1288,7 @@ model_add <- lm(wages~nchild+gender, data=earnings)
 coef(model_add)
 ```
 
-$$\hat{\texttt{wages}}_i=25.24+1.55(\texttt{nchild}_i)-3.97(\texttt{female}_i)$$
+$$\hat{\text{wages}}_i=25.24+1.55(\text{nchild}_i)-3.97(\text{female}_i)$$
 
 What is the relationship between wages and number of children for men and women?
 
@@ -1297,11 +1297,11 @@ What is the relationship between wages and number of children for men and women?
 ::: {.column .fragment}
 
 ### Men
-The $\texttt{female}_i$ variable is an indicator variable that is zero for men, so:
+The $\text{female}_i$ variable is an indicator variable that is zero for men, so:
 
 $$\begin{eqnarray*}
-\hat{\texttt{wages}}_i & = & 25.24+1.55(\texttt{nchild}_i)-3.97(0)\\
-\hat{\texttt{wages}}_i & = & 25.24+1.55(\texttt{nchild}_i)
+\hat{\text{wages}}_i & = & 25.24+1.55(\text{nchild}_i)-3.97(0)\\
+\hat{\text{wages}}_i & = & 25.24+1.55(\text{nchild}_i)
 \end{eqnarray*}$$
 
 :::
@@ -1309,12 +1309,12 @@ $$\begin{eqnarray*}
 ::: {.column .fragment}
 
 ### Women
-The $\texttt{female}_i$ variable is an indicator variable that is one for women, so:
+The $\text{female}_i$ variable is an indicator variable that is one for women, so:
 
 $$\begin{eqnarray*}
-\hat{\texttt{wages}}_i & = & 25.24+1.55(\texttt{nchild}_i)-3.97(1)\\
-\hat{\texttt{wages}}_i & = & (25.24-3.97)+1.55(\texttt{nchild}_i)\\
-\hat{\texttt{wages}}_i & = & 21.27+1.55(\texttt{nchild}_i)\\
+\hat{\text{wages}}_i & = & 25.24+1.55(\text{nchild}_i)-3.97(1)\\
+\hat{\text{wages}}_i & = & (25.24-3.97)+1.55(\text{nchild}_i)\\
+\hat{\text{wages}}_i & = & 21.27+1.55(\text{nchild}_i)\\
 \end{eqnarray*}$$
 
 :::
@@ -1345,8 +1345,8 @@ ggplot(earnings, aes(x=nchild, y=wages,
 
 ::: {.column}
 $$\begin{eqnarray*}
-\hat{\texttt{wages}}_i&=&25.24+1.55(\texttt{nchild}_i)\\
- & & -3.97(\texttt{female}_i)
+\hat{\text{wages}}_i&=&25.24+1.55(\text{nchild}_i)\\
+ & & -3.97(\text{female}_i)
 \end{eqnarray*}$$
 
 * The effect of number of children on wages ($1.55) is **forced** to be the same for men and women.
@@ -1363,7 +1363,7 @@ model_mult <- lm(wages~nchild*gender, data=earnings)
 coef(model_mult)
 ```
 
-$$\hat{\texttt{wages}}_i=24.72+1.78(\texttt{nchild}_i)-2.84(\texttt{female}_i)-1.33(\texttt{nchild}_i)(\texttt{female}_i)$$
+$$\hat{\text{wages}}_i=24.72+1.78(\text{nchild}_i)-2.84(\text{female}_i)-1.33(\text{nchild}_i)(\text{female}_i)$$
 
 What is the relationship between wages and number of children for men and women?
 
@@ -1372,12 +1372,12 @@ What is the relationship between wages and number of children for men and women?
 ::: {.column .fragment}
 
 ### Men
-The $\texttt{female}_i$ variable is an indicator variable that is zero for men, so:
+The $\text{female}_i$ variable is an indicator variable that is zero for men, so:
 
 $$\begin{eqnarray*}
-\hat{\texttt{wages}}_i & = & 24.72+1.78(\texttt{nchild}_i)-2.84(0)\\
-& & -1.33(\texttt{nchild}_i)(0)\\
-\hat{\texttt{wages}}_i & = & 24.72+1.78(\texttt{nchild}_i)
+\hat{\text{wages}}_i & = & 24.72+1.78(\text{nchild}_i)-2.84(0)\\
+& & -1.33(\text{nchild}_i)(0)\\
+\hat{\text{wages}}_i & = & 24.72+1.78(\text{nchild}_i)
 \end{eqnarray*}$$
 
 :::
@@ -1385,13 +1385,13 @@ $$\begin{eqnarray*}
 ::: {.column .fragment}
 
 ### Women
-The $\texttt{female}_i$ variable is an indicator variable that is one for women, so:
+The $\text{female}_i$ variable is an indicator variable that is one for women, so:
 
 $$\begin{eqnarray*}
-\hat{\texttt{wages}}_i & = & 24.72+1.78(\texttt{nchild}_i)-2.84(1)\\
-& & -1.33(\texttt{nchild}_i)(1)\\
-\hat{\texttt{wages}}_i & = & (24.72-2.84)+(1.78-1.33)(\texttt{nchild}_i)\\
-\hat{\texttt{wages}}_i & = & 21.82+0.45(\texttt{nchild}_i)\\
+\hat{\text{wages}}_i & = & 24.72+1.78(\text{nchild}_i)-2.84(1)\\
+& & -1.33(\text{nchild}_i)(1)\\
+\hat{\text{wages}}_i & = & (24.72-2.84)+(1.78-1.33)(\text{nchild}_i)\\
+\hat{\text{wages}}_i & = & 21.82+0.45(\text{nchild}_i)\\
 \end{eqnarray*}$$
 
 :::
@@ -1422,8 +1422,8 @@ ggplot(earnings, aes(x=nchild, y=wages,
 
 ::: {.column}
 
-$$\begin{eqnarray*}\hat{\texttt{wages}}_i & = & 24.72+1.78(\texttt{nchild}_i)-2.84(\texttt{female}_i)\\
-& & -1.33(\texttt{nchild}_i)(\texttt{female}_i)\\\end{eqnarray*}$$
+$$\begin{eqnarray*}\hat{\text{wages}}_i & = & 24.72+1.78(\text{nchild}_i)-2.84(\text{female}_i)\\
+& & -1.33(\text{nchild}_i)(\text{female}_i)\\\end{eqnarray*}$$
 
 * This model shows that men and women get different returns to wages for the number of children with men getting a much greater return ($1.78 to $0.45).
 * This models shows that the wage gap starts at $2.84 when men and women have no children and grows by $1.33 for every child. 
@@ -1501,7 +1501,7 @@ options(width=80)
 coef(lm(wages~nchild*gender, data=earnings))
 ```
 
-$$\hat{\texttt{wages}}_i  =  24.72+1.78(\texttt{nchild}_i)-2.84(\texttt{female}_i)-1.33(\texttt{nchild}_i)(\texttt{female}_i)$$
+$$\hat{\text{wages}}_i  =  24.72+1.78(\text{nchild}_i)-2.84(\text{female}_i)-1.33(\text{nchild}_i)(\text{female}_i)$$
 
 * The model predicts that men with no children make $24.72/hour, on average.
 * The model predicts that **among workers with no children**, women make $2.84 less than men, on average.
