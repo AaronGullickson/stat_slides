@@ -2,16 +2,12 @@
 
 library(ggplot2)
 
-theme_myslides <- theme_bw()+
-  theme(axis.title = element_text(size=24),
-        axis.text = element_text(size=18),
-        plot.title = element_text(size=36),
-        plot.subtitle = element_text(size=30),
-        plot.caption = element_text(size=30),
-        legend.title = element_text(size=24),
-        legend.text = element_text(size=18),
-        plot.background = element_rect(fill = "white",
-                                       color="white"),
-        panel.background = element_rect(fill = "white"),
-        legend.background = element_rect(fill = "white"))
-theme_set(theme_myslides)
+# just set the base size - this base size will wok well for half-width figures
+# for full with figures switch to 22.
+theme_set(theme_bw(base_size = 30))
+
+# set up function for annotating text at the right scale, set size to 5 for
+# full width figures
+annotate_text <- function(text, ..., size = 7) {
+  annotate("label", label = text, ..., size = size)
+}
