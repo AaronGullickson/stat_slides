@@ -88,13 +88,14 @@ percent
 
 
 :::: {.columns}
-::: {.column width="50%"}
-::: {.fragment}
+
+::: {.column .fragment}
+
 ### {{< fa xmark >}} Don't use a piechart
+
 ```{r}
 #| label: no-piechart
 #| echo: false
-#| fig-height: 10
 politics |>
   group_by(party) |>
   summarize(n=n()) |>
@@ -107,22 +108,22 @@ politics |>
         axis.title = element_blank())
 ```
 :::
-:::
 
-::: {.column width="50%"}
-::: {.fragment}
+::: {.column .fragment}
+
 ### {{< fa check >}} Use a barplot
+
 ```{r}
 #| label: use-barplot
 #| echo: false
-#| fig-height: 10
+#| fig-asp: 1.1
 ggplot(politics, aes(x=party, y=after_stat(prop), group=1))+
   geom_bar()+
   scale_y_continuous(label=scales::percent)+
   labs(x="party affiliation", y=NULL)
 ```
 :::
-:::
+
 ::::
 
 ## Constructing a barplot using ggplot
@@ -194,13 +195,13 @@ ggplot(politics,
 
 ```{r}
 #| label: histogram-stretch
-#| fig-width: 24
-#| fig-height: 12
+#| fig-asp: 0.5625
 #| echo: false
 ggplot(movies, aes(x=runtime))+
   geom_histogram(fill="skyblue", color="black", 
                  binwidth=5)+
-  labs(x="runtime in minutes")
+  labs(x="runtime in minutes")+
+  theme_bw(base_size = 22)
 ```
 
 ## How a histogram is created
@@ -423,7 +424,8 @@ ggplot(movies, aes(x=runtime))+
   scale_color_viridis_d()+
   labs(x="runtime in minutes",
        title="Distribution of movie runtime")+
-  geom_vline(data=temp, aes(xintercept = value, color=measure), linewidth=2)
+  geom_vline(data=temp, aes(xintercept = value, color=measure), linewidth=2)+
+  theme(legend.position = "bottom")
 ```
 
 :::
@@ -442,21 +444,22 @@ ggplot(movies, aes(x=runtime))+
 
 ```{r}
 #| label: hist-mean-median-boxoffice
-#| fig-width: 24
-#| fig-height: 14
+#| fig-asp: 0.5625
 #| echo: false
+
 temp <- data.frame(value=c(mean(movies$box_office), median(movies$box_office)),
                    measure=c("mean","median"))
 ggplot(movies, aes(x=box_office))+
-  geom_histogram(fill="grey", color="black", 
+  geom_histogram(fill="grey", color="grey60", 
                  binwidth=5)+
   labs(x="box office returns in millions of USD", y=NULL,
        title="Distribution of movie box office returns")+
   scale_color_viridis_d()+
   geom_vline(data=temp, aes(xintercept = value, color=measure), linewidth=2)+
-  annotate("label", x=300, y=400, 
-           label="The mean ($45.2 million) is more than\ndouble the median ($21.6 million)",
-           size=12)
+  annotate_text("The mean ($45.2 million) is more than\ndouble the median ($21.6 million)", 
+                x = 400, y = 400, size = 5)+
+  theme(legend.position = "bottom")+
+  theme_bw(base_size = 22)
 ```
 
 ## Modal Categories
@@ -482,8 +485,7 @@ ggplot(movies, aes(x=maturity_rating, y=after_stat(prop), group=1))+
   scale_y_continuous(labels=scales::percent, limits = c(0,0.5))+
   labs(x=NULL, y=NULL, 
        title="Distribution of movie maturity rating")+
-  annotate("label", x=4, y=0.5, label="R-rated is the\nmodal category",
-           size=7)
+  annotate_text("R-rated is the\nmodal category", x = 4, y = 0.5)
 ```
 
 :::
@@ -553,7 +555,7 @@ quantile(movies$runtime)
 ggplot(movies, aes(x="", y=runtime))+
   geom_boxplot(fill="grey", outlier.color = "red")+
   labs(x=NULL, y="runtime in minutes",
-       title="Use the five-number summary to create\na boxplot")
+       title="Use the five-number summary to\ncreate a boxplot")
 ```
 
 :::
@@ -567,32 +569,32 @@ ggplot(movies, aes(x="", y=runtime))+
 ```{r echo=FALSE, fig.width=12}
 #| label: boxplot-anatomy
 #| echo: false
-#| fig-width: 24
-#| fig-height: 14
+#| fig-asp: 0.5625
 ggplot(movies, aes(y=runtime))+
   geom_hline(yintercept = 116, linetype=2, color="grey")+
-  annotate("label", x=0.5, y=116, label="75%", size=10)+
+  annotate_text("75%", x = 0.5, y = 116, size = 5)+
   geom_hline(yintercept = 95, linetype=2, color="grey")+
-  annotate("label", x=0.5, y=95, label="25%", size=10)+
-  geom_hline(yintercept = 104, linetype=2, color="grey")+
-  annotate("label", x=0.5, y=104, label="50% (median)", size=10)+
-  geom_segment(x=0.6, xend=0.6, y=95, yend=116, 
+  annotate_text("25%", x = 0.5, y = 95, size= 5)+
+  geom_hline(yintercept = 104, linetype = 2, color="grey")+
+  annotate_text("50% (median)", x = 0.5, y = 104, size = 5)+
+  geom_segment(x=0.6, xend = 0.6, y = 95, yend=116, 
                arrow=arrow(length=unit(0.1, "inch")))+
   geom_segment(x=0.6, xend=0.6, y=116, yend=95, 
                arrow=arrow(length=unit(0.1, "inch")))+
-  annotate("label", x=0.6, y=120, label="IQR", size=10)+
+  annotate_text("IQR", x = 0.6, y = 120, size = 5)+
   geom_segment(x=0.05, xend=0.05, y=116, yend=116+20*1.5, 
                arrow=arrow(length=unit(0.1, "inch")))+
   geom_segment(x=0.05, xend=0.05, yend=116, y=116+20*1.5, 
                arrow=arrow(length=unit(0.1, "inch")))+
-  annotate("label", x=0.25, y=140, size=10,
-           label="whiskers to either maximum/minimum\nor 1.5 x IQR, whichever is shortest")+
-  annotate("label", x=0.2, y=175, size=10, 
-           label="observations beyond 1.5 x IQR\nare drawn individually",
-           color="red")+
+  annotate_text("whiskers to either maximum/minimum\nor 1.5 x IQR, whichever is shortest", 
+                x=0.25, y=140, size = 5)+
+  annotate_text("observations beyond 1.5 x IQR\nare drawn individually", 
+           x=0.2, y=175, color="red", size = 5)+
   geom_boxplot(fill="grey", outlier.color = "red")+
   xlim(-0.6, 0.6)+
-  labs(x=NULL, y="runtime in minutes")
+  labs(x=NULL, y="runtime in minutes")+
+  theme_bw(base_size = 22)
+  
 ```
 
 
@@ -632,8 +634,7 @@ You can use `fill` to determine color of the box and `outlier.color` to determin
 #| echo: false
 ggplot(movies, aes(x="", y=runtime))+
   geom_boxplot(fill="grey", outlier.color="red")+
-  labs(x=NULL, y="runtime in minutes")+
-  theme_bw()
+  labs(x=NULL, y="runtime in minutes")
 ```
 
 :::
@@ -647,8 +648,7 @@ ggplot(movies, aes(x="", y=runtime))+
 ```{r}
 #| label: spread-example
 #| echo: false
-#| fig-width: 24
-#| fig-height: 14
+#| fig-asp: 0.5625
 temp <- data.frame(x=c(rnorm(10000,10,1),
                        rnorm(10000,10,0.5)),
                    type=c(rep("wide",10000),
@@ -658,8 +658,8 @@ ggplot(temp, aes(x=x, fill=type))+
   geom_histogram(data=subset(temp, type=="wide"), alpha=0.7, binwidth=0.2)+
   scale_fill_viridis_d()+
   guides(fill=FALSE)+
-  labs(x="some interesting variable",
-       title="Distributions with the same center and shape, but different spread")
+  labs(x="some interesting variable")+
+  theme_bw(base_size = 22)
 ```
 
 ## Measures of spread {.smaller}
