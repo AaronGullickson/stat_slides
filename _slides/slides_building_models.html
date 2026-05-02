@@ -6,10 +6,10 @@
 <script src="slides_building_models_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="slides_building_models_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="slides_building_models_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="slides_building_models_files/libs/quarto-html/quarto-syntax-highlighting-9e1f2a4632985dffc2c80318c992baf5.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="slides_building_models_files/libs/quarto-html/quarto-syntax-highlighting-15ea27bac76f9890c21e80949f497921.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <link href="slides_building_models_files/libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="slides_building_models_files/libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.6.40">
+  <meta name="generator" content="quarto-1.8.24">
 
   <meta name="author" content="Aaron Gullickson">
   <title>Building Models</title>
@@ -31,8 +31,9 @@
       vertical-align: middle;
     }
     /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -43,7 +44,7 @@
     }
     @media print {
     pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
     }
     pre.numberSource code
       { counter-reset: source-line 0; }
@@ -94,7 +95,7 @@
     code span.vs { color: #4e9a06; } /* VerbatimString */
     code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="slides_building_models_files/libs/revealjs/dist/theme/quarto-4911d2f5eb786d6d95cb091d6b3cdfd5.css">
+  <link rel="stylesheet" href="slides_building_models_files/libs/revealjs/dist/theme/quarto-3a545247d623608b5794fddbc58eab20.css">
   <link href="slides_building_models_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="slides_building_models_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="slides_building_models_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -189,15 +190,15 @@
       margin-right: 0; 
     }
   </style>
-  <link href="slides_building_models_files/libs/htmltools-fill-0.5.8/fill.css" rel="stylesheet">
+  <link href="slides_building_models_files/libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
   <script src="slides_building_models_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
-  <script src="slides_building_models_files/libs/plotly-binding-4.10.4/plotly.js"></script>
+  <script src="slides_building_models_files/libs/plotly-binding-4.12.0/plotly.js"></script>
   <script src="slides_building_models_files/libs/typedarray-0.1/typedarray.min.js"></script>
   <script src="slides_building_models_files/libs/jquery-3.5.1/jquery.min.js"></script>
-  <link href="slides_building_models_files/libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
-  <script src="slides_building_models_files/libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
-  <link href="slides_building_models_files/libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
-  <script src="slides_building_models_files/libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+  <link href="slides_building_models_files/libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+  <script src="slides_building_models_files/libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+  <link href="slides_building_models_files/libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet">
+  <script src="slides_building_models_files/libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -224,7 +225,7 @@ Aaron Gullickson
 <section id="drawing-straight-lines" class="slide level2">
 <h2>Drawing straight lines</h2>
 
-<img data-src="slides_building_models_files/figure-revealjs/scatter-straight-lines1-1.png" width="2304" class="r-stretch"></section>
+<img data-src="slides_building_models_files/figure-revealjs/scatter-straight-lines1-1.png" width="960" class="r-stretch"></section>
 <section id="drawing-straight-lines-1" class="slide level2">
 <h2>Drawing straight lines</h2>
 
@@ -289,20 +290,20 @@ Aaron Gullickson
 <div class="fragment">
 <p>We can calculate by hand in R, although we will learn an easier way later:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fu">cor</span>(crimes<span class="sc">$</span>property_rate,crimes<span class="sc">$</span>unemploy_rate)<span class="sc">*</span><span class="fu">sd</span>(crimes<span class="sc">$</span>property_rate)<span class="sc">/</span><span class="fu">sd</span>(crimes<span class="sc">$</span>unemploy_rate)</span>
-<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>slope</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fu">cor</span>(crimes<span class="sc">$</span>property_rate,crimes<span class="sc">$</span>unemploy_rate)<span class="sc">*</span><span class="fu">sd</span>(crimes<span class="sc">$</span>property_rate)<span class="sc">/</span><span class="fu">sd</span>(crimes<span class="sc">$</span>unemploy_rate)</span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>slope</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 220.7796</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>intercept <span class="ot">&lt;-</span> <span class="fu">mean</span>(crimes<span class="sc">$</span>property_rate)<span class="sc">-</span>slope<span class="sc">*</span><span class="fu">mean</span>(crimes<span class="sc">$</span>unemploy_rate)</span>
-<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>intercept</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>intercept <span class="ot">&lt;-</span> <span class="fu">mean</span>(crimes<span class="sc">$</span>property_rate)<span class="sc">-</span>slope<span class="sc">*</span><span class="fu">mean</span>(crimes<span class="sc">$</span>unemploy_rate)</span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>intercept</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1238.073</code></pre>
 </div>
 </div>
 </div>
 <div class="fragment">
-<p><span class="math display">\[\hat{\texttt{property_crimes}}_i=1238.1+220.8(\texttt{unemployment_rate}_i)\]</span></p>
+<p><span class="math display">\[\hat{\text{property crimes}}_i=1238.1+220.8(\text{unemployment rate}_i)\]</span></p>
 </div>
 </section>
 <section id="the-ols-regression-line-as-a-model" class="slide level2 smaller">
@@ -315,14 +316,14 @@ Aaron Gullickson
 <div class="fragment">
 <p>the <code>lm</code> command can be used to create a model object in R:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(property_rate<span class="sc">~</span>unemploy_rate, <span class="at">data=</span>crimes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(property_rate<span class="sc">~</span>unemploy_rate, <span class="at">data=</span>crimes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The tilde (~) is used to indicate the relationship between the two variables with the dependent variable on the left hand side.</p>
 </div>
 <div class="fragment">
 <p>I can then use the <code>coef</code> command on this model to get my coefficients (i.e.&nbsp;intercept and slope).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  (Intercept) unemploy_rate 
     1238.0725      220.7796 </code></pre>
@@ -334,7 +335,7 @@ Aaron Gullickson
 <section id="use-summary-for-model-tmi" class="slide level2">
 <h2>Use <code>summary</code> for model TMI</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -362,11 +363,11 @@ F-statistic: 9.392 on 1 and 49 DF,  p-value: 0.003539</code></pre>
 <div class="columns">
 <div class="column" style="width:40%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crimes, <span class="fu">aes</span>(<span class="at">x=</span>unemploy_rate, <span class="at">y=</span>property_rate))<span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crimes, <span class="fu">aes</span>(<span class="at">x=</span>unemploy_rate, <span class="at">y=</span>property_rate))<span class="sc">+</span></span>
 <span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
 <span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)<span class="sc">+</span></span>
 <span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"unemployment rate"</span>,</span>
-<span id="cb10-5"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"property crimes (per 100,000)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-5"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"property crimes (per 100,000)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment" data-code-focus="3">
 <p><code>geom_smooth</code> with the argument <code>method="lm"</code> will add the OLS regression line to your scatterplot.</p>
@@ -386,7 +387,7 @@ F-statistic: 9.392 on 1 and 49 DF,  p-value: 0.003539</code></pre>
 </section>
 <section id="interpreting-the-results" class="slide level2">
 <h2>Interpreting the results</h2>
-<p><span class="math display">\[\hat{\texttt{property_crimes}}_i=1238.1+220.8(\texttt{unemploy_rate}_i)\]</span></p>
+<p><span class="math display">\[\hat{\text{property crimes}}_i=1238.1+220.8(\text{unemployment rate}_i)\]</span></p>
 <div class="columns">
 <div class="column fragment">
 <h3 id="intercept">Intercept</h3>
@@ -416,7 +417,7 @@ We don’t expect to see the exact same value for all cases with <span class="ma
 <section id="try-interpreting-these-numbers" class="slide level2 smaller">
 <h2>Try interpreting these numbers</h2>
 <p>Try interpreting these numbers from a regression model where the dependent variable is box office returns (in millions of dollars) and the independent variable is the metascore (from 0 to 100 in “points”).</p>
-<p><span class="math display">\[\hat{\texttt{box_office}}_i=4.98+0.77(\texttt{metascore}_i)\]</span></p>
+<p><span class="math display">\[\hat{\text{box office}}_i=4.98+0.77(\text{metascore}_i)\]</span></p>
 <div class="columns">
 <div class="column fragment">
 <h3 id="intercept-1">Intercept</h3>
@@ -429,7 +430,7 @@ We don’t expect to see the exact same value for all cases with <span class="ma
 <section id="nonsensical-intercepts" class="slide level2 smaller">
 <h2>Nonsensical Intercepts</h2>
 <p>Try interpreting these numbers from a regression model where the dependent variable is sexual frequency (sexual encounters per year) and the independent variable is age in years.</p>
-<p><span class="math display">\[\hat{\texttt{sex}}_i=88.32-0.83(\texttt{age}_i)\]</span></p>
+<p><span class="math display">\[\hat{\text{sex}}_i=88.32-0.83(\text{age}_i)\]</span></p>
 <div class="columns">
 <div class="column fragment">
 <h3 id="intercept-2">Intercept</h3>
@@ -457,8 +458,8 @@ We don’t expect to see the exact same value for all cases with <span class="ma
 <div class="fragment">
 <p>In the formula of the <code>lm</code> command in R, we can do this easily by surrounding our math with <code>I()</code> which tells R to apply the function inside and treat it as a new variable:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sexf<span class="sc">~</span><span class="fu">I</span>(age<span class="dv">-18</span>), <span class="at">data=</span>sex)</span>
-<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(model), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sexf<span class="sc">~</span><span class="fu">I</span>(age<span class="dv">-18</span>), <span class="at">data=</span>sex)</span>
+<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(model), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept) I(age - 18) 
       73.45       -0.83 </code></pre>
@@ -479,7 +480,7 @@ We don’t expect to see the exact same value for all cases with <span class="ma
 </section>
 <section id="now-interpret-these-numbers" class="slide level2">
 <h2>Now interpret these numbers</h2>
-<p><span class="math display">\[\hat{\texttt{sex}}_i=73.45-0.83(\texttt{age}_i-18)\]</span></p>
+<p><span class="math display">\[\hat{\text{sex}}_i=73.45-0.83(\text{age}_i-18)\]</span></p>
 <div class="columns">
 <div class="column fragment">
 <h3 id="intercept-3">Intercept</h3>
@@ -561,7 +562,7 @@ We don’t expect to see the exact same value for all cases with <span class="ma
 <p>It turns out:</p>
 <p><span class="math display">\[1-\frac{\sum_{i=1}^n (y_i-\hat{y}_i)^2}{\sum_{i=1}^n (y_i-\bar{y})^2}=r^2\]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(crimes<span class="sc">$</span>unemploy_rate, crimes<span class="sc">$</span>property_rate)<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(crimes<span class="sc">$</span>unemploy_rate, crimes<span class="sc">$</span>property_rate)<span class="sc">^</span><span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1608377</code></pre>
 </div>
@@ -574,7 +575,7 @@ We don’t expect to see the exact same value for all cases with <span class="ma
 <div class="columns">
 <div class="column fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(crimes<span class="sc">$</span>unemploy_rate, crimes<span class="sc">$</span>property_rate)<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(crimes<span class="sc">$</span>unemploy_rate, crimes<span class="sc">$</span>property_rate)<span class="sc">^</span><span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1608377</code></pre>
 </div>
@@ -582,7 +583,7 @@ We don’t expect to see the exact same value for all cases with <span class="ma
 <p>About 19.7% of the variation in property crime rates across states can be accounted for by variation in unemployment rates across states.</p>
 </div><div class="column fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(property_rate<span class="sc">~</span>unemploy_rate, <span class="at">data=</span>crimes))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(property_rate<span class="sc">~</span>unemploy_rate, <span class="at">data=</span>crimes))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -615,7 +616,7 @@ F-statistic: 9.392 on 1 and 49 DF,  p-value: 0.003539</code></pre>
 <p>How do we test?</p>
 </div><div class="column fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(property_rate<span class="sc">~</span>unemploy_rate, <span class="at">data=</span>crimes))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(property_rate<span class="sc">~</span>unemploy_rate, <span class="at">data=</span>crimes))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -662,8 +663,8 @@ F-statistic: 9.392 on 1 and 49 DF,  p-value: 0.003539</code></pre>
 <div class="columns">
 <div class="column fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(property_rate<span class="sc">~</span>percent_lhs, <span class="at">data=</span>crimes)</span>
-<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(property_rate<span class="sc">~</span>percent_lhs, <span class="at">data=</span>crimes)</span>
+<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept) percent_lhs 
   1693.3291     71.4142 </code></pre>
@@ -674,11 +675,11 @@ F-statistic: 9.392 on 1 and 49 DF,  p-value: 0.003539</code></pre>
 </div><div class="column fragment">
 <h4 id="potential-spuriousness">⚠️ Potential spuriousness!</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(crimes<span class="sc">$</span>poverty_rate, crimes<span class="sc">$</span>property_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(crimes<span class="sc">$</span>poverty_rate, crimes<span class="sc">$</span>property_rate)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5000783</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(crimes<span class="sc">$</span>poverty_rate, crimes<span class="sc">$</span>percent_lhs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(crimes<span class="sc">$</span>poverty_rate, crimes<span class="sc">$</span>percent_lhs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.8241208</code></pre>
 </div>
@@ -720,7 +721,7 @@ F-statistic: 9.392 on 1 and 49 DF,  p-value: 0.003539</code></pre>
 <section id="account-for-a-confounding-variable" class="slide level2">
 <h2>Account for a confounding variable</h2>
 <p>Just add the potential confounder to the model:</p>
-<p><span class="math display">\[\hat{\texttt{crime_rate}}_i=b_0+b_1(\texttt{percent lhs}_i)+b_2(\texttt{poverty rate}_i)\]</span></p>
+<p><span class="math display">\[\hat{\text{crime rate}}_i=b_0+b_1(\text{percent lhs}_i)+b_2(\text{poverty rate}_i)\]</span></p>
 <div class="fragment">
 <p>😮 Thats right, you can have more than one independent variable in a linear model. But what does it mean?</p>
 </div>
@@ -729,16 +730,16 @@ F-statistic: 9.392 on 1 and 49 DF,  p-value: 0.003539</code></pre>
 <h2>Plot in three dimensions</h2>
 <div class="cell">
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item" id="htmlwidget-598acc59d2de32995fa7" style="width:960px;height:576px;"></div>
-<script type="application/json" data-for="htmlwidget-598acc59d2de32995fa7">{"x":{"visdat":{"158b6634d9ad5":["function () ","plotlyVisDat"]},"cur_data":"158b6634d9ad5","attrs":{"158b6634d9ad5":{"x":[14.243908558836203,7.2761221367015052,13.228549749974752,13.806233860032501,17.070005074586504,8.6090457430416532,9.5140694264915435,10.224870791343362,9.4059111135752733,12.048218776041796,13.31920341817422,8.1645785421811929,9.4275411148424713,11.109754590437166,11.423753044162083,8.0095686837486593,9.2743610381727741,14.300014247650802,15.185616457970085,7.689454559731046,9.957986399530677,9.5679009095991727,9.4730601435424013,7.0315577467158947,16.0800461949643,10.437476574837605,6.8052982988154289,8.9128609866048318,13.698218791376252,7.1007178754667244,10.45939484548764,14.742949766187566,13.521995845760749,12.640141916895265,7.5054106924666435,9.9048958150252897,12.190671254595472,9.6180823399783844,9.7969110773768531,12.001560309224919,12.873552216512723,8.2781532862032545,13.028212380145611,16.802535385338011,8.0445999444464711,7.4385653691763611,10.694281956850121,8.8909649710122647,13.484417421777531,8.0687600184080495,7.1011145903706998],"y":[13.014501120005203,7.488382359082042,11.552939520400747,12.858256103428799,10.40721560906799,7.1687666412908948,6.9080789302752708,7.9797899126107081,12.893716950766906,10.609472734071719,12.144491415670837,6.7195496898789919,9.5775374503210031,9.3700929608739258,9.8981474988207214,7.3551860688810882,8.1695384585946691,13.527320818977396,14.568953212484212,7.9437519937693812,6.3751488182501292,7.4523794533020791,10.374804126663433,6.2585541958016906,15.947602760081484,9.7979650455187191,8.465236387950613,7.6719817202923766,9.8173993866961364,4.9064931714936728,7.6251997868939796,15.26149812490868,10.943475945383501,11.194602269415579,6.4157036029911625,10.42671036238557,11.610703441036145,9.1898646841686151,8.6689954116092789,9.1995024758865078,11.682395912929721,8.5227089430144947,11.877316690312682,11.899989817967892,7.2909982647122824,7.0666515157254146,7.4919733652400557,7.3997295532555079,12.963737429991488,7.6929243392356117,7.1153794420681677],"z":[2979.3178991510958,3157.5029589314067,2962.4204898692587,3202.4717853472175,2502.3258250362669,2669.6937179735855,1801.9703574162686,2644.9817425402225,4650.1570154460978,2646.2519697557018,2987.6339860820021,3019.9023297146441,1699.0185550679316,2015.9130631837779,2474.1155291565592,2033.9114174469701,2745.8638058435736,2164.973128996965,3358.5475267731158,1666.7763183836162,2297.2767051588712,1561.3746967290758,1870.8367599588905,2170.6088350587561,2741.9908071044702,2813.522012825199,2593.0874986168783,2282.421820832581,2592.9152270963768,1579.191106752628,1577.123886233667,3694.5079066401709,1560.2875346769142,2656.999229347562,2211.8037793510061,2520.2550733611552,2949.5771443504477,2987.3915884606708,1723.2829576958866,1857.8907789901791,3267.3513203484144,1891.1865856962479,2943.3645317225,2709.5301578947037,2815.4707853364198,1473.2165026265729,1836.5186291887403,3364.0179795067638,1909.7559356241268,1878.621490504587,1885.5462407678851],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"158b6634d9ad5.1":{"x":[6,7,8,9,10,11,12,13,14,15,16,17,18],"y":[5,6,7,8,9,10,11,12,13,14,15,16],"z":[[1933.2098031305325,1853.760322604056,1774.3108420775795,1694.8613615511031,1615.4118810246266,1535.9624004981501,1456.5129199716737,1377.0634394451972,1297.6139589187208,1218.1644783922443,1138.7149978657681,1059.2655173392916,979.81603681281513],[2131.4940322825782,2052.0445517561016,1972.5950712296253,1893.1455907031489,1813.6961101766724,1734.2466296501959,1654.7971491237195,1575.347668597243,1495.8981880707665,1416.4487075442903,1336.9992270178138,1257.5497464913374,1178.1002659648609],[2329.7782614346238,2250.3287809081476,2170.8793003816709,2091.4298198551946,2011.9803393287182,1932.5308588022417,1853.0813782757652,1773.6318977492888,1694.1824172228125,1614.7329366963361,1535.2834561698596,1455.8339756433832,1376.3844951169067],[2528.0624905866698,2448.6130100601931,2369.1635295337169,2289.7140490072406,2210.264568480764,2130.8150879542877,2051.365607427811,1971.9161269013348,1892.4666463748583,1813.0171658483819,1733.5676853219054,1654.1182047954289,1574.6687242689525],[2726.3467197387158,2646.8972392122391,2567.4477586857629,2487.9982781592862,2408.54879763281,2329.0993171063333,2249.649836579857,2170.2003560533803,2090.7508755269041,2011.3013950004276,1931.8519144739512,1852.4024339474747,1772.9529534209983],[2924.6309488907614,2845.1814683642851,2765.7319878378084,2686.2825073113322,2606.8330267848555,2527.3835462583793,2447.9340657319026,2368.4845852054264,2289.0351046789501,2209.5856241524734,2130.1361436259972,2050.6866630995205,1971.2371825730443],[3122.9151780428074,3043.4656975163307,2964.0162169898545,2884.5667364633778,2805.1172559369015,2725.6677754104248,2646.2182948839486,2566.7688143574719,2487.3193338309957,2407.8698533045194,2328.4203727780427,2248.9708922515665,2169.5214117250898],[3321.1994071948529,3241.7499266683767,3162.3004461419,3082.8509656154238,3003.4014850889471,2923.9520045624708,2844.5025240359946,2765.0530435095179,2685.6035629830417,2606.154082456565,2526.7046019300888,2447.2551214036121,2367.8056408771358],[3519.4836363468989,3440.0341558204223,3360.584675293946,3281.1351947674693,3201.6857142409931,3122.2362337145169,3042.7867531880402,2963.3372726615639,2883.8877921350872,2804.438311608611,2724.9888310821343,2645.5393505556581,2566.0898700291814],[3717.7678654989445,3638.3183849724683,3558.8689044459916,3479.4194239195153,3399.9699433930386,3320.5204628665624,3241.0709823400862,3161.6215018136095,3082.1720212871332,3002.7225407606566,2923.2730602341803,2843.8235797077036,2764.3740991812274],[3916.0520946509905,3836.6026141245138,3757.1531335980376,3677.7036530715609,3598.2541725450847,3518.8046920186084,3439.3552114921317,3359.9057309656555,3280.4562504391788,3201.0067699127026,3121.5572893862259,3042.1078088597496,2962.6583283332734],[4114.3363238030361,4034.8868432765598,3955.4373627500836,3875.9878822236069,3796.5384016971302,3717.088921170654,3637.6394406441777,3558.189960117701,3478.7404795912248,3399.2909990647481,3319.8415185382719,3240.3920380117956,3160.942557485319]],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"surface","color":["grey"],"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"percent LHS"},"yaxis":{"title":"poverty rate"},"zaxis":{"title":"property crimes per 100,000"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[14.243908558836203,7.2761221367015052,13.228549749974752,13.806233860032501,17.070005074586504,8.6090457430416532,9.5140694264915435,10.224870791343362,9.4059111135752733,12.048218776041796,13.31920341817422,8.1645785421811929,9.4275411148424713,11.109754590437166,11.423753044162083,8.0095686837486593,9.2743610381727741,14.300014247650802,15.185616457970085,7.689454559731046,9.957986399530677,9.5679009095991727,9.4730601435424013,7.0315577467158947,16.0800461949643,10.437476574837605,6.8052982988154289,8.9128609866048318,13.698218791376252,7.1007178754667244,10.45939484548764,14.742949766187566,13.521995845760749,12.640141916895265,7.5054106924666435,9.9048958150252897,12.190671254595472,9.6180823399783844,9.7969110773768531,12.001560309224919,12.873552216512723,8.2781532862032545,13.028212380145611,16.802535385338011,8.0445999444464711,7.4385653691763611,10.694281956850121,8.8909649710122647,13.484417421777531,8.0687600184080495,7.1011145903706998],"y":[13.014501120005203,7.488382359082042,11.552939520400747,12.858256103428799,10.40721560906799,7.1687666412908948,6.9080789302752708,7.9797899126107081,12.893716950766906,10.609472734071719,12.144491415670837,6.7195496898789919,9.5775374503210031,9.3700929608739258,9.8981474988207214,7.3551860688810882,8.1695384585946691,13.527320818977396,14.568953212484212,7.9437519937693812,6.3751488182501292,7.4523794533020791,10.374804126663433,6.2585541958016906,15.947602760081484,9.7979650455187191,8.465236387950613,7.6719817202923766,9.8173993866961364,4.9064931714936728,7.6251997868939796,15.26149812490868,10.943475945383501,11.194602269415579,6.4157036029911625,10.42671036238557,11.610703441036145,9.1898646841686151,8.6689954116092789,9.1995024758865078,11.682395912929721,8.5227089430144947,11.877316690312682,11.899989817967892,7.2909982647122824,7.0666515157254146,7.4919733652400557,7.3997295532555079,12.963737429991488,7.6929243392356117,7.1153794420681677],"z":[2979.3178991510958,3157.5029589314067,2962.4204898692587,3202.4717853472175,2502.3258250362669,2669.6937179735855,1801.9703574162686,2644.9817425402225,4650.1570154460978,2646.2519697557018,2987.6339860820021,3019.9023297146441,1699.0185550679316,2015.9130631837779,2474.1155291565592,2033.9114174469701,2745.8638058435736,2164.973128996965,3358.5475267731158,1666.7763183836162,2297.2767051588712,1561.3746967290758,1870.8367599588905,2170.6088350587561,2741.9908071044702,2813.522012825199,2593.0874986168783,2282.421820832581,2592.9152270963768,1579.191106752628,1577.123886233667,3694.5079066401709,1560.2875346769142,2656.999229347562,2211.8037793510061,2520.2550733611552,2949.5771443504477,2987.3915884606708,1723.2829576958866,1857.8907789901791,3267.3513203484144,1891.1865856962479,2943.3645317225,2709.5301578947037,2815.4707853364198,1473.2165026265729,1836.5186291887403,3364.0179795067638,1909.7559356241268,1878.621490504587,1885.5462407678851],"type":"scatter3d","mode":"markers","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[6,7,8,9,10,11,12,13,14,15,16,17,18],"y":[5,6,7,8,9,10,11,12,13,14,15,16],"z":[[1933.2098031305325,1853.760322604056,1774.3108420775795,1694.8613615511031,1615.4118810246266,1535.9624004981501,1456.5129199716737,1377.0634394451972,1297.6139589187208,1218.1644783922443,1138.7149978657681,1059.2655173392916,979.81603681281513],[2131.4940322825782,2052.0445517561016,1972.5950712296253,1893.1455907031489,1813.6961101766724,1734.2466296501959,1654.7971491237195,1575.347668597243,1495.8981880707665,1416.4487075442903,1336.9992270178138,1257.5497464913374,1178.1002659648609],[2329.7782614346238,2250.3287809081476,2170.8793003816709,2091.4298198551946,2011.9803393287182,1932.5308588022417,1853.0813782757652,1773.6318977492888,1694.1824172228125,1614.7329366963361,1535.2834561698596,1455.8339756433832,1376.3844951169067],[2528.0624905866698,2448.6130100601931,2369.1635295337169,2289.7140490072406,2210.264568480764,2130.8150879542877,2051.365607427811,1971.9161269013348,1892.4666463748583,1813.0171658483819,1733.5676853219054,1654.1182047954289,1574.6687242689525],[2726.3467197387158,2646.8972392122391,2567.4477586857629,2487.9982781592862,2408.54879763281,2329.0993171063333,2249.649836579857,2170.2003560533803,2090.7508755269041,2011.3013950004276,1931.8519144739512,1852.4024339474747,1772.9529534209983],[2924.6309488907614,2845.1814683642851,2765.7319878378084,2686.2825073113322,2606.8330267848555,2527.3835462583793,2447.9340657319026,2368.4845852054264,2289.0351046789501,2209.5856241524734,2130.1361436259972,2050.6866630995205,1971.2371825730443],[3122.9151780428074,3043.4656975163307,2964.0162169898545,2884.5667364633778,2805.1172559369015,2725.6677754104248,2646.2182948839486,2566.7688143574719,2487.3193338309957,2407.8698533045194,2328.4203727780427,2248.9708922515665,2169.5214117250898],[3321.1994071948529,3241.7499266683767,3162.3004461419,3082.8509656154238,3003.4014850889471,2923.9520045624708,2844.5025240359946,2765.0530435095179,2685.6035629830417,2606.154082456565,2526.7046019300888,2447.2551214036121,2367.8056408771358],[3519.4836363468989,3440.0341558204223,3360.584675293946,3281.1351947674693,3201.6857142409931,3122.2362337145169,3042.7867531880402,2963.3372726615639,2883.8877921350872,2804.438311608611,2724.9888310821343,2645.5393505556581,2566.0898700291814],[3717.7678654989445,3638.3183849724683,3558.8689044459916,3479.4194239195153,3399.9699433930386,3320.5204628665624,3241.0709823400862,3161.6215018136095,3082.1720212871332,3002.7225407606566,2923.2730602341803,2843.8235797077036,2764.3740991812274],[3916.0520946509905,3836.6026141245138,3757.1531335980376,3677.7036530715609,3598.2541725450847,3518.8046920186084,3439.3552114921317,3359.9057309656555,3280.4562504391788,3201.0067699127026,3121.5572893862259,3042.1078088597496,2962.6583283332734],[4114.3363238030361,4034.8868432765598,3955.4373627500836,3875.9878822236069,3796.5384016971302,3717.088921170654,3637.6394406441777,3558.189960117701,3478.7404795912248,3399.2909990647481,3319.8415185382719,3240.3920380117956,3160.942557485319]],"type":"surface","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-4a9ab519b0a6c4a5f52f" style="width:960px;height:576px;"></div>
+<script type="application/json" data-for="htmlwidget-4a9ab519b0a6c4a5f52f">{"x":{"visdat":{"c04911fd96f5":["function () ","plotlyVisDat"]},"cur_data":"c04911fd96f5","attrs":{"c04911fd96f5":{"x":[14.243908558836203,7.2761221367015052,13.228549749974752,13.806233860032501,17.070005074586504,8.6090457430416532,9.5140694264915435,10.224870791343362,9.4059111135752733,12.048218776041796,13.31920341817422,8.1645785421811929,9.4275411148424713,11.109754590437166,11.423753044162083,8.0095686837486593,9.2743610381727741,14.300014247650802,15.185616457970085,7.689454559731046,9.957986399530677,9.5679009095991727,9.4730601435424013,7.0315577467158947,16.0800461949643,10.437476574837605,6.8052982988154289,8.9128609866048318,13.698218791376252,7.1007178754667244,10.45939484548764,14.742949766187566,13.521995845760749,12.640141916895265,7.5054106924666435,9.9048958150252897,12.190671254595472,9.6180823399783844,9.7969110773768531,12.001560309224919,12.873552216512723,8.2781532862032545,13.028212380145611,16.802535385338011,8.0445999444464711,7.4385653691763611,10.694281956850121,8.8909649710122647,13.484417421777531,8.0687600184080495,7.1011145903706998],"y":[13.014501120005203,7.488382359082042,11.552939520400747,12.858256103428799,10.40721560906799,7.1687666412908948,6.9080789302752708,7.9797899126107081,12.893716950766906,10.609472734071719,12.144491415670837,6.7195496898789919,9.5775374503210031,9.3700929608739258,9.8981474988207214,7.3551860688810882,8.1695384585946691,13.527320818977396,14.568953212484212,7.9437519937693812,6.3751488182501292,7.4523794533020791,10.374804126663433,6.2585541958016906,15.947602760081484,9.7979650455187191,8.465236387950613,7.6719817202923766,9.8173993866961364,4.9064931714936728,7.6251997868939796,15.26149812490868,10.943475945383501,11.194602269415579,6.4157036029911625,10.42671036238557,11.610703441036145,9.1898646841686151,8.6689954116092789,9.1995024758865078,11.682395912929721,8.5227089430144947,11.877316690312682,11.899989817967892,7.2909982647122824,7.0666515157254146,7.4919733652400557,7.3997295532555079,12.963737429991488,7.6929243392356117,7.1153794420681677],"z":[2979.3178991510958,3157.5029589314067,2962.4204898692587,3202.4717853472175,2502.3258250362669,2669.6937179735855,1801.9703574162686,2644.9817425402225,4650.1570154460978,2646.2519697557018,2987.6339860820021,3019.9023297146441,1699.0185550679316,2015.9130631837779,2474.1155291565592,2033.9114174469701,2745.8638058435736,2164.973128996965,3358.5475267731158,1666.7763183836162,2297.2767051588712,1561.3746967290758,1870.8367599588905,2170.6088350587561,2741.9908071044702,2813.522012825199,2593.0874986168783,2282.421820832581,2592.9152270963768,1579.191106752628,1577.123886233667,3694.5079066401709,1560.2875346769142,2656.999229347562,2211.8037793510061,2520.2550733611552,2949.5771443504477,2987.3915884606708,1723.2829576958866,1857.8907789901791,3267.3513203484144,1891.1865856962479,2943.3645317225,2709.5301578947037,2815.4707853364198,1473.2165026265729,1836.5186291887403,3364.0179795067638,1909.7559356241268,1878.621490504587,1885.5462407678851],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"c04911fd96f5.1":{"x":[6,7,8,9,10,11,12,13,14,15,16,17,18],"y":[5,6,7,8,9,10,11,12,13,14,15,16],"z":[[1933.2098031305318,1853.7603226040555,1774.3108420775789,1694.8613615511026,1615.4118810246259,1535.9624004981497,1456.5129199716732,1377.0634394451968,1297.6139589187203,1218.1644783922438,1138.7149978657674,1059.2655173392909,979.81603681281445],[2131.4940322825773,2052.0445517561011,1972.5950712296244,1893.1455907031482,1813.6961101766715,1734.2466296501952,1654.7971491237188,1575.3476685972423,1495.8981880707659,1416.4487075442894,1336.9992270178129,1257.5497464913365,1178.10026596486],[2329.7782614346233,2250.3287809081471,2170.8793003816704,2091.4298198551942,2011.9803393287175,1932.5308588022413,1853.0813782757648,1773.6318977492883,1694.1824172228119,1614.7329366963354,1535.2834561698589,1455.8339756433825,1376.384495116906],[2528.0624905866694,2448.6130100601931,2369.1635295337164,2289.7140490072402,2210.2645684807635,2130.8150879542873,2051.3656074278106,1971.9161269013343,1892.4666463748579,1813.0171658483814,1733.5676853219049,1654.1182047954285,1574.668724268952],[2726.3467197387154,2646.8972392122391,2567.4477586857624,2487.9982781592862,2408.5487976328095,2329.0993171063333,2249.649836579857,2170.2003560533803,2090.7508755269037,2011.3013950004274,1931.851914473951,1852.4024339474745,1772.952953420998],[2924.6309488907614,2845.1814683642851,2765.7319878378084,2686.2825073113322,2606.8330267848555,2527.3835462583793,2447.9340657319026,2368.4845852054264,2289.0351046789501,2209.5856241524734,2130.1361436259967,2050.6866630995205,1971.237182573044],[3122.9151780428069,3043.4656975163307,2964.016216989854,2884.5667364633778,2805.1172559369011,2725.6677754104248,2646.2182948839481,2566.7688143574719,2487.3193338309957,2407.869853304519,2328.4203727780423,2248.9708922515661,2169.5214117250898],[3321.1994071948529,3241.7499266683767,3162.3004461419,3082.8509656154238,3003.4014850889471,2923.9520045624708,2844.5025240359946,2765.0530435095179,2685.6035629830412,2606.154082456565,2526.7046019300888,2447.2551214036121,2367.8056408771354],[3519.4836363468989,3440.0341558204227,3360.584675293946,3281.1351947674698,3201.6857142409931,3122.2362337145169,3042.7867531880402,2963.3372726615639,2883.8877921350877,2804.438311608611,2724.9888310821343,2645.5393505556581,2566.0898700291818],[3717.7678654989445,3638.3183849724683,3558.8689044459916,3479.4194239195153,3399.9699433930386,3320.5204628665624,3241.0709823400857,3161.6215018136095,3082.1720212871332,3002.7225407606566,2923.2730602341799,2843.8235797077036,2764.3740991812274],[3916.052094650991,3836.6026141245147,3757.153133598038,3677.7036530715618,3598.2541725450851,3518.8046920186089,3439.3552114921322,3359.9057309656559,3280.4562504391797,3201.006769912703,3121.5572893862263,3042.1078088597501,2962.6583283332739],[4114.336323803037,4034.8868432765603,3955.4373627500836,3875.9878822236074,3796.5384016971307,3717.0889211706544,3637.6394406441777,3558.1899601177015,3478.7404795912253,3399.2909990647486,3319.8415185382719,3240.3920380117956,3160.9425574853194]],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"surface","color":["grey"],"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"percent LHS"},"yaxis":{"title":"poverty rate"},"zaxis":{"title":"property crimes per 100,000"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[14.243908558836203,7.2761221367015052,13.228549749974752,13.806233860032501,17.070005074586504,8.6090457430416532,9.5140694264915435,10.224870791343362,9.4059111135752733,12.048218776041796,13.31920341817422,8.1645785421811929,9.4275411148424713,11.109754590437166,11.423753044162083,8.0095686837486593,9.2743610381727741,14.300014247650802,15.185616457970085,7.689454559731046,9.957986399530677,9.5679009095991727,9.4730601435424013,7.0315577467158947,16.0800461949643,10.437476574837605,6.8052982988154289,8.9128609866048318,13.698218791376252,7.1007178754667244,10.45939484548764,14.742949766187566,13.521995845760749,12.640141916895265,7.5054106924666435,9.9048958150252897,12.190671254595472,9.6180823399783844,9.7969110773768531,12.001560309224919,12.873552216512723,8.2781532862032545,13.028212380145611,16.802535385338011,8.0445999444464711,7.4385653691763611,10.694281956850121,8.8909649710122647,13.484417421777531,8.0687600184080495,7.1011145903706998],"y":[13.014501120005203,7.488382359082042,11.552939520400747,12.858256103428799,10.40721560906799,7.1687666412908948,6.9080789302752708,7.9797899126107081,12.893716950766906,10.609472734071719,12.144491415670837,6.7195496898789919,9.5775374503210031,9.3700929608739258,9.8981474988207214,7.3551860688810882,8.1695384585946691,13.527320818977396,14.568953212484212,7.9437519937693812,6.3751488182501292,7.4523794533020791,10.374804126663433,6.2585541958016906,15.947602760081484,9.7979650455187191,8.465236387950613,7.6719817202923766,9.8173993866961364,4.9064931714936728,7.6251997868939796,15.26149812490868,10.943475945383501,11.194602269415579,6.4157036029911625,10.42671036238557,11.610703441036145,9.1898646841686151,8.6689954116092789,9.1995024758865078,11.682395912929721,8.5227089430144947,11.877316690312682,11.899989817967892,7.2909982647122824,7.0666515157254146,7.4919733652400557,7.3997295532555079,12.963737429991488,7.6929243392356117,7.1153794420681677],"z":[2979.3178991510958,3157.5029589314067,2962.4204898692587,3202.4717853472175,2502.3258250362669,2669.6937179735855,1801.9703574162686,2644.9817425402225,4650.1570154460978,2646.2519697557018,2987.6339860820021,3019.9023297146441,1699.0185550679316,2015.9130631837779,2474.1155291565592,2033.9114174469701,2745.8638058435736,2164.973128996965,3358.5475267731158,1666.7763183836162,2297.2767051588712,1561.3746967290758,1870.8367599588905,2170.6088350587561,2741.9908071044702,2813.522012825199,2593.0874986168783,2282.421820832581,2592.9152270963768,1579.191106752628,1577.123886233667,3694.5079066401709,1560.2875346769142,2656.999229347562,2211.8037793510061,2520.2550733611552,2949.5771443504477,2987.3915884606708,1723.2829576958866,1857.8907789901791,3267.3513203484144,1891.1865856962479,2943.3645317225,2709.5301578947037,2815.4707853364198,1473.2165026265729,1836.5186291887403,3364.0179795067638,1909.7559356241268,1878.621490504587,1885.5462407678851],"type":"scatter3d","mode":"markers","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[6,7,8,9,10,11,12,13,14,15,16,17,18],"y":[5,6,7,8,9,10,11,12,13,14,15,16],"z":[[1933.2098031305318,1853.7603226040555,1774.3108420775789,1694.8613615511026,1615.4118810246259,1535.9624004981497,1456.5129199716732,1377.0634394451968,1297.6139589187203,1218.1644783922438,1138.7149978657674,1059.2655173392909,979.81603681281445],[2131.4940322825773,2052.0445517561011,1972.5950712296244,1893.1455907031482,1813.6961101766715,1734.2466296501952,1654.7971491237188,1575.3476685972423,1495.8981880707659,1416.4487075442894,1336.9992270178129,1257.5497464913365,1178.10026596486],[2329.7782614346233,2250.3287809081471,2170.8793003816704,2091.4298198551942,2011.9803393287175,1932.5308588022413,1853.0813782757648,1773.6318977492883,1694.1824172228119,1614.7329366963354,1535.2834561698589,1455.8339756433825,1376.384495116906],[2528.0624905866694,2448.6130100601931,2369.1635295337164,2289.7140490072402,2210.2645684807635,2130.8150879542873,2051.3656074278106,1971.9161269013343,1892.4666463748579,1813.0171658483814,1733.5676853219049,1654.1182047954285,1574.668724268952],[2726.3467197387154,2646.8972392122391,2567.4477586857624,2487.9982781592862,2408.5487976328095,2329.0993171063333,2249.649836579857,2170.2003560533803,2090.7508755269037,2011.3013950004274,1931.851914473951,1852.4024339474745,1772.952953420998],[2924.6309488907614,2845.1814683642851,2765.7319878378084,2686.2825073113322,2606.8330267848555,2527.3835462583793,2447.9340657319026,2368.4845852054264,2289.0351046789501,2209.5856241524734,2130.1361436259967,2050.6866630995205,1971.237182573044],[3122.9151780428069,3043.4656975163307,2964.016216989854,2884.5667364633778,2805.1172559369011,2725.6677754104248,2646.2182948839481,2566.7688143574719,2487.3193338309957,2407.869853304519,2328.4203727780423,2248.9708922515661,2169.5214117250898],[3321.1994071948529,3241.7499266683767,3162.3004461419,3082.8509656154238,3003.4014850889471,2923.9520045624708,2844.5025240359946,2765.0530435095179,2685.6035629830412,2606.154082456565,2526.7046019300888,2447.2551214036121,2367.8056408771354],[3519.4836363468989,3440.0341558204227,3360.584675293946,3281.1351947674698,3201.6857142409931,3122.2362337145169,3042.7867531880402,2963.3372726615639,2883.8877921350877,2804.438311608611,2724.9888310821343,2645.5393505556581,2566.0898700291818],[3717.7678654989445,3638.3183849724683,3558.8689044459916,3479.4194239195153,3399.9699433930386,3320.5204628665624,3241.0709823400857,3161.6215018136095,3082.1720212871332,3002.7225407606566,2923.2730602341799,2843.8235797077036,2764.3740991812274],[3916.052094650991,3836.6026141245147,3757.153133598038,3677.7036530715618,3598.2541725450851,3518.8046920186089,3439.3552114921322,3359.9057309656559,3280.4562504391797,3201.006769912703,3121.5572893862263,3042.1078088597501,2962.6583283332739],[4114.336323803037,4034.8868432765603,3955.4373627500836,3875.9878822236074,3796.5384016971307,3717.0889211706544,3637.6394406441777,3558.1899601177015,3478.7404795912253,3399.2909990647486,3319.8415185382719,3240.3920380117956,3160.9425574853194]],"type":"surface","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
 <section id="calculating-the-model" class="slide level2 smaller">
 <h2><i class="fa-solid fa-calculator" aria-label="calculator"></i> Calculating the model</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(property_rate<span class="sc">~</span>percent_lhs<span class="sc">+</span>poverty_rate, <span class="at">data=</span>crimes)</span>
-<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(property_rate<span class="sc">~</span>percent_lhs<span class="sc">+</span>poverty_rate, <span class="at">data=</span>crimes)</span>
+<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> (Intercept)  percent_lhs poverty_rate 
   1418.48554    -79.44948    198.28423 </code></pre>
@@ -804,23 +805,23 @@ F-statistic: 9.392 on 1 and 49 DF,  p-value: 0.003539</code></pre>
 Table&nbsp;1: Linear models predicting property crime rate.
 </figcaption>
 <div aria-describedby="tbl-model-multiple-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div id="zkmzsszhqs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#zkmzsszhqs table {
+<div id="kvzqgefvpt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kvzqgefvpt table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#zkmzsszhqs thead, #zkmzsszhqs tbody, #zkmzsszhqs tfoot, #zkmzsszhqs tr, #zkmzsszhqs td, #zkmzsszhqs th {
+#kvzqgefvpt thead, #kvzqgefvpt tbody, #kvzqgefvpt tfoot, #kvzqgefvpt tr, #kvzqgefvpt td, #kvzqgefvpt th {
   border-style: none;
 }
 
-#zkmzsszhqs p {
+#kvzqgefvpt p {
   margin: 0;
   padding: 0;
 }
 
-#zkmzsszhqs .gt_table {
+#kvzqgefvpt .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -846,12 +847,12 @@ Table&nbsp;1: Linear models predicting property crime rate.
   border-left-color: #D3D3D3;
 }
 
-#zkmzsszhqs .gt_caption {
+#kvzqgefvpt .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#zkmzsszhqs .gt_title {
+#kvzqgefvpt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -863,7 +864,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
   border-bottom-width: 0;
 }
 
-#zkmzsszhqs .gt_subtitle {
+#kvzqgefvpt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -875,7 +876,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
   border-top-width: 0;
 }
 
-#zkmzsszhqs .gt_heading {
+#kvzqgefvpt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -887,13 +888,13 @@ Table&nbsp;1: Linear models predicting property crime rate.
   border-right-color: #D3D3D3;
 }
 
-#zkmzsszhqs .gt_bottom_border {
+#kvzqgefvpt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zkmzsszhqs .gt_col_headings {
+#kvzqgefvpt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -908,7 +909,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
   border-right-color: #D3D3D3;
 }
 
-#zkmzsszhqs .gt_col_heading {
+#kvzqgefvpt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -928,7 +929,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
   overflow-x: hidden;
 }
 
-#zkmzsszhqs .gt_column_spanner_outer {
+#kvzqgefvpt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -940,15 +941,15 @@ Table&nbsp;1: Linear models predicting property crime rate.
   padding-right: 4px;
 }
 
-#zkmzsszhqs .gt_column_spanner_outer:first-child {
+#kvzqgefvpt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zkmzsszhqs .gt_column_spanner_outer:last-child {
+#kvzqgefvpt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zkmzsszhqs .gt_column_spanner {
+#kvzqgefvpt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -960,11 +961,11 @@ Table&nbsp;1: Linear models predicting property crime rate.
   width: 100%;
 }
 
-#zkmzsszhqs .gt_spanner_row {
+#kvzqgefvpt .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#zkmzsszhqs .gt_group_heading {
+#kvzqgefvpt .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -990,7 +991,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
   text-align: left;
 }
 
-#zkmzsszhqs .gt_empty_group_heading {
+#kvzqgefvpt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1005,15 +1006,15 @@ Table&nbsp;1: Linear models predicting property crime rate.
   vertical-align: middle;
 }
 
-#zkmzsszhqs .gt_from_md > :first-child {
+#kvzqgefvpt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zkmzsszhqs .gt_from_md > :last-child {
+#kvzqgefvpt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zkmzsszhqs .gt_row {
+#kvzqgefvpt .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1032,7 +1033,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
   overflow-x: hidden;
 }
 
-#zkmzsszhqs .gt_stub {
+#kvzqgefvpt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1045,7 +1046,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
   padding-right: 5px;
 }
 
-#zkmzsszhqs .gt_stub_row_group {
+#kvzqgefvpt .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1059,15 +1060,15 @@ Table&nbsp;1: Linear models predicting property crime rate.
   vertical-align: top;
 }
 
-#zkmzsszhqs .gt_row_group_first td {
+#kvzqgefvpt .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#zkmzsszhqs .gt_row_group_first th {
+#kvzqgefvpt .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#zkmzsszhqs .gt_summary_row {
+#kvzqgefvpt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1077,16 +1078,16 @@ Table&nbsp;1: Linear models predicting property crime rate.
   padding-right: 5px;
 }
 
-#zkmzsszhqs .gt_first_summary_row {
+#kvzqgefvpt .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#zkmzsszhqs .gt_first_summary_row.thick {
+#kvzqgefvpt .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#zkmzsszhqs .gt_last_summary_row {
+#kvzqgefvpt .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1096,7 +1097,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
   border-bottom-color: #D3D3D3;
 }
 
-#zkmzsszhqs .gt_grand_summary_row {
+#kvzqgefvpt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1106,7 +1107,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
   padding-right: 5px;
 }
 
-#zkmzsszhqs .gt_first_grand_summary_row {
+#kvzqgefvpt .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1116,7 +1117,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
   border-top-color: #D3D3D3;
 }
 
-#zkmzsszhqs .gt_last_grand_summary_row_top {
+#kvzqgefvpt .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1126,11 +1127,11 @@ Table&nbsp;1: Linear models predicting property crime rate.
   border-bottom-color: #D3D3D3;
 }
 
-#zkmzsszhqs .gt_striped {
+#kvzqgefvpt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zkmzsszhqs .gt_table_body {
+#kvzqgefvpt .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1139,7 +1140,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
   border-bottom-color: #D3D3D3;
 }
 
-#zkmzsszhqs .gt_footnotes {
+#kvzqgefvpt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1153,7 +1154,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
   border-right-color: #D3D3D3;
 }
 
-#zkmzsszhqs .gt_footnote {
+#kvzqgefvpt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1162,7 +1163,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
   padding-right: 5px;
 }
 
-#zkmzsszhqs .gt_sourcenotes {
+#kvzqgefvpt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1176,7 +1177,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
   border-right-color: #D3D3D3;
 }
 
-#zkmzsszhqs .gt_sourcenote {
+#kvzqgefvpt .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1184,83 +1185,83 @@ Table&nbsp;1: Linear models predicting property crime rate.
   padding-right: 5px;
 }
 
-#zkmzsszhqs .gt_left {
+#kvzqgefvpt .gt_left {
   text-align: left;
 }
 
-#zkmzsszhqs .gt_center {
+#kvzqgefvpt .gt_center {
   text-align: center;
 }
 
-#zkmzsszhqs .gt_right {
+#kvzqgefvpt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zkmzsszhqs .gt_font_normal {
+#kvzqgefvpt .gt_font_normal {
   font-weight: normal;
 }
 
-#zkmzsszhqs .gt_font_bold {
+#kvzqgefvpt .gt_font_bold {
   font-weight: bold;
 }
 
-#zkmzsszhqs .gt_font_italic {
+#kvzqgefvpt .gt_font_italic {
   font-style: italic;
 }
 
-#zkmzsszhqs .gt_super {
+#kvzqgefvpt .gt_super {
   font-size: 65%;
 }
 
-#zkmzsszhqs .gt_footnote_marks {
+#kvzqgefvpt .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#zkmzsszhqs .gt_asterisk {
+#kvzqgefvpt .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#zkmzsszhqs .gt_indent_1 {
+#kvzqgefvpt .gt_indent_1 {
   text-indent: 5px;
 }
 
-#zkmzsszhqs .gt_indent_2 {
+#kvzqgefvpt .gt_indent_2 {
   text-indent: 10px;
 }
 
-#zkmzsszhqs .gt_indent_3 {
+#kvzqgefvpt .gt_indent_3 {
   text-indent: 15px;
 }
 
-#zkmzsszhqs .gt_indent_4 {
+#kvzqgefvpt .gt_indent_4 {
   text-indent: 20px;
 }
 
-#zkmzsszhqs .gt_indent_5 {
+#kvzqgefvpt .gt_indent_5 {
   text-indent: 25px;
 }
 
-#zkmzsszhqs .katex-display {
+#kvzqgefvpt .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#zkmzsszhqs div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#kvzqgefvpt div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
 
-<table class="gt_table cell caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table cell caption-top" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_col_headings header">
-<th id=" " class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"></th>
-<th id="Model 1" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Model 1</th>
-<th id="Model 2" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Model 2</th>
-<th id="Model 3" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Model 3</th>
+<th id="a-" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"></th>
+<th id="Model-1" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Model 1</th>
+<th id="Model-2" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Model 2</th>
+<th id="Model-3" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Model 3</th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
@@ -1336,11 +1337,11 @@ Table&nbsp;1: Linear models predicting property crime rate.
 <td class="gt_row gt_center" headers="Model 2">0.287</td>
 <td class="gt_row gt_center" headers="Model 3">0.512</td>
 </tr>
-</tbody><tfoot class="gt_sourcenotes">
-<tr class="odd">
+</tbody><tfoot>
+<tr class="gt_sourcenotes odd">
 <td colspan="4" class="gt_sourcenote">* p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001</td>
 </tr>
-<tr class="even">
+<tr class="gt_sourcenotes even">
 <td colspan="4" class="gt_sourcenote">Standard errors in parenthesis.</td>
 </tr>
 </tfoot>
@@ -1375,12 +1376,12 @@ Table&nbsp;1: Linear models predicting property crime rate.
 <section id="gender-and-sexual-frequency" class="slide level2">
 <h2>Gender and sexual frequency</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(sex<span class="sc">$</span>sexf, sex<span class="sc">$</span>gender, mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(sex<span class="sc">$</span>sexf, sex<span class="sc">$</span>gender, mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    Male   Female 
 48.11560 45.94162 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fl">45.94162-48.11560</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fl">45.94162-48.11560</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -2.17398</code></pre>
 </div>
@@ -1404,7 +1405,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
 </section>
 <section id="make-an-indicator-variable" class="slide level2">
 <h2>Make an indicator variable</h2>
-<p><span class="math display">\[\texttt{female}_i=\begin{cases}
+<p><span class="math display">\[\text{female}_i=\begin{cases}
   1 &amp; \text{if female}\\
   0 &amp; \text{otherwise}
   \end{cases}\]</span></p>
@@ -1415,8 +1416,8 @@ Table&nbsp;1: Linear models predicting property crime rate.
 </ul>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a>sex<span class="sc">$</span>female <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(sex<span class="sc">$</span>gender<span class="sc">==</span><span class="st">"Female"</span>)</span>
-<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(sex<span class="sc">$</span>gender, sex<span class="sc">$</span>female)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a>sex<span class="sc">$</span>female <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(sex<span class="sc">$</span>gender<span class="sc">==</span><span class="st">"Female"</span>)</span>
+<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(sex<span class="sc">$</span>gender, sex<span class="sc">$</span>female)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        
             0    1
@@ -1443,7 +1444,7 @@ Table&nbsp;1: Linear models predicting property crime rate.
 <div class="fragment">
 <h4 id="two-separate-means">Two separate means</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(sex<span class="sc">$</span>sexf, sex<span class="sc">$</span>female, mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(sex<span class="sc">$</span>sexf, sex<span class="sc">$</span>female, mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       0        1 
 48.11560 45.94162 </code></pre>
@@ -1453,8 +1454,8 @@ Table&nbsp;1: Linear models predicting property crime rate.
 <div class="fragment">
 <h4 id="mean-and-mean-difference">Mean and mean difference</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sexf<span class="sc">~</span>female, <span class="at">data=</span>sex)</span>
-<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sexf<span class="sc">~</span>female, <span class="at">data=</span>sex)</span>
+<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)      female 
   48.115605   -2.173988 </code></pre>
@@ -1468,9 +1469,9 @@ Table&nbsp;1: Linear models predicting property crime rate.
 <div class="fragment">
 <h4 id="reverse-reference---what-changes-and-why">Reverse reference - what changes and why?</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a>sex<span class="sc">$</span>male <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(sex<span class="sc">$</span>gender<span class="sc">==</span><span class="st">"Male"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a>sex<span class="sc">$</span>male <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(sex<span class="sc">$</span>gender<span class="sc">==</span><span class="st">"Male"</span>)</span>
 <span id="cb39-2"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sexf<span class="sc">~</span>male, <span class="at">data=</span>sex)</span>
-<span id="cb39-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb39-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)        male 
   45.941617    2.173988 </code></pre>
@@ -1482,8 +1483,8 @@ Table&nbsp;1: Linear models predicting property crime rate.
 <h2>Categorical variables in <code>lm</code></h2>
 <p>There is no need to create indicator variables. Just feed in categorical variables directly:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sexf<span class="sc">~</span>gender, <span class="at">data=</span>sex)</span>
-<span id="cb41-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sexf<span class="sc">~</span>gender, <span class="at">data=</span>sex)</span>
+<span id="cb41-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> (Intercept) genderFemale 
    48.115605    -2.173988 </code></pre>
@@ -1495,8 +1496,8 @@ Table&nbsp;1: Linear models predicting property crime rate.
 </ul>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sexf<span class="sc">~</span><span class="fu">relevel</span>(gender, <span class="st">"Female"</span>), <span class="at">data=</span>sex)</span>
-<span id="cb43-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sexf<span class="sc">~</span><span class="fu">relevel</span>(gender, <span class="st">"Female"</span>), <span class="at">data=</span>sex)</span>
+<span id="cb43-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                  (Intercept) relevel(gender, "Female")Male 
                     45.941617                      2.173988 </code></pre>
@@ -1507,8 +1508,8 @@ Table&nbsp;1: Linear models predicting property crime rate.
 <section id="more-than-two-categories" class="slide level2">
 <h2>More than two categories</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sexf<span class="sc">~</span>marital, <span class="at">data=</span>sex)</span>
-<span id="cb45-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sexf<span class="sc">~</span>marital, <span class="at">data=</span>sex)</span>
+<span id="cb45-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    (Intercept)  maritalMarried maritalDivorced  maritalWidowed 
       53.455737       -7.010258       -5.576478      -27.573078 </code></pre>
@@ -1523,8 +1524,8 @@ Table&nbsp;1: Linear models predicting property crime rate.
 <section id="interpretations" class="slide level2">
 <h2>Interpretations</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sexf<span class="sc">~</span>marital, <span class="at">data=</span>sex)</span>
-<span id="cb47-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sexf<span class="sc">~</span>marital, <span class="at">data=</span>sex)</span>
+<span id="cb47-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    (Intercept)  maritalMarried maritalDivorced  maritalWidowed 
       53.455737       -7.010258       -5.576478      -27.573078 </code></pre>
@@ -1545,8 +1546,8 @@ Table&nbsp;1: Linear models predicting property crime rate.
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sexf<span class="sc">~</span>marital<span class="sc">+</span><span class="fu">I</span>(age<span class="dv">-18</span>), <span class="at">data=</span>sex)</span>
-<span id="cb49-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(sexf<span class="sc">~</span>marital<span class="sc">+</span><span class="fu">I</span>(age<span class="dv">-18</span>), <span class="at">data=</span>sex)</span>
+<span id="cb49-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    (Intercept)  maritalMarried maritalDivorced  maritalWidowed     I(age - 18) 
      70.2052710       7.3318447      10.9010137       4.9924914      -0.9080391 </code></pre>
@@ -2020,12 +2021,12 @@ Table&nbsp;2: Linear models predicting sexual frequency.
 }
 </style>
 
-<table class="gt_table do-not-create-environment cell caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table do-not-create-environment cell caption-top" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_col_headings header">
-<th id=" " class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"></th>
-<th id="Model 1" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Model 1</th>
-<th id="Model 2" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Model 2</th>
+<th id="a-" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"></th>
+<th id="Model-1" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Model 1</th>
+<th id="Model-2" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Model 2</th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
@@ -2089,11 +2090,11 @@ Table&nbsp;2: Linear models predicting sexual frequency.
 <td class="gt_row gt_center" headers="Model 1">0.024</td>
 <td class="gt_row gt_center" headers="Model 2">0.113</td>
 </tr>
-</tbody><tfoot class="gt_sourcenotes">
-<tr class="odd">
+</tbody><tfoot>
+<tr class="gt_sourcenotes odd">
 <td colspan="3" class="gt_sourcenote">* p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001</td>
 </tr>
-<tr class="even">
+<tr class="gt_sourcenotes even">
 <td colspan="3" class="gt_sourcenote">Standard errors in parenthesis. Age centered on 18 years. Married is reference category for marital status.</td>
 </tr>
 </tfoot>
@@ -2126,13 +2127,13 @@ Table&nbsp;2: Linear models predicting sexual frequency.
 <div class="columns">
 <div class="column" style="width:35%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(earnings, <span class="fu">aes</span>(<span class="at">x=</span>nchild, <span class="at">y=</span>wages, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(earnings, <span class="fu">aes</span>(<span class="at">x=</span>nchild, <span class="at">y=</span>wages, </span>
 <span id="cb51-2"><a href="" aria-hidden="true" tabindex="-1"></a>                     <span class="at">color=</span>gender))<span class="sc">+</span></span>
 <span id="cb51-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.05</span>)<span class="sc">+</span></span>
 <span id="cb51-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">end=</span><span class="fl">0.75</span>)<span class="sc">+</span></span>
 <span id="cb51-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)<span class="sc">+</span></span>
 <span id="cb51-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"number of children"</span>,</span>
-<span id="cb51-7"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"hourly wages in USD"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb51-7"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"hourly wages in USD"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:65%;">
 <div class="cell">
@@ -2149,30 +2150,30 @@ Table&nbsp;2: Linear models predicting sexual frequency.
 <section id="additive-models-will-miss-context" class="slide level2 smaller">
 <h2>Additive models will miss context</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="" aria-hidden="true" tabindex="-1"></a>model_add <span class="ot">&lt;-</span> <span class="fu">lm</span>(wages<span class="sc">~</span>nchild<span class="sc">+</span>gender, <span class="at">data=</span>earnings)</span>
-<span id="cb52-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model_add)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="" aria-hidden="true" tabindex="-1"></a>model_add <span class="ot">&lt;-</span> <span class="fu">lm</span>(wages<span class="sc">~</span>nchild<span class="sc">+</span>gender, <span class="at">data=</span>earnings)</span>
+<span id="cb52-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model_add)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> (Intercept)       nchild genderFemale 
    25.239547     1.155477    -3.974105 </code></pre>
 </div>
 </div>
-<p><span class="math display">\[\hat{\texttt{wages}}_i=25.24+1.55(\texttt{nchild}_i)-3.97(\texttt{female}_i)\]</span></p>
+<p><span class="math display">\[\hat{\text{wages}}_i=25.24+1.55(\text{nchild}_i)-3.97(\text{female}_i)\]</span></p>
 <p>What is the relationship between wages and number of children for men and women?</p>
 <div class="columns">
 <div class="column fragment">
 <h3 id="men">Men</h3>
-<p>The <span class="math inline">\(\texttt{female}_i\)</span> variable is an indicator variable that is zero for men, so:</p>
+<p>The <span class="math inline">\(\text{female}_i\)</span> variable is an indicator variable that is zero for men, so:</p>
 <p><span class="math display">\[\begin{eqnarray*}
-\hat{\texttt{wages}}_i &amp; = &amp; 25.24+1.55(\texttt{nchild}_i)-3.97(0)\\
-\hat{\texttt{wages}}_i &amp; = &amp; 25.24+1.55(\texttt{nchild}_i)
+\hat{\text{wages}}_i &amp; = &amp; 25.24+1.55(\text{nchild}_i)-3.97(0)\\
+\hat{\text{wages}}_i &amp; = &amp; 25.24+1.55(\text{nchild}_i)
 \end{eqnarray*}\]</span></p>
 </div><div class="column fragment">
 <h3 id="women">Women</h3>
-<p>The <span class="math inline">\(\texttt{female}_i\)</span> variable is an indicator variable that is one for women, so:</p>
+<p>The <span class="math inline">\(\text{female}_i\)</span> variable is an indicator variable that is one for women, so:</p>
 <p><span class="math display">\[\begin{eqnarray*}
-\hat{\texttt{wages}}_i &amp; = &amp; 25.24+1.55(\texttt{nchild}_i)-3.97(1)\\
-\hat{\texttt{wages}}_i &amp; = &amp; (25.24-3.97)+1.55(\texttt{nchild}_i)\\
-\hat{\texttt{wages}}_i &amp; = &amp; 21.27+1.55(\texttt{nchild}_i)\\
+\hat{\text{wages}}_i &amp; = &amp; 25.24+1.55(\text{nchild}_i)-3.97(1)\\
+\hat{\text{wages}}_i &amp; = &amp; (25.24-3.97)+1.55(\text{nchild}_i)\\
+\hat{\text{wages}}_i &amp; = &amp; 21.27+1.55(\text{nchild}_i)\\
 \end{eqnarray*}\]</span></p>
 </div></div>
 </section>
@@ -2191,8 +2192,8 @@ Table&nbsp;2: Linear models predicting sexual frequency.
 </div>
 </div><div class="column">
 <p><span class="math display">\[\begin{eqnarray*}
-\hat{\texttt{wages}}_i&amp;=&amp;25.24+1.55(\texttt{nchild}_i)\\
-&amp; &amp; -3.97(\texttt{female}_i)
+\hat{\text{wages}}_i&amp;=&amp;25.24+1.55(\text{nchild}_i)\\
+&amp; &amp; -3.97(\text{female}_i)
 \end{eqnarray*}\]</span></p>
 <ul>
 <li class="fragment">The effect of number of children on wages ($1.55) is <strong>forced</strong> to be the same for men and women.</li>
@@ -2203,32 +2204,32 @@ Table&nbsp;2: Linear models predicting sexual frequency.
 <section id="we-need-a-multiplicative-model" class="slide level2 smaller">
 <h2>We need a multiplicative model</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="" aria-hidden="true" tabindex="-1"></a>model_mult <span class="ot">&lt;-</span> <span class="fu">lm</span>(wages<span class="sc">~</span>nchild<span class="sc">*</span>gender, <span class="at">data=</span>earnings)</span>
-<span id="cb54-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model_mult)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="" aria-hidden="true" tabindex="-1"></a>model_mult <span class="ot">&lt;-</span> <span class="fu">lm</span>(wages<span class="sc">~</span>nchild<span class="sc">*</span>gender, <span class="at">data=</span>earnings)</span>
+<span id="cb54-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model_mult)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        (Intercept)              nchild        genderFemale nchild:genderFemale 
           24.719748            1.778860           -2.839198           -1.334728 </code></pre>
 </div>
 </div>
-<p><span class="math display">\[\hat{\texttt{wages}}_i=24.72+1.78(\texttt{nchild}_i)-2.84(\texttt{female}_i)-1.33(\texttt{nchild}_i)(\texttt{female}_i)\]</span></p>
+<p><span class="math display">\[\hat{\text{wages}}_i=24.72+1.78(\text{nchild}_i)-2.84(\text{female}_i)-1.33(\text{nchild}_i)(\text{female}_i)\]</span></p>
 <p>What is the relationship between wages and number of children for men and women?</p>
 <div class="columns">
 <div class="column fragment">
 <h3 id="men-1">Men</h3>
-<p>The <span class="math inline">\(\texttt{female}_i\)</span> variable is an indicator variable that is zero for men, so:</p>
+<p>The <span class="math inline">\(\text{female}_i\)</span> variable is an indicator variable that is zero for men, so:</p>
 <p><span class="math display">\[\begin{eqnarray*}
-\hat{\texttt{wages}}_i &amp; = &amp; 24.72+1.78(\texttt{nchild}_i)-2.84(0)\\
-&amp; &amp; -1.33(\texttt{nchild}_i)(0)\\
-\hat{\texttt{wages}}_i &amp; = &amp; 24.72+1.78(\texttt{nchild}_i)
+\hat{\text{wages}}_i &amp; = &amp; 24.72+1.78(\text{nchild}_i)-2.84(0)\\
+&amp; &amp; -1.33(\text{nchild}_i)(0)\\
+\hat{\text{wages}}_i &amp; = &amp; 24.72+1.78(\text{nchild}_i)
 \end{eqnarray*}\]</span></p>
 </div><div class="column fragment">
 <h3 id="women-1">Women</h3>
-<p>The <span class="math inline">\(\texttt{female}_i\)</span> variable is an indicator variable that is one for women, so:</p>
+<p>The <span class="math inline">\(\text{female}_i\)</span> variable is an indicator variable that is one for women, so:</p>
 <p><span class="math display">\[\begin{eqnarray*}
-\hat{\texttt{wages}}_i &amp; = &amp; 24.72+1.78(\texttt{nchild}_i)-2.84(1)\\
-&amp; &amp; -1.33(\texttt{nchild}_i)(1)\\
-\hat{\texttt{wages}}_i &amp; = &amp; (24.72-2.84)+(1.78-1.33)(\texttt{nchild}_i)\\
-\hat{\texttt{wages}}_i &amp; = &amp; 21.82+0.45(\texttt{nchild}_i)\\
+\hat{\text{wages}}_i &amp; = &amp; 24.72+1.78(\text{nchild}_i)-2.84(1)\\
+&amp; &amp; -1.33(\text{nchild}_i)(1)\\
+\hat{\text{wages}}_i &amp; = &amp; (24.72-2.84)+(1.78-1.33)(\text{nchild}_i)\\
+\hat{\text{wages}}_i &amp; = &amp; 21.82+0.45(\text{nchild}_i)\\
 \end{eqnarray*}\]</span></p>
 </div></div>
 </section>
@@ -2240,14 +2241,14 @@ Table&nbsp;2: Linear models predicting sexual frequency.
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_building_models_files/figure-revealjs/unnamed-chunk-53-1.png" width="960"></p>
+<p><img data-src="slides_building_models_files/figure-revealjs/unnamed-chunk-25-1.png" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
 </div><div class="column">
-<p><span class="math display">\[\begin{eqnarray*}\hat{\texttt{wages}}_i &amp; = &amp; 24.72+1.78(\texttt{nchild}_i)-2.84(\texttt{female}_i)\\
-&amp; &amp; -1.33(\texttt{nchild}_i)(\texttt{female}_i)\\\end{eqnarray*}\]</span></p>
+<p><span class="math display">\[\begin{eqnarray*}\hat{\text{wages}}_i &amp; = &amp; 24.72+1.78(\text{nchild}_i)-2.84(\text{female}_i)\\
+&amp; &amp; -1.33(\text{nchild}_i)(\text{female}_i)\\\end{eqnarray*}\]</span></p>
 <ul>
 <li class="fragment">This model shows that men and women get different returns to wages for the number of children with men getting a much greater return ($1.78 to $0.45).</li>
 <li class="fragment">This models shows that the wage gap starts at $2.84 when men and women have no children and grows by $1.33 for every child.</li>
@@ -2260,16 +2261,16 @@ Table&nbsp;2: Linear models predicting sexual frequency.
 <div class="column fragment">
 <h3 id="separate-models">Separate models</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>nchild,</span>
-<span id="cb56-2"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="at">data=</span><span class="fu">subset</span>(earnings, gender<span class="sc">==</span><span class="st">"Female"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>nchild,</span>
+<span id="cb56-2"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="at">data=</span><span class="fu">subset</span>(earnings, gender<span class="sc">==</span><span class="st">"Female"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)      nchild 
  21.8805499   0.4441326 </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>nchild,</span>
-<span id="cb58-2"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="at">data=</span><span class="fu">subset</span>(earnings, gender<span class="sc">==</span><span class="st">"Male"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>nchild,</span>
+<span id="cb58-2"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="at">data=</span><span class="fu">subset</span>(earnings, gender<span class="sc">==</span><span class="st">"Male"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)      nchild 
    24.71975     1.77886 </code></pre>
@@ -2282,7 +2283,7 @@ Table&nbsp;2: Linear models predicting sexual frequency.
 </div><div class="column fragment">
 <h3 id="interaction-term">Interaction term</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>nchild<span class="sc">*</span>gender, <span class="at">data=</span>earnings))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>nchild<span class="sc">*</span>gender, <span class="at">data=</span>earnings))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        (Intercept)              nchild 
           24.719748            1.778860 
@@ -2358,13 +2359,13 @@ Table&nbsp;2: Linear models predicting sexual frequency.
 <section id="interpretation-1" class="slide level2 smaller">
 <h2>Interpretation</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>nchild<span class="sc">*</span>gender, <span class="at">data=</span>earnings))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>nchild<span class="sc">*</span>gender, <span class="at">data=</span>earnings))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        (Intercept)              nchild        genderFemale nchild:genderFemale 
           24.719748            1.778860           -2.839198           -1.334728 </code></pre>
 </div>
 </div>
-<p><span class="math display">\[\hat{\texttt{wages}}_i  =  24.72+1.78(\texttt{nchild}_i)-2.84(\texttt{female}_i)-1.33(\texttt{nchild}_i)(\texttt{female}_i)\]</span></p>
+<p><span class="math display">\[\hat{\text{wages}}_i  =  24.72+1.78(\text{nchild}_i)-2.84(\text{female}_i)-1.33(\text{nchild}_i)(\text{female}_i)\]</span></p>
 <ul>
 <li class="fragment">The model predicts that men with no children make $24.72/hour, on average.</li>
 <li class="fragment">The model predicts that <strong>among workers with no children</strong>, women make $2.84 less than men, on average.</li>
@@ -2834,12 +2835,12 @@ Table&nbsp;3: Linear models predicting sexual hourly wages among workers.
 }
 </style>
 
-<table class="gt_table cell caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table cell caption-top" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_col_headings header">
-<th id=" " class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"></th>
-<th id="Model 1" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Model 1</th>
-<th id="Model 2" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Model 2</th>
+<th id="a-" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"></th>
+<th id="Model-1" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Model 1</th>
+<th id="Model-2" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Model 2</th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
@@ -2903,11 +2904,11 @@ Table&nbsp;3: Linear models predicting sexual hourly wages among workers.
 <td class="gt_row gt_center" headers="Model 1">0.024</td>
 <td class="gt_row gt_center" headers="Model 2">0.069</td>
 </tr>
-</tbody><tfoot class="gt_sourcenotes">
-<tr class="odd">
+</tbody><tfoot>
+<tr class="gt_sourcenotes odd">
 <td colspan="3" class="gt_sourcenote">* p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001</td>
 </tr>
-<tr class="even">
+<tr class="gt_sourcenotes even">
 <td colspan="3" class="gt_sourcenote">Standard errors in parenthesis. Age centered on 40 years.</td>
 </tr>
 </tfoot>
@@ -2921,9 +2922,9 @@ Table&nbsp;3: Linear models predicting sexual hourly wages among workers.
 </div>
 </div><div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(wages<span class="sc">~</span>nchild<span class="sc">*</span>gender, <span class="at">data=</span>earnings)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(wages<span class="sc">~</span>nchild<span class="sc">*</span>gender, <span class="at">data=</span>earnings)</span>
 <span id="cb64-2"><a href="" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(wages<span class="sc">~</span>nchild<span class="sc">*</span>gender<span class="sc">+</span><span class="fu">I</span>(age<span class="dv">-40</span>), </span>
-<span id="cb64-3"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">data=</span>earnings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb64-3"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">data=</span>earnings)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li class="fragment">We can add in additional control variables without forcing everything to vary by context.</li>
@@ -2935,7 +2936,7 @@ Table&nbsp;3: Linear models predicting sexual hourly wages among workers.
 <h2>Interacting two categorical variables</h2>
 <p>An additive model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">+</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">+</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              (Intercept)              genderFemale       educationHS Diploma 
                     16.27                     -5.06                      4.71 
@@ -2988,7 +2989,7 @@ Table&nbsp;3: Linear models predicting sexual hourly wages among workers.
 <h2>Interacting two categorical variables</h2>
 <p>An additive model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">+</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">+</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              (Intercept)              genderFemale       educationHS Diploma 
                     16.27                     -5.06                      4.71 
@@ -3039,7 +3040,7 @@ Table&nbsp;3: Linear models predicting sexual hourly wages among workers.
 <h2>Interacting two categorical variables</h2>
 <p>An additive model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">+</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">+</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              (Intercept)              genderFemale       educationHS Diploma 
                     16.27                     -5.06                      4.71 
@@ -3090,7 +3091,7 @@ Table&nbsp;3: Linear models predicting sexual hourly wages among workers.
 <h2>Interacting two categorical variables</h2>
 <p>An additive model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">+</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">+</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              (Intercept)              genderFemale       educationHS Diploma 
                     16.27                     -5.06                      4.71 
@@ -3141,7 +3142,7 @@ Table&nbsp;3: Linear models predicting sexual hourly wages among workers.
 <h2>Interacting two categorical variables</h2>
 <p>An additive model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">+</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">+</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              (Intercept)              genderFemale       educationHS Diploma 
                     16.27                     -5.06                      4.71 
@@ -3192,7 +3193,7 @@ Table&nbsp;3: Linear models predicting sexual hourly wages among workers.
 <h2>Interacting two categorical variables</h2>
 <p>An additive model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">+</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">+</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              (Intercept)              genderFemale       educationHS Diploma 
                     16.27                     -5.06                      4.71 
@@ -3255,7 +3256,7 @@ Table&nbsp;3: Linear models predicting sexual hourly wages among workers.
 <h2>Interacting two categorical variables</h2>
 <p>A multiplicative model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">*</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">*</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                           (Intercept)                           genderFemale 
                                  15.79                                  -3.84 
@@ -3312,7 +3313,7 @@ genderFemale:educationBachelors Degree  genderFemale:educationGraduate Degree
 <h2>Interacting two categorical variables</h2>
 <p>A multiplicative model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">*</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">*</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                           (Intercept)                           genderFemale 
                                  15.79                                  -3.84 
@@ -3369,7 +3370,7 @@ genderFemale:educationBachelors Degree  genderFemale:educationGraduate Degree
 <h2>Interacting two categorical variables</h2>
 <p>A multiplicative model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">*</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">*</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                           (Intercept)                           genderFemale 
                                  15.79                                  -3.84 
@@ -3426,7 +3427,7 @@ genderFemale:educationBachelors Degree  genderFemale:educationGraduate Degree
 <h2>Interacting two categorical variables</h2>
 <p>A multiplicative model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">*</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">*</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                           (Intercept)                           genderFemale 
                                  15.79                                  -3.84 
@@ -3483,7 +3484,7 @@ genderFemale:educationBachelors Degree  genderFemale:educationGraduate Degree
 <h2>Interacting two categorical variables</h2>
 <p>A multiplicative model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">*</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">*</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                           (Intercept)                           genderFemale 
                                  15.79                                  -3.84 
@@ -3548,7 +3549,7 @@ genderFemale:educationBachelors Degree  genderFemale:educationGraduate Degree
 <h2>Interacting two categorical variables</h2>
 <p>A multiplicative model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">*</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(<span class="fu">lm</span>(wages<span class="sc">~</span>gender<span class="sc">*</span>education, <span class="at">data=</span>earnings)), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                           (Intercept)                           genderFemale 
                                  15.79                                  -3.84 
@@ -3941,190 +3942,173 @@ genderFemale:educationBachelors Degree  genderFemale:educationGraduate Degree
     </script>
 
     <script id="quarto-html-after-body" type="application/javascript">
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
-        }
-      }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
-      }
-      toggleBodyColorPrimary();  
-      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-      tabsets.forEach(function(tabset) {
-        const tabby = new Tabby('#' + tabset.id);
-      });
-      const isCodeAnnotation = (el) => {
-        for (const clz of el.classList) {
-          if (clz.startsWith('code-annotation-')) {                     
-            return true;
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
           }
+          return false;
         }
-        return false;
-      }
-      const onCopySuccess = function(e) {
-        // button target
-        const button = e.trigger;
-        // don't keep focus
-        button.blur();
-        // flash "checked"
-        button.classList.add('code-copy-button-checked');
-        var currentTitle = button.getAttribute("title");
-        button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
-        setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
           }
-          button.setAttribute("title", currentTitle);
-          button.classList.remove('code-copy-button-checked');
-        }, 1000);
-        // clear code selection
-        e.clearSelection();
-      }
-      const getTextToCopy = function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
           for (const childEl of codeEl.children) {
             if (isCodeAnnotation(childEl)) {
               childEl.remove();
             }
           }
           return codeEl.innerText;
-      }
-      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-        text: getTextToCopy
-      });
-      clipboard.on('success', onCopySuccess);
-      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-          text: getTextToCopy,
-          container: window.document.getElementById('quarto-embedded-source-code-modal')
-        });
-        clipboardModal.on('success', onCopySuccess);
-      }
-        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-        var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
-        var isInternal = (href) => {
-            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
         }
-        // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-        for (var i=0; i<links.length; i++) {
-          const link = links[i];
-          if (!isInternal(link.href)) {
-            // undo the damage that might have been done by quarto-nav.js in the case of
-            // links that we want to consider external
-            if (link.dataset.originalHref !== undefined) {
-              link.href = link.dataset.originalHref;
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
             }
           }
-        }
-      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-        const config = {
-          allowHTML: true,
-          maxWidth: 500,
-          delay: 100,
-          arrow: false,
-          appendTo: function(el) {
-              return el.closest('section.slide') || el.parentElement;
-          },
-          interactive: true,
-          interactiveBorder: 10,
-          theme: 'light-border',
-          placement: 'bottom-start',
-        };
-        if (contentFn) {
-          config.content = contentFn;
-        }
-        if (onTriggerFn) {
-          config.onTrigger = onTriggerFn;
-        }
-        if (onUntriggerFn) {
-          config.onUntrigger = onUntriggerFn;
-        }
-          config['offset'] = [0,0];
-          config['maxWidth'] = 700;
-        window.tippy(el, config); 
-      }
-      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-      for (var i=0; i<noterefs.length; i++) {
-        const ref = noterefs[i];
-        tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-          try { href = new URL(href).hash; } catch {}
-          const id = href.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note) {
-            return note.innerHTML;
-          } else {
-            return "";
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
           }
-        });
-      }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
           }
-        } else {
-          return undefined;
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
         }
-      };
-      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-      for (var i=0; i<bibliorefs.length; i++) {
-        const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
-              }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
           });
         }
-      }
-    });
-    </script>
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
     
 
 </body></html>
