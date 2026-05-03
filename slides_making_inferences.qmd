@@ -37,13 +37,13 @@ About 31.8% of respondents to the American National Election Study (ANES) favore
 ```{r}
 #| label: inference1
 #| echo: false
-#| fig-height: 14
-#| fig-width: 24
+#| fig-asp: 0.5625
+
 par(mar=c(0,0,0,0))
 plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 rect(6,1,10,9, col="skyblue")
-text(8,5,"US Population", cex=1.2)
-text(8,4,expression(rho=="?"))
+text(8,5,"US Population", cex=2)
+text(8,4,expression(rho=="?"), cex = 2)
 ```
 
 ## Drawing a statistical inference
@@ -51,18 +51,18 @@ text(8,4,expression(rho=="?"))
 ```{r}
 #| label: inference2
 #| echo: false
-#| fig-height: 14
-#| fig-width: 24
+#| fig-asp: 0.5625
+
 par(mar=c(0,0,0,0))
 plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 rect(6,1,10,9, col="skyblue")
-text(8,5,"US Population", cex=1.2)
-text(8,4,expression(rho=="?"))
+text(8,5,"US Population", cex=2)
+text(8,4,expression(rho=="?"), cex = 2)
 rect(0,3,4,7, col="yellow")
-text(2,5,"ANES Sample", cex=1.2)
+text(2,5,"ANES Sample", cex=2)
 text(2,4,expression(hat(p)==0.318))
 arrows(6,4,4,4)
-text(5,3.5,"Draw a sample", cex=1)
+text(5,3.5,"Draw a sample", cex=1.3)
 ```
 
 ## Drawing a statistical inference
@@ -70,20 +70,19 @@ text(5,3.5,"Draw a sample", cex=1)
 ```{r}
 #| label: inference3
 #| echo: false
-#| fig-height: 14
-#| fig-width: 24
+#| fig-asp: 0.5625
 par(mar=c(0,0,0,0))
 plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 rect(6,1,10,9, col="skyblue")
-text(8,5,"US Population", cex=1.2)
-text(8,4,expression(rho%~~%0.317))
+text(8,5,"US Population", cex=2)
+text(8,4,expression(rho%~~%0.318), cex = 2)
 rect(0,3,4,7, col="yellow")
-text(2,5,"ANES Sample", cex=1.2)
-text(2,4,expression(hat(p)==0.317))
+text(2,5,"ANES Sample", cex=2)
+text(2,4,expression(hat(p)==0.318))
 arrows(6,4,4,4)
-text(5,3.5,"Draw a sample", cex=1)
+text(5,3.5,"Draw a sample", cex=1.3)
 arrows(4,6,6,6)
-text(5,5.5,"Infer from sample", cex=1)
+text(5,5.5,"Infer from sample", cex=1.3)
 ```
 
 ## Parameters and statistics {.smaller}
@@ -247,13 +246,12 @@ Lets say I wanted to sample two students to estimate class height. In a class of
 ```{r}
 #| label: class-height-sampling-dist2
 #| echo: false
-#| fig-height: 14
-#| fig-width: 24
+#| fig-asp: 0.5625
 ggplot(data.frame(means2), aes(x=means2))+
   geom_histogram(fill="grey", color="grey20", breaks=seq(from=58,to=76, by=1))+
-  labs(x="mean height in samples of size 2",
-       title="Sampling distribution of mean student height from samples of size 2")+
-  xlim(58, 76)
+  labs(x="mean height in samples of size 2")+
+  xlim(58, 76)+
+  theme_bw(base_size = 22)
 ```
 
 ## Sampling distributions for different $n$
@@ -261,8 +259,7 @@ ggplot(data.frame(means2), aes(x=means2))+
 ```{r}
 #| label: class-height-sampling-dist-compare
 #| echo: false
-#| fig-height: 14
-#| fig-width: 24
+#| fig-asp: 0.5625
 temp <- data.frame(size=c(rep("n=2", length(means2)),
                           rep("n=3", length(means3)),
                           rep("n=4", length(means4)),
@@ -275,10 +272,10 @@ ggplot(temp, aes(x=means, y=..density.., fill=size))+
   geom_density(data=subset(temp, size=="n=3"), alpha=0.6)+
   geom_density(data=subset(temp, size=="n=2"), alpha=0.6)+
   geom_vline(xintercept = mean(students$height), color="red", size=2, alpha=0.7)+
-  labs(x="mean height", 
-       title="The shape is becoming more bell-curved and narrower")+
+  labs(x="mean height", fill = "sample size")+
   xlim(58, 76)+
-  annotate("label", x=66.6, y=0.175, label="mu", parse=TRUE, size=10, color="red")
+  annotate("label", x=66.6, y=0.175, label="mu", parse=TRUE, size=5, color="red")+
+  theme_bw(base_size = 20)
 ```
 
 ## What is the mean of the sampling distributions?
@@ -298,7 +295,6 @@ knitr::kable(cbind('Distribution'=c("Population Distribution","Sampling Distibut
 
 ## Its the Central Limit Theorem! {.smaller}
 
-As the sample size increases, the sampling distribution of a sample mean becomes a **normal** distribution.
 
 :::: {.columns}
 
@@ -314,7 +310,7 @@ par(mar=c(6,0.1,4,0.1))
 plot(x,y, type="l", lwd=3, yaxt="n", xlab="",
      ylab="", xaxt="n",
      main="Sampling distribution of sample mean")
-axis(1, at=c(-3,-1.96,-1,0,1,1.96,3), cex=0.8, las=3,
+axis(1, at=c(-3,-1.96,-1,0,1,1.96,3), cex=2, las=3,
      labels=c(expression(mu-3*sigma/sqrt(n)),
               expression(mu-1.96*sigma/sqrt(n)),
               expression(mu-1*sigma/sqrt(n)),
@@ -326,18 +322,20 @@ polygon(c(x[21],x[21:81], x[81]),c(0,y[21:81],0), col="grey80")
 polygon(c(x[31],x[31:71],x[71]),c(0,y[31:71],0), col="grey50")
 polygon(c(x[41],x[41:61],x[61]),c(0,y[41:61],0), col="grey30")
 abline(v=0, lwd=3, lty=2, col="red")
-text(0,max(y)*0.9, expression(mu), col="red", cex=2, pos=4)
+text(0,max(y)*0.9, expression(mu), col="red", cex=3, pos=4)
 arrows(x[41],max(y)*0.5,x[61],max(y)*0.5, code=3, length=0.1)
 arrows(x[31],max(y)*0.3,x[71],max(y)*0.3, code=3, length=0.1)
 arrows(x[21],max(y)*0.05,x[81],max(y)*0.05, code=3, length=0.1)
-text(0, max(y)*0.5, label="68%", col="white", pos=3)
-text(1.5, max(y)*0.3, label="95%", col="white", pos=3)
-text(2.5, max(y)*0.05, label="99.7%", col="black", pos=3)
+text(0, max(y)*0.5, label="68%", col="white", pos=3, cex = 2)
+text(1.5, max(y)*0.3, label="95%", col="white", pos=3, cex = 2)
+text(2.5, max(y)*0.05, label="99.7%", col="black", pos=3, cex = 2)
 ```
 
 :::
 
 ::: {.column}
+
+As the sample size increases, the sampling distribution of a sample mean becomes a **normal** distribution.
 
 * The normal distribution is a bell-shaped curve with two characteristics: center and spread. 
 * Centered on $\mu$, which is the true value in the population.
@@ -375,9 +373,10 @@ ggplot(data.frame(means5), aes(x=means5))+
   labs(x="mean height in samples of size 5",
        title="Sampling distribution of mean height")+
   xlim(58, 76)+
-  annotate("label", x=66.5, y=50000, label="most sample means\nwill be close to\nthe true value\nin the population")+
-  annotate("label", x=75, y=15000, label="but a few will\nbe far away")+
-  annotate("label", x=66.6, y=150000, label="mu", parse=TRUE, size=5, color="red")
+  annotate("label", x=66.5, y=50000, label="most sample means\nwill be close to\nthe true value\nin the population", size = 7)+
+  annotate("label", x=72, y=15000, label="but a few will\nbe far away", size = 7)+
+  annotate("label", x=66.6, y=150000, label="mu", parse=TRUE, size=7, color="red")+
+  theme_bw(base_size = 29)
 ```
 
 :::
@@ -441,7 +440,7 @@ axis(1, at=c(-2,0,2), cex=0.7,
               expression(mu),
               expression(mu+1.96*sigma/sqrt(n))))
 polygon(c(x[31],x[31:71],x[71]),c(0,y[31:71],0), col="grey")
-text(0, max(y)/3, "95% probability that I will\ndraw a sample mean\nthat is within two (1.96)\nstandard deviations of\nthe true population mean")
+text(0, max(y)/4, "95% probability that I will\ndraw a sample mean\nthat is within two (1.96)\nstandard deviations of\nthe true population mean", cex = 2)
 ```
 
 :::
@@ -460,7 +459,7 @@ $$\bar{x}\pm1.96*\sigma/\sqrt{n}$$
 ```{r}
 #| label: conf-bar
 #| echo: false
-#| fig-height: 5
+#| fig-asp: 0.5625
 par(mar=c(0,0,0,0))
 plot(-2,-2, xlim=c(-1,20), ylim=c(-4,5.1), xaxt="n", yaxt="n", bty="n", xlab="", ylab="", cex.main=1.5)
 x <- rnorm(19,0,1)
@@ -999,15 +998,15 @@ I use the Greek $\rho$ to indicate the population proportion of winners. I will 
 
 :::
 
-## Assuming $H_0$ is true, what is the sampling distribution of my sample proportion? {.smaller}
+## Coca-Cola Hypothesis Test {.smaller}
 
 :::: {.columns}
 
-::: {.column width="50%"}
+::: {.column}
 
 ```{r}
 #| echo: false
-#| fig-height: 10
+
 x <- seq(from=-0.02,to=0.2,by=0.001)
 p <- 0.083
 se <- sqrt(p*(1-p)/100)
@@ -1016,13 +1015,19 @@ y <- (1/(se*sqrt(2*pi)))*exp(-1*(x-p)^2/(2*se^2))
 plot(x,y,type="l",xlab="sample proportion of winning bottlecaps",yaxt="n",ylab="", main="Sampling distribution for sample proportion\nassuming null hypothesis is true", col="white")
 text(p,8,"?", cex=10)
 ```
-]
+
+
+:::
+
+::: {.column}
+
+#### Assuming $H_0$ is true, what is the sampling distribution of my sample proportion?
 
 :::
 
 ::::
 
-## Assuming $H_0$ is true, what is the sampling distribution of my sample proportion? {.smaller}
+## Coca-Cola Hypothesis Test {.smaller}
 
 :::: {.columns}
 
@@ -1030,7 +1035,7 @@ text(p,8,"?", cex=10)
 
 ```{r}
 #| echo: false
-#| fig-height: 10
+
 x <- seq(from=-0.02,to=0.2,by=0.001)
 p <- 0.083
 se <- sqrt(p*(1-p)/100)
@@ -1043,13 +1048,15 @@ plot(x,y,type="l",xlab="sample proportion of winning bottlecaps",yaxt="n",ylab="
 
 ::: {.column}
 
+#### Assuming $H_0$ is true, what is the sampling distribution of my sample proportion? {.smaller}
+
 With a sample size of 100, it should be normally distributed.
 
 :::
 
 ::::
 
-## Assuming $H_0$ is true, what is the sampling distribution of my sample proportion? {.smaller}
+## Coca-Cola Hypothesis Test {.smaller}
 
 :::: {.columns}
 
@@ -1057,7 +1064,7 @@ With a sample size of 100, it should be normally distributed.
 
 ```{r}
 #| echo: false
-#| fig-height: 10
+
 x <- seq(from=-0.02,to=0.2,by=0.001)
 p <- 0.083
 se <- sqrt(p*(1-p)/100)
@@ -1072,6 +1079,8 @@ text(p,3,"true proportion = 0.083", col="blue", pos=4)
 
 ::: {.column}
 
+#### Assuming $H_0$ is true, what is the sampling distribution of my sample proportion?
+
 With a sample size of 100, it should be normally distributed.
 
 The center of the distribution is the true population parameter assuming $H_0$ is true. In this case, that is 0.083.
@@ -1080,7 +1089,7 @@ The center of the distribution is the true population parameter assuming $H_0$ i
 
 ::::
 
-## Assuming $H_0$ is true, what is the sampling distribution of my sample proportion? {.smaller}
+## Coca-Cola Hypothesis Test {.smaller}
 
 :::: {.columns}
 
@@ -1105,6 +1114,8 @@ text(p+se,1,"standard error = 0.0276", col="red", pos=4)
 
 ::: {.column}
 
+#### Assuming $H_0$ is true, what is the sampling distribution of my sample proportion?
+
 With a sample size of 100, it should be normally distributed.
 
 The center of the distribution is the true population parameter assuming $H_0$ is true. In this case, that is 0.083.
@@ -1115,7 +1126,7 @@ As we learned in the previous section, the standard error is given by: $$\sqrt\f
 
 ::::
 
-## Is the actual sample proportion unusual?
+## Coca-Cola Hypothesis Test {.smaller}
 
 :::: {.columns}
 
@@ -1123,7 +1134,7 @@ As we learned in the previous section, the standard error is given by: $$\sqrt\f
 
 ```{r}
 #| echo: false
-#| fig-height: 10
+
 x <- seq(from=-0.02,to=0.2,by=0.001)
 p <- 0.083
 se <- sqrt(p*(1-p)/100)
@@ -1150,7 +1161,7 @@ arrows(p,1,0.05,1)
 
 ::::
 
-## How far is far enough? {.smaller}
+## Coca-Cola Hypothesis Test {.smaller}
 
 :::: {.columns}
 
@@ -1158,7 +1169,7 @@ arrows(p,1,0.05,1)
 
 ```{r}
 #| echo: false
-#| fig-height: 10
+
 x2 <- (x-p)/se
 plot(x2,y,type="l",xlab="sample proportion",yaxt="n",ylab="", main="Game of make believe")
 abline(h=0)
@@ -1169,6 +1180,8 @@ abline(v=-1.18,lwd=4,col="red")
 
 ::: {.column}
 
+#### How far is far enough?
+
 We determine how far our sample proportion is from the center in terms of the number of standard errors. 
 
 $$\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18$$
@@ -1177,7 +1190,7 @@ $$\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18$$
 
 ::::
 
-## How far is far enough? {.smaller}
+## Coca-Cola Hypothesi Test {.smaller}
 
 :::: {.columns}
 
@@ -1199,6 +1212,8 @@ text(-2.5,3.5,"0.12 (12%)",pos=3)
 
 ::: {.column}
 
+#### How far is far enough?
+
 We determine how far our sample proportion is from the center in terms of the number of standard errors. 
 
 $$\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18$$
@@ -1209,7 +1224,7 @@ What proportion of sample proportions are this low or lower?
 
 ::::
 
-## How far is far enough? {.smaller}
+## Coca-Cola Hypothesis Test {.smaller}
 
 
 :::: {.columns}
@@ -1236,6 +1251,8 @@ text(2.5,3.5,"0.12 (12%)",pos=3)
 
 ::: {.column}
 
+#### How far is far enough?
+
 We determine how far our sample proportion is from the center in terms of the number of standard errors. 
 
 $$\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18$$
@@ -1248,7 +1265,7 @@ We also need to take account of sample proportions this far away in the opposite
 
 ::::
 
-## How far is far enough? {.smaller}
+## Coca-Cola Hypothesis Test {.smaller}
 
 :::: {.columns}
 
@@ -1276,6 +1293,8 @@ text(0,11,"p-value=0.12+0.12=0.24 (24%)",pos=3)
 :::
 
 ::: {.column}
+
+#### How far is far enough?
 
 We determine how far our sample proportion is from the center in terms of the number of standard errors. 
 
