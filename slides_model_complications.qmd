@@ -147,7 +147,7 @@ $$-0.54-0.09(nsports_i)$$
 ::: {.column}
 
 ```{r}
-#| label: fig-marginal-fx-plot-code
+#| label: marginal-fx-plot-code
 #| eval: false
 nsports <- 0:6
 gender_diff <- -0.54-0.09*nsports
@@ -163,8 +163,7 @@ ggplot(tibble(nsports, gender_diff),
 ::: {.column}
 
 ```{r}
-#| label: fig-marginal-fx-plot-exec
-#| fig-cap: Marginal effect of gender difference on popularity by sports played
+#| label: marginal-fx-plot-exec
 #| echo: false
 nsports <- 0:6
 gender_diff <- -0.54-0.09*nsports
@@ -186,15 +185,21 @@ ggplot(data.frame(nsports, gender_diff),
 ::: {.column .fragment}
 
 ### Linearity
-```{r linear-violation, echo=FALSE, fig.height=4}
+
+```{r}
+#| label: linear-violation
+#| echo: false
+#| fig-asp: 0.5625
+
 ggplot(subset(gapminder, year==2007), aes(x=gdpPercap, y=lifeExp))+
   geom_point(alpha=0.7)+
   geom_smooth(method="lm", se=FALSE)+
   geom_text_repel(data=subset(gapminder, 
                               year==2007 & gdpPercap>5000 & lifeExp<60), 
                   aes(label=country), size=2)+
-  labs(x="GDP per capita", y="Life expectancy at birth", subtitle = "2007 data from Gapminder")+
-  scale_x_continuous(labels=scales::dollar)
+  labs(x="GDP per capita", y="Life expectancy at birth")+
+  scale_x_continuous(labels=scales::dollar)+
+  theme_bw(base_size = 20)
 ```
 
 * If you fit a model with the wrong functional form, it is considered a *specification error*.
@@ -206,12 +211,17 @@ ggplot(subset(gapminder, year==2007), aes(x=gdpPercap, y=lifeExp))+
 ::: {.column .fragment}
 
 ### Error terms are iid
-```{r heteroskedasticity, echo=FALSE, fig.height=4}
+
+```{r}
+#| label: heteroskedasticity
+#| echo: false
+#| fig-asp: 0.5625
 model <- lm(box_office~metascore, data=movies)
 ggplot(augment(model), aes(x=.fitted, y=.resid))+
   geom_jitter(alpha=0.2)+
   geom_hline(yintercept = 0, linetype=2)+
-  labs(x="predicted values of box office returns by tomato rating", y="model residuals")
+  labs(x="predicted values of box office returns by IMDB rating", y="model residuals")+
+  theme_bw(base_size = 20)
 ```
 * iid = **independent and identically distributed** which is typically violated either by **heteroscedasticity** or **autocorrelation**. 
 * The consequence of violating the i.i.d. assumption is usually incorrect standard errors. 
@@ -405,11 +415,9 @@ summary(model)$coef
 ## Linear models fit straight lines
 
 ```{r}
-#| label: fig-life-exp-non-linear
-#| fig-cap: The relationship between life expectancy and GDP per capita is clearly not a straight line!
+#| label: life-exp-non-linear-fig
 #| echo: false
-#| fig-width: 24
-#| fig-height: 14
+#| fig-asp: 0.5625
 
 gapminder |>
   filter(year == 2007) |>
@@ -418,8 +426,9 @@ gapminder |>
   geom_smooth(method="lm", se=FALSE)+
   geom_text_repel(data=subset(gapminder, year==2007 & gdpPercap>5000 & lifeExp<60), 
                   aes(label=country), size=2)+
-  labs(x="GDP per capita", y="Life expectancy at birth", subtitle = "2007 data from Gapminder")+
-  scale_x_continuous(labels=scales::dollar)
+  labs(x="GDP per capita", y="Life expectancy at birth")+
+  scale_x_continuous(labels=scales::dollar)+
+  theme_bw(base_size = 20)
 ```
 
 ::: {.notes}
@@ -434,16 +443,15 @@ gapminder |>
 ## Non-linearity can be hard to detect
 
 ```{r}
-#| label: fig-non-linear-movies
-#| fig-cap: Is this relationship non-linear?
+#| label: non-linear-movies-fig
 #| echo: false
-#| fig-width: 24
-#| fig-height: 14
+#| fig-asp: 0.5625
 
 ggplot(movies, aes(x=rating_imdb, y=box_office))+
   geom_jitter(alpha=0.2)+
   scale_y_continuous(labels = scales::dollar)+
-  labs(x="IMDB rating", y="Box Office Returns (millions USD)")
+  labs(x="IMDB rating", y="Box Office Returns (millions USD)")+
+  theme_bw(base_size = 20)
 ```
 
 ## Two techniques for detecting non-linearity
@@ -455,7 +463,9 @@ ggplot(movies, aes(x=rating_imdb, y=box_office))+
 ### Non-linear smoothing
 
 ```{r}
+#| label: gapminder-fig
 #| echo: false
+#| fig-asp: 1.1
 
 gapminder |>
   filter(year == 2007) |>
@@ -464,7 +474,7 @@ gapminder |>
   geom_smooth(se=FALSE)+
   geom_text_repel(data=subset(gapminder, year==2007 & gdpPercap>5000 & lifeExp<60), 
                   aes(label=country), size=2)+
-  labs(x="GDP per capita", y="Life expectancy at birth", subtitle = "2007 data from Gapminder")+
+  labs(x="GDP per capita", y="Life expectancy at birth")+
   scale_x_continuous(labels=scales::dollar)
 ```
 
@@ -475,15 +485,16 @@ gapminder |>
 ### Diagnostic residual plot
 
 ```{r}
+#| label: diag-gapminder-fig
 #| echo: false
+#| fig-asp: 1.1
 
 model <- lm(lifeExp~gdpPercap, data=subset(gapminder, year==2007))
 ggplot(augment(model), aes(x=.fitted, y=.resid))+
   geom_point()+
   geom_hline(yintercept = 0, linetype=2)+
   geom_smooth(se=FALSE)+
-  labs(x="fitted values of life expectancy", y="model residuals")+
-  theme_bw()
+  labs(x="fitted values of life expectancy", y="model residuals")
 ```
 
 :::
@@ -539,11 +550,9 @@ temp |>
 ## Applying a median smoother
 
 ```{r}
-#| label: fig-median-smoothing
-#| fig-cap: Different median smoothers over scatterplot movie box office returns by IMDB rating
+#| label: median-smoothing-fig
 #| echo: false
-#| fig-width: 24
-#| fig-height: 14
+#| fig-asp: 0.5625
 
 smoothed <- movies |> 
   select(rating_imdb, box_office) |>
@@ -566,7 +575,9 @@ ggplot(movies, aes(x = rating_imdb, y = box_office))+
   scale_color_manual(values = wes_palette("Moonrise2"))+
   geom_label_repel(data=subset(movies, title=="Rush Hour 3"),
                    aes(label=title), min.segment.length = 0)+
-  labs(x="IMDB rating", y="Box Office Returns (millions)")
+  labs(x="IMDB rating", y="Box Office Returns (millions)")+
+  theme_bw(base_size = 20)+
+  theme(legend.position = "bottom")
 ```
 
 ## The LOESS smoother {.smaller}
@@ -575,7 +586,16 @@ ggplot(movies, aes(x = rating_imdb, y = box_office))+
 
 ::: {.column}
 
-### LOcally Estimated Scatterplot Smoothing
+```{r}
+#| label: loess-fig-actual
+#| code-line-numbers: "3"
+#| eval: false
+ggplot(movies, aes(x = rating_imdb, y = box_office))+
+  geom_jitter(alpha=0.2)+
+  geom_smooth(method = "loess", se = FALSE)+
+  labs(x = "IMDB Rating", 
+       y = "Box Office Returns (millions USD)")
+```
 
 - Each smoothed value is determined from a model that includes:
   - polynomial terms (more on that later)
@@ -588,9 +608,9 @@ ggplot(movies, aes(x = rating_imdb, y = box_office))+
 ::: {.column}
 
 ```{r}
-#| label: fig-loess
-#| fig-cap: Use LOESS smoothing for nice smooth lines
+#| label: loess-fig
 #| code-line-numbers: "3"
+#| echo: false
 ggplot(movies, aes(x=rating_imdb, y=box_office))+
   geom_jitter(alpha=0.2)+
   geom_smooth(method="loess", se=FALSE)+
@@ -753,15 +773,14 @@ ggplot(earnings, aes(x=age, y=wages))+
 
 - A scatterplot of the residuals vs. the fitted values from a model can also be useful for detecting non-linearity.
 - If the relationship is linear, then we should expect to see no sign of a relationship in this plot. Drawing a smoothed line can be useful for this diagnosis.
-- Residual plots can also help to detect **heteroskedasticity** which we will talk about later.
+- Residual plots can also help to detect **heteroskedasticity**.
 
 :::
 
 ::: {.column}
 
 ```{r}
-#| label: fig-resid-plot-le
-#| fig-cap: Residual plots can be used for multiple diagnostic purposes
+#| label: resid-plot-le
 #| echo: false
 
 model <- lm(lifeExp~gdpPercap, data=subset(gapminder, year==2007))
@@ -833,7 +852,7 @@ ggplot(augment(model),
 ### Transform variables
 ```{r}
 #| echo: false
-#| fig-height: 4
+#| fig-asp: 0.5
 ggplot(subset(gapminder, year==2007), 
        aes(x=gdpPercap, y=lifeExp))+
   geom_point(alpha=0.7)+
@@ -850,7 +869,7 @@ ggplot(subset(gapminder, year==2007),
 ### Polynomial terms
 ```{r}
 #| echo: false
-#| fig-height: 4
+#| fig-asp: 0.5
 ggplot(subset(gapminder, year==2007), 
        aes(x=gdpPercap, y=lifeExp))+
   geom_point(alpha=0.7)+
@@ -869,7 +888,7 @@ ggplot(subset(gapminder, year==2007),
 ### Create splines
 ```{r}
 #| echo: false
-#| fig-height: 4
+#| fig-asp: 0.5
 temp <- subset(gapminder, year==2007)
 cutoff <- 7500
 temp$gdp.spline <- ifelse(temp$gdpPercap<cutoff, 0,
@@ -1026,17 +1045,16 @@ We can use this feature to model relative (percent) change rather than absolute 
 ## Logging box office returns gives us a linear fit
 
 ```{r}
-#| label: fig-box-office-log
-#| fig-cap: Note the logarithmic scale on the y-axis
+#| label: box-office-log-fig
 #| echo: false
-#| fig-width: 24
-#| fig-height: 14
+#| fig-asp: 0.5625
 
 ggplot(movies, aes(x=rating_imdb, y=box_office))+
   geom_jitter(alpha=0.2)+
   geom_smooth(method="lm", color="red", se=FALSE)+
   scale_y_log10(labels = scales::dollar)+
-  labs(x="IMDB Rating", y="Box Office Returns (millions)")
+  labs(x="IMDB Rating", y="Box Office Returns (millions)")+
+  theme_bw(base_size = 20)
 ```
 
 ## What does it mean for the model?
@@ -1151,31 +1169,32 @@ exp(coef(model))
 
 ## Logging the independent variable {.smaller}
 
-:::: {.columns}
+```{r}
+#| label: log-gdp-model
 
-::: {.column width = "30%"}
-
-Lets return to the relationship between GDP per capita and life expectancy that fit well as a linear relationship when we logged GDP per capita. Lets run the model:
-
-```{r log-gdp-model}
-model <- lm(lifeExp~log(gdpPercap), 
-            data=subset(gapminder, 
-                        year==2007))
+model <- lm(lifeExp ~ log(gdpPercap), 
+            data = subset(gapminder, year == 2007))
 round(coef(model), 5)
 ```
 
-:::
 
-::: {.column .fragment width = "70%"}
+::: {.fragment}
 
 How do we interpret these results? This case requires something different than the case where we logged the dependent variable.
 
 Our basic model for life expectancy by GDP per capita is:
 
 $$\hat{y}_i=4.9+7.2\log{x_i}$$
+:::
+
+::: {.fragment}
+
 What is the predicted value of life expectancy at $1 GDP?
 
 $$\hat{y}_i=4.9+7.2\log{1} = 4.9+7.2 * 0=4.9$$
+:::
+
+::: {.fragment}
 
 What happens when we increase GDP per capita by 1% (from 1 to 1.01)?
 
@@ -1184,8 +1203,6 @@ $$\hat{y}_i=4.9+7.2\log{1.01} = 4.9+7.2 * 0.01=4.9+0.072$$
 Predicted life expectancy increases by 0.072 years. 
 
 :::
-
-::::
 
 ## The 1% increase is the same at all $x$
 
@@ -1213,18 +1230,17 @@ $$\hat{y}_i=b_0+b_1\log(x_i)$$
 ## Logging both variables
 
 ```{r}
-#| label: fig-log-both
-#| fig-cap: Logging both variables can sometimes solve multiple problems
+#| label: log-both-fig
 #| echo: false
-#| fig-width: 24
-#| fig-height: 14
+#| fig-asp: 0.5625
 
 ggplot(earnings, aes(x=age, y=wages))+
   geom_jitter(alpha=0.05, width=0.1)+
   geom_smooth(se=FALSE, method="lm", linewidth = 1.5)+
   scale_y_log10(labels = scales::dollar)+
   scale_x_log10()+
-  labs(x="age (log-scale)", y="hourly wages (log-scale)")
+  labs(x="age (log-scale)", y="hourly wages (log-scale)")+
+  theme_bw(base_size = 20)
 ```
 
 ## The elasticity model
@@ -1304,13 +1320,13 @@ $$y=a+bx+cx^2$$
 
 ```{r}
 #| echo: false
-#| fig-height: 6
+#| fig-asp: 0.5
 
 
 x <- 0:100
 y <- 10+5*x-0.04*x^2
 plot(x,y, type="l", lwd=2, las=1)
-text(40, 50, expression(y == 10 + 5*x + 0.04*x^2))
+text(40, 50, expression(y == 10 + 5*x + 0.04*x^2), cex = 1.5)
 ```
 
 :::
@@ -1511,8 +1527,7 @@ ggplot(subset(gapminder, year==2007),
 ::: {.column}
 
 ```{r}
-#| label: fig-spline-wages
-#| fig-cap: Spline models create hinges or "broken arrows"
+#| label: spline-wages-fig
 #| echo: false
 
 earnings$age.spline <- ifelse(earnings$age<35, 0, earnings$age-35)
@@ -1711,7 +1726,7 @@ $$y_i=\underbrace{\beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\ldots+\beta_px_{ip}}_{\ha
 ```{r}
 #| label: time-series
 #| echo: false
-#| fig-height: 7
+#| fig-asp: 0.6
 
 ggplot(births_nyc, aes(x = date, y = births))+
   geom_line()+
@@ -1799,8 +1814,7 @@ augment(model) |>
 ::: {.column .fragment}
 
 ```{r}
-#| label: fig-heteroscedasticity
-#| fig-cap: The variance of the residuals increases with the predicted value
+#| label: heteroscedasticity-fig
 #| echo: false
 
 model <- lm(box_office~rating_imdb, data=movies)
@@ -1868,7 +1882,7 @@ ggplot(augment(model), aes(x=.fitted, y=.std.resid))+
   geom_jitter(alpha=0.7)+
   geom_hline(yintercept=0, linetype=2)+
   geom_smooth(se = FALSE)+
-  labs(x="fitted values of log box office returns by IMDG Rating",
+  labs(x="fitted values of log box office returns by IMDB Rating",
        y="model residuals",
        title="After logging box office returns")
 ```
@@ -2026,8 +2040,7 @@ Because Mormons are heavily concentrated in certain places, percent Mormon in th
 ::: {.column}
 
 ```{r}
-#| label: fig-mormons
-#| fig-cap: The variance in the proportion across years is higher than we would expect if we were drawing an SRS
+#| label: mormons-fig
 #| echo: false
 
 temp <- relig |>
@@ -2048,7 +2061,7 @@ temp |>
   geom_line()+
   geom_point()+
   geom_hline(yintercept = prop_mormon_pooled, linetype=2)+
-  annotate("text", 1980, 0.015, 
+  annotate("text", 1980, 0.015, size = 7,
            label="expected 95% confidence\ninterval under SRS",
            color="red")+
   scale_y_continuous(labels = scales::percent)+
@@ -2199,14 +2212,12 @@ addhealth |>
 ::: {.column .fragment}
 
 ```{r}
-#| label: fig-addhealthweight-dist
-#| fig-cap: Some observations count more than others
+#| label: addhealthweight-dist-fig
 #| echo: false
 
 ggplot(addhealth, aes(x=sweight))+
   geom_histogram(fill="darkgreen", color="grey20")+
-  labs(x="sampling weight",
-       title="Sampling weight distribution in Add Health data")
+  labs(x="sampling weight")
 ```
 
 :::
@@ -2626,7 +2637,7 @@ addhealth$parent_income.randi[is.na(addhealth$parent_income)] <- random_values
 
 ggplot(addhealth, aes(x=parent_income.meani, y=nominations, 
                       color=parent_income_missing))+
-  geom_point(alpha=0.6)+
+  geom_point(alpha=0.4)+
   scale_color_manual(values=c("grey20","red"))+
   labs(x="parental income ($1000s)", y="number of friend nominations",
        color="Income value imputed")+
@@ -2643,7 +2654,7 @@ ggplot(addhealth, aes(x=parent_income.meani, y=nominations,
 
 ggplot(addhealth, aes(x=parent_income.randi, y=nominations, 
                       color=parent_income_missing))+
-  geom_point(alpha=0.6)+
+  geom_point(alpha=0.4)+
   geom_smooth(method="lm", se=FALSE)+
   scale_color_manual(values=c("grey20","red"))+
   labs(x="parental income ($1000s)", y="number of friend nominations",
@@ -2688,7 +2699,6 @@ modelsummary(
 ```
 
 - This model still assumes MCAR and reduces variance in the independent variable. 
-- Its primary advantage is that it is a quick method to avoid having to throw out cases that have valid data on other important variables.
 
 ##  Regression imputation {.smaller}
 
@@ -2761,7 +2771,7 @@ ggplot(addhealth, aes(x=parent_income.regi, y=nominations,
                       color=parent_income_missing))+
   geom_point(alpha=0.4)+
   geom_smooth(method = "lm", se = FALSE)+
-  scale_color_manual(values=c("grey","red"))+
+  scale_color_manual(values=c("grey20","red"))+
   labs(x="parental income ($1000s)" , 
        y="number of friend nominations received",
        color="Income value imputed",
@@ -2779,7 +2789,7 @@ ggplot(addhealth, aes(x=parent_income.rregi, y=nominations,
                       color=parent_income_missing))+
   geom_point(alpha=0.4)+
   geom_smooth(method = "lm", se = FALSE)+
-  scale_color_manual(values=c("grey","red"))+
+  scale_color_manual(values=c("grey20","red"))+
   labs(x="parental parental income", y="actual or imputed parental income",
        color="Income value imputed",
        title = "Random Regression Imputation")+
@@ -3078,8 +3088,7 @@ We will look at data collected by myself and Nicole Marwell on the spatial distr
 :::{.column}
 
 ```{r}
-#| label: fig-nyc-map
-#| fig-cap: Per capita services contracted out in NYC by health area, 1997-2001
+#| label: nyc-map-fig
 #| echo: false
 
 ha_shp <- st_read(here(here("data","nyc_health_areas","health_area_shapefiles",
@@ -3093,7 +3102,7 @@ ha_shp <- ha_shp |>
 
 ggplot(ha_shp, aes(fill=amtcapita_d))+
   geom_sf()+
-  theme_void()+
+  theme_void(base_size = 32)+
   theme(legend.position = "bottom")+
   scale_fill_brewer("Annual amount per capita, 1997-2001", type="seq", 
                     palette="RdYlBu", direction=-1, na.value="grey")
@@ -3158,12 +3167,13 @@ You can also visualize the correlation matrix as a *correlogram*.
 
 ```{r}
 #| label: corrgram-nyc
-#| fig-height: 8
+#| fig-asp: 0.7
 
 library(corrgram)
 nyc |>
   select(poverty, unemployed, lincome) |>
-  corrgram(upper.panel="panel.cor", lower.panel="panel.pts")
+  corrgram(upper.panel="panel.cor", lower.panel="panel.pts",
+           cex.labels = 2)
 ```
 
 :::
@@ -3400,10 +3410,9 @@ The loadings themselves show the correlation coefficient between each observed v
 ### Visualize factor loadings
 
 ```{r}
-#| label: fig-factor-loading
-#| fig-cap: Visual display of factor loadings
+#| label: factor-loading-fig
 
-fa.diagram(factor_nyc)
+fa.diagram(factor_nyc, cex = 2f)
 ```
 
 :::
@@ -3431,8 +3440,7 @@ A one standard deviation increase on my deprivation scale is associated with a 3
 ::: {.column}
 
 ```{r}
-#| label: fig-compare-scores
-#| fig-cap: comparison of the summated scale vs. factor score
+#| label: compare-scores-fig
 #| echo: false
 
 ggplot(nyc, aes(x=deprivation_summated, y=deprivation_factor))+
@@ -3536,12 +3544,10 @@ morality_r <- cor(pew, use="pairwise.complete.obs")
 ## Correlogram of responses
 
 ```{r}
-#| label: fig-correlogram-moral
-#| fig-cap: Correlogram of morality variables from Pew data
-#| fig-width: 24
-#| fig-height: 14
+#| label: correlogram-moral-fig
+#| fig-asp: 0.5625
 
-corrgram(morality_r, upper.panel=panel.cor, order=TRUE)
+corrgram(morality_r, upper.panel=panel.cor, order=TRUE, cex = 1.25)
 ```
 
 ## Try factor analysis with up to three factors
@@ -3557,20 +3563,18 @@ morality_fa3 <- fa(morality_r, 3, rotate="oblimin")
 ```
 
 ```{r}
-#| label: fig-factor-morality
-#| fig-cap: Factor analysis of morality data
+#| label: factor-morality-fig
 #| layout-ncol: 3
-#| fig-width: 24
-#| fig-height: 28
+#| fig-asp: 1
 #| echo: false
 #| fig-subcap:
 #|    - Single factor
 #|    - Two factors
 #|    - Three factors
 
-fa.diagram(morality_fa1, main = NULL, l.cex = 5)
-fa.diagram(morality_fa2, main = NULL, l.cex = 5)
-fa.diagram(morality_fa3, main = NULL, l.cex = 5)
+fa.diagram(morality_fa1, main = NULL, cex = 5)
+fa.diagram(morality_fa2, main = NULL, cex = 5)
+fa.diagram(morality_fa3, main = NULL, cex = 5)
 ```
 
 ##  Extending factor analysis
@@ -3585,4 +3589,384 @@ An important cousin of factor analysis that can be used for categorical variable
 
 The idea of factor analysis can be generalized to construct entire systems of equations that involve both latent and observed variables.
 
+# Model Selection {.center background-color="black" background-image="images/caleb-jones-J3JMyXWQHXU-unsplash.jpg"}
+
+##  Predicting violent crime rates
+
+Lets predict violent crime rates in US States by a variety of characteristics. 
+
+```{r}
+#| label: build-crime-models
+
+model_demog <- lm(violent_rate ~ median_age + percent_male, data = crimes)
+model_ineq <- update(model_demog, .~. + gini)
+model_pov <- update(model_ineq, .~. + poverty_rate)
+model_unemp <- update(model_pov, .~. + unemploy_rate)
+model_justunemp <- lm(violent_rate ~ unemploy_rate, data = crimes)
+model_another <- update(model_justunemp,.~. + gini + median_age)
+```
+
+Note that some of these models are **nested** within other models, meaning that the more complex models just add additional variables to earlier models. Other models are non-nested. 
+
+## Which model is best? {.smaller}
+
+```{r}
+#| label: tbl-model-compare
+#| tbl-cap: Models predicting violent crime rate
+#| echo: false
+
+cm <- c("(Intercept)" = "Intercept",
+        "median_age" = "Median Age",
+        "percent_male"= "Percent Male",
+        "gini" = "Gini Coefficient",
+        "poverty_rate" = "Poverty Rate",
+        "unemploy_rate" = "Unemployment Rate")
+
+modelsummary(list(model_demog, model_ineq, model_pov, model_unemp, 
+                  model_justunemp, model_another),
+             output = "gt",
+             fmt = 1,
+             statistic = NULL,
+             coef_map = cm,
+             gof_map = c("nobs", "r.squared"),
+             stars = TRUE)
+```
+
+##  A tradeoff: accuracy vs. parsimony {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+![](images/bullseye.jpg)
+
+### Accuracy
+ We want our models to be accurate, or more formally we want them to have high **goodness of fit**. This is measured in linear models primarily by the $R^2$ value. A more accurate model accounts for more of the variation in the dependent variable. 
+
+:::
+
+::: {.column .fragment}
+
+![](images/piggybank.jpg)
+
+### Parsimony
+We want our models to be parsimonious. They should account for variation in the dependent variable with a minimal number of explanatory variables. Models that are not parsimonious are rarely theoretically very interesting.
+
+:::
+
+::::
+
+##  How to choose a model {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+### {{< fa xmark >}} Do Nots
+
+- **Do not** choose a model based on all of the coefficients being statistically significant.
+- **Do not** choose a model because it produces the results you like the best. That is not science. 
+- **Do not** choose a model based on some purely mechanical algorithm. Model choice should be driven by what questions you want to ask as much as goodness of fit and parsimony.
+- **Do not** choose a model based on $R^2$ values. This approach will ignore parsimony.
+
+:::
+
+::: {.column .fragment}
+
+### {{< fa check >}} Good Practices
+
+- **Do** think theoretically about what is the best model for the question at hand.
+- **Do** make use of model selection tools to help make a decision, but not in a mechanistic way. Use multiple tools. 
+- **Do** conduct and report sensitivity analyses showing how dependent your result is upon the selected model vs. other models. 
+- **Do** weigh both parsimony and accuracy, relative to the goals of your research question.
+
+:::
+
+::::
+
+##  {{< fa toolbox >}} Model selection tools
+
+- The F-Test
+- Adjusted $R^2$
+- Bayesian Information Criterion (BIC)
+
+::: {.fragment}
+
+All three of these statistics (and more) are provided in `glance` from the `broom` package.
+
+```{r}
+#| label: glance-model
+
+glance(model_demog)
+```
+
+:::
+
+
+##  Null vs. saturated model {.smaller}
+
+::: {.fragment}
+
+### Null model
+
+$$\hat{y}_i=\bar{y}$$
+
+The null model is the linear model with no predictors.
+
+:::
+
+::: {.fragment}
+
+### Saturated model
+
+$$\hat{y}_i=\beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\ldots+\beta_px_{ip}$$
+Where,
+$$n=p$$
+The saturated model is a hypothetical model in which the number of predictors equals the number of observations and we fit each $y_i$ exactly.
+
+:::
+
+##  The F-Test {.smaller}
+
+- Compare two different nested models, where the second model has $g$ additional independent variables.
+- The null hypothesis for the F-test is that the effects for all of the additional $g$ variables are zero. 
+
+::: {.fragment}
+
+The F-test produces a test statistic called the **F-statistic**:
+
+$$F=\frac{(SSR_1-SSR_2)/g}{SSR_2/(n-g-k-1)}$$
+
+:::
+
+-  $SSR$ is the sum of squared residuals for a given model
+- $g$ is the additional terms added to the second model
+- $k$ is the number of terms in the first model
+
+::: {.fragment}
+
+Assuming the null hypothesis is true, the F-statistic will come from an F-distribution with degrees of freedom equal to $g$ and $n-g-k-1$ (the F-distribution has two DF parameters). The area in the right tail gives the p-value.
+
+:::
+
+## Calculating F-statistic {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+```{r}
+#| label: ftest
+
+model_null <- lm(violent_rate ~ 1, data = crimes)
+SSR1 <- sum(model_null$residuals^2)
+SSR2 <- sum(model_demog$residuals^2)
+g <- length(model_demog$coef)-length(model_null$coef)
+k <- length(model_null$coef)-1
+n <- length(model_null$residuals)
+fstat <- ((SSR1 - SSR2) / g) / (SSR2 / (n - g - k - 1))
+fstat
+1-pf(fstat, g, n - g - k - 1)
+```
+
+The p-value for the hypothesis test is 0.0011. So, I would reject the null hypothesis and prefer the model predicting violent crime by median age and percent male to the null model. 
+
+:::
+
+::: {.column .fragment}
+
+```{r}
+#| label: anova-plot
+#| echo: false
+
+x <- seq(from=0,to=10,by=0.01)
+y <- df(seq(from=0,to=10,by=0.01),g,n-g-k-1)
+tibble(x, y) |>
+  ggplot(aes(x = x, y = y))+
+  geom_line()+
+  geom_vline(xintercept = fstat, linetype = 2)+
+  labs(x = "F-statistic", y = NULL,
+       title = "F-distribution (2, 47)")
+```
+:::
+
+::::
+
+##  Using `anova` command for F-test
+
+Rather than do this by hand, you can feed both models into the `anova` command.
+
+```{r}
+#| label: ftest-anova
+
+anova(model_null, model_demog)
+```
+
+## Multiple model comparisons
+
+The `anova` command is not limited to two models. We can feed in a list of models **so long as they are nested models.**
+
+```{r}
+#| label: ftest-anova-nested
+
+anova(model_null, model_demog, model_ineq, model_unemp)
+```
+
+##  F-test for adding one variable
+
+```{r}
+#| label: ftest-anova-onecar
+
+anova(model_demog, model_ineq)
+summary(model_ineq)$coef["gini",]
+```
+
+- The p-value for an F-test where only one variable is added is identical to the p-value for a t-statistic of that particular regression coefficient.
+
+##  Methods for penalizing goodness of fit
+
+- $R^2$ can be thought of as a goodness-of-fit statistic. It measures the accuracy of the model in predicting the dependent variable.
+- $R^2$ cannot be used directly to select models because it can only get bigger as more independent variables are added to the model. It will always prefer the more complex model unless there is literally zero correlation between the new independent variables and the dependent variable. 
+- What if we could penalize $R^2$ by some value that depends on the number of independent variables in the model? This would give us a single measure that combines accuracy and parsimony. 
+
+##  Adjusted $R^2$
+
+The formula for adjusted $R^2$ is:
+
+$$R^2_{adj}=R^2-(\frac{p}{n-p-1})(1-R^2)$$
+
+Where $p$ is the number of independent variables in the model. The subtracted part is the parsimony penalty and it is a function of the number of variables as a proportion of the sample size and the lack of goodness-of-fit, $1-R^2$.
+
+::: {.fragment}
+
+```{r}
+#| label: adj-r-squared-comparison
+
+glance(model_demog)[,c("r.squared", "adj.r.squared")]
+```
+
+:::
+
+## Bayesian Information Criterion {.smaller}
+
+There are two common forms of BIC:
+
+- BIC is implicitly compared to the saturated model. The `BIC` command in R will give you this value. 
+- BIC' is implicitly compared to the null model.
+
+::: {.fragment}
+
+The equation for BIC' for linear models is most intuitive:
+
+$$BIC'=n\log(1-R^2)+p\log(n)$$
+Where $p$ is the number of independent variables in the model. The first component is the accuracy of the model and the second component is the parsimony penalty.
+
+:::
+
+- BIC is unusual in that lower values are better, and negative values are most preferred. A negative value means you prefer this model to its comparison (e.g. null or saturated model). 
+- You can directly compare the values of any two given models by BIC' or BIC, and you will prefer the model with the lower value. The models do not need to be nested. 
+
+
+##  Calculating BIC
+
+```{r bicfunction}
+#| label: bic-function
+
+bic.null <- function(model) {
+  rsq <- summary(model)$r.squared
+  n <- length(model$resid)
+  p <- length(model$coef) - 1
+  return(n * log(1 - rsq) + p * log(n))
+}
+
+bic.null(model_demog)
+BIC(model_demog)
+BIC(model_demog)-BIC(model_null)
+```
+
+##  BIC or BIC' give the same difference
+
+```{r}
+#| label: bic-compare
+
+bic.null(model_unemp) - bic.null(model_demog)
+BIC(model_unemp) - BIC(model_demog)
+```
+
+::: {.fragment}
+
+Because the difference is positive, we slightly prefer the less complex demographic model to the model that adds unemployment, poverty, and the gini coefficient.
+
+:::
+
+:::{.fragment .nonincremental}
+
+A general rule of thumb is that
+
+* BIC differences less than two give weak preferences
+* BIC differences greater than six give strong preferences
+* BIC differences greater than ten give very strong preferences. 
+
+:::
+
+## Model comparison {.smaller}
+
+::: {style="font-size: 90%;"}
+
+```{r}
+#| label: tbl-model-summary-compare
+#| tbl-cap: Models predicting violent crime rates
+#| echo: false
+
+modelsummary(list(model_demog, model_ineq, model_pov, model_unemp, 
+                  model_justunemp, model_another),
+             output = "gt",
+             fmt = 1,
+             statistic = NULL,
+             coef_map = cm,
+             gof_map = c("nobs", "r.squared", "adj.r.squared", "bic", "F"),
+             stars = TRUE)
+```
+
+
+:::
+
+## Model uncertainty {.smaller}
+
+- Given a set of potential independent variables, there is a very large number of potential models that could be chosen, even if we don't consider added complications like interaction or polynomial terms. 
+- Generally, we select only one model from this full set. Even when we examine alternative models, we don't examine every possible set.
+- **Model averaging** techniques iteratively fit all or most models and use some algorithm to decide to average effects across these models.
+- The `BMA` package in R will do **Bayesian Model Averaging** which will provide an expected value for every coefficient across all possible models, as well as the probability a variable is in the model, and the top preferred models. 
+
+## Bayesian Model Averaging {.smaller}
+
+```{r}
+#| label: bma-models
+#| eval: false
+
+library(BMA)
+model_bma <- bic.glm(violent_rate ~ median_age + percent_male + percent_lhs + 
+                       median_income + gini + unemploy_rate + poverty_rate, 
+        data = crimes, glm.family = gaussian)
+summary(model_bma)
+```
+
+```
+ 28  models were selected
+ Best  5  models (cumulative posterior probability =  0.4647 ): 
+
+               p!=0   EV         SD         model 1     model 2     model 3     model 4     model 5   
+Intercept      100    82.937285  1.409e+03  1020.97063  -849.27477  -191.04334  1116.67098  1040.47540
+median_age     68.4  -17.300522  1.453e+01   -28.22382       .       -13.77369   -30.04257   -28.12604
+percent_male   14.9    1.752056  1.613e+01       .           .           .           .           .    
+percent_lhs    61.5  -16.396241  1.647e+01       .       -29.60906   -28.01411   -13.21131   -28.89025
+median_income  56.2    0.005413  5.728e-03       .         0.01155     0.01018       .           .    
+gini           16.3    1.577432  8.166e+00       .           .           .           .           .    
+unemploy_rate  58.2   43.668082  4.307e+01    79.46096       .           .       100.40607    85.81370
+poverty_rate   63.8   42.509637  4.017e+01       .        88.73749    81.90378       .        26.37693
+                                                                                                      
+nVar                                             2           3           4           3           4    
+BIC                                         -135.92479  -135.70055  -134.70002  -134.09916  -133.99923
+post prob                                      0.144       0.129       0.078       0.058       0.055  
+```
 
