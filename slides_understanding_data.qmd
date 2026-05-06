@@ -169,7 +169,8 @@ ggplot(popularity, aes(x=nominations))+
   geom_histogram(col="grey20",fill="darkgreen")+
   labs(x="number of friend nominations received",
        title="The distribution of a quantitative variable",
-       caption = "Add Health data, 1997")
+       caption = "Add Health data, 1997")+
+  theme_bw(base_size = 28)
 ```
 :::
 
@@ -182,7 +183,8 @@ ggplot(subset(politics, president!="No Vote"), aes(x=president, y=..prop.., grou
   scale_y_continuous(labels = scales::percent)+
   labs(x="presidential choice among voters", y=NULL,
        title="The distribution of a categorical variable",
-       caption="ANES data, 2016")
+       caption="ANES data, 2016")+
+  theme_bw(base_size = 28)
 ```
 :::
 ::::
@@ -262,7 +264,7 @@ ggplot(president, aes(x=gender, y=percent))+
   geom_hline(yintercept=50, linetype=2)+
   coord_flip()+
   labs(x=NULL, y="Percent of voters voting for Trump",
-       title="Confidence intervals on voting by gender",
+       title="Confidence intervals on a proportion",
        caption="ANES data, 2016")
 ```
 :::
@@ -278,7 +280,7 @@ ggplot(president, aes(x=gender, y=percent))+
 
 ```{r}
 #| label: build-models
-#| fig-width: 20
+#| fig-asp: 0.5625
 #| echo: false
 model <- lm(property_rate~poverty_rate, data=crimes)
 df <- predict(model, newdata=data.frame(poverty_rate=c(15,20)))
@@ -292,22 +294,21 @@ ggplot(crimes, aes(x=poverty_rate/100, y=property_rate))+
   geom_hline(yintercept=0, linetype=2)+
   geom_vline(xintercept=0, linetype=2)+
   ylim(0,5000)+
-  annotate(geom="text",
-           x=0.18, df[1]*0.95, label="Run")+
-  annotate(geom="text",
-           x=0.185, df[1]*1.07, label="Slope")+
-  annotate(geom="text",
-           x=0.2*1.01, df[1]+(df[2]-df[1])/2, label="Rise", hjust=0)+
-  annotate(geom="text",
-           x=0, y=coef(model)[1]*0.92, label="Y-intercept", hjust=0)+
-  annotate(geom="text",
-           x=.025, y=4250, hjust=0,
-           label=TeX("$\\hat{y}_i=1337.8+108.5x_i$"), parse=TRUE,
-           size=10, color="red")+
+  annotate(label = "Run", x=0.18, y = df[1]*0.95, size = 4, geom = "text")+
+  annotate(label = "Slope", x=0.185, y = df[1]*1.07, size= 4, geom = "text")+
+  annotate(label = "Rise", x=0.2*1.01, y = df[1]+(df[2]-df[1])/2, hjust = 0, 
+           size = 4, geom = "text")+
+  annotate(label = "Y-intercept", x = 0, y = coef(model)[1]*0.91,  hjust = 0, 
+           geom = "text", size = 4)+
+  annotate(geom = "text",
+           x = .025, y = 4250, hjust = 0,
+           label= TeX("$\\hat{y}_i=1337.8+108.5x_i$"), parse = TRUE,
+           size = 4, color = "red")+
   labs(x="state poverty rate",
        y="property crimes per 100,000 population",
        title="A simple model",
-       caption = "FBI crime data and Census data, 2014-18")
+       caption = "FBI crime data and Census data, 2014-18")+
+  theme_bw(base_size = 20)
 ```
 
 ::: {.notes}
@@ -322,7 +323,8 @@ Statistical models allow us to examine relationships between multiple variables 
 ## Models can get more complex
 
 :::: {.columns}
-::: {.column width="50%"}
+
+::: {.column .fragment}
 ```{r}
 #| label: confounders
 #| echo: false
@@ -341,12 +343,13 @@ ggplot(df, aes(x=x, y=y))+
   geom_smooth(method="lm", aes(color=group), se=FALSE)+
   labs(x="Some explanatory variable of interest",
        y="Some outcome variable of interest",
-       title="The problem of confounding")
+       title="The problem of confounding")+
+  theme(legend.position = "bottom")
 
 ```
 :::
 
-::: {.column width="50%"}
+::: {.column .fragment}
 ```{r}
 #| label: interactions
 #| echo: false
@@ -363,10 +366,13 @@ ggplot(df, aes(x=x, y=y))+
   geom_smooth(method="lm", aes(color=group), se=FALSE)+
   labs(x="Some explanatory variable of interest",
        y="Some outcome variable of interest",
-       title="Interactions")
+       title="Interactions")+
+  theme(legend.position = "bottom")
 
 ```
+
 :::
+
 ::::
 
 ::: {.notes}

@@ -35,23 +35,24 @@ The association between two variables could be generated because they are both r
 ```{r}
 #| label: spuriousness
 #| echo: false
-#| fig-height: 5
+#| fig-asp: 0.5625
+
 par(mar=c(0,0,0,0))
 plot(-100,-100, xaxt="n", yaxt="n",
      xlim=c(0,10),
      ylim=c(0,10), bty="n")
 rect(0,1,4,4, col="skyblue")
-text(2,2.5, "Speeding Tickets")
+text(2,2.5, "Speeding Tickets", cex = 2)
 rect(6,1,10,4, col="skyblue")
-text(8,2.5, "Accidents")
-rect(3,6,7,10, col="red")
-text(5, 8, "Miles Driven")
+text(8,2.5, "Accidents", cex = 2)
+rect(3,6,7,10, col="tomato")
+text(5, 8, "Miles Driven", cex = 2)
 arrows(4.5,5.8,2.5,4.2)
 arrows(5.5,5.8,8,4.2)
 arrows(4.2,2.5,5.8,2.5, lty=2)
-text(3, 5, "+")
-text(7, 5, "+")
-text(5, 3, "+")
+text(3, 5, "+", cex = 2)
+text(7, 5, "+", cex = 2)
+text(5, 3, "+", cex = 2)
 ```
 
 :::
@@ -65,17 +66,18 @@ We may think that one variable causes the other, but it is equally possible that
 ```{r}
 #| label: reverse-causality
 #| echo: false
-#| fig-height: 5
+#| fig-asp: 0.5625
+
 par(mar=c(0,0,0,0))
 plot(-100,-100, xaxt="n", yaxt="n",
      xlim=c(0,10),
      ylim=c(0,5), bty="n")
 rect(0,1,4,4, col="skyblue")
-text(2,2.5, "Income")
+text(2,2.5, "Income", cex = 2)
 rect(6,1,10,4, col="skyblue")
-text(8,2.5, "Health")
+text(8,2.5, "Health", cex = 2)
 arrows(4,2.5,6,2.5, code=3)
-text(5, 3, "?")
+text(5, 3, "?", cex = 2)
 ```
 
 :::
@@ -219,24 +221,7 @@ What changed?
 * Notice that the rows do not sum to one anymore. However, the columns do sum to one. 
 * Because of the `2` in the `prop.table` command, we are now looking at the distribution of gender conditional on survival.
 
-## Comparative barplot by faceting
-
-```{r}
-#| label: comparative-barplot
-#| echo: false
-#| fig-width: 24
-#| fig-height: 14
-ggplot(titanic, aes(x=survival, y=..prop.., group=1))+
-  geom_bar()+
-  scale_y_continuous(label=scales::percent)+
-  labs(y="percent surviving", x=NULL,
-       title="Distribution of Titanic survival by gender")+
-  facet_wrap(~sex)
-```
-
----
-
-## Code and output for comparative barplot {.smaller}
+## Comparative barplot by faceting {.smaller}
 
 :::: {.columns}
 
@@ -245,12 +230,11 @@ ggplot(titanic, aes(x=survival, y=..prop.., group=1))+
 ```{r}
 #| label: comp-barplot-example1
 #| eval: false
-ggplot(titanic, aes(x=survival, y=..prop..,
-                    group=1))+
+ggplot(titanic, aes(x = survival, y= after_stat(prop),
+                    group = 1))+
   geom_bar()+
-  scale_y_continuous(label=scales::percent)+
-  labs(y="percent surviving", x=NULL,
-       title="Distribution of Titanic survival by gender")+
+  scale_y_continuous(label = scales::percent)+
+  labs(y = "percent surviving", x = NULL)+
   facet_wrap(~sex)+
   theme_bw()
 ```
@@ -271,10 +255,8 @@ ggplot(titanic, aes(x=survival, y=..prop..,
                     group=1))+
   geom_bar()+
   scale_y_continuous(label=scales::percent)+
-  labs(y="percent surviving", x=NULL,
-       title="Distribution of Titanic survival by gender")+
-  facet_wrap(~sex)+
-  theme_bw()
+  labs(y="percent surviving", x=NULL)+
+  facet_wrap(~sex)
 ```
 
 :::
@@ -290,13 +272,11 @@ ggplot(titanic, aes(x=survival, y=..prop..,
 ```{r}
 #| label: comp-barplot-color1
 #| eval: false
-ggplot(titanic, aes(x=survival, y=..prop..,
-                    group=sex, fill=sex))+
-  geom_bar(position="dodge")+
-  scale_y_continuous(label=scales::percent)+
-  labs(y="percent surviving", x=NULL,
-       title="Distribution of Titanic survival by gender",
-       fill="gender")+
+ggplot(titanic, aes(x = survival, y = after_stat(prop),
+                    group = sex, fill = sex))+
+  geom_bar(position = "dodge")+
+  scale_y_continuous(label = scales::percent)+
+  labs(y = "percent surviving", x = NULL, fill = "gender")+
   theme_bw()
 ```
 
@@ -325,14 +305,11 @@ We add `fill="gender"` to `labs` so that our legend has a nice title.
 ```{r}
 #| label: comp-barplot-color2
 #| echo: false
-ggplot(titanic, aes(x=survival, y=..prop..,
-                    group=sex, fill=sex))+
-  geom_bar(position="dodge")+
-  scale_y_continuous(label=scales::percent)+
-  labs(y="percent surviving", x=NULL,
-       title="Distribution of Titanic survival by gender",
-       fill="gender")+ #<<
-  theme_bw()
+ggplot(titanic, aes(x = survival, y = after_stat(prop),
+                    group = sex, fill = sex))+
+  geom_bar(position = "dodge")+
+  scale_y_continuous(label = scales::percent)+
+  labs(y = "percent surviving", x = NULL, fill = "gender")
 ```
 
 :::
@@ -357,23 +334,42 @@ props <- round(prop.table(tab, 1),3)*100
 props
 ```
 
+::: {.fragment}
+
+```{r}
+#| label: vote-educ-barplot-no-run
+#| eval: false
+
+ggplot(subset(politics, president != "No Vote"), 
+       aes(x = president, y = after_stat(prop), 
+           group = educ, fill = educ))+
+  geom_bar(position = "dodge")+
+  labs(x = NULL, y = "percent of education group", fill = "education")+
+  scale_y_continuous(label = scales::percent)+
+  scale_fill_brewer(palette = "YlGn")+
+  theme(legend.position = "bottom")+
+  guides(fill = guide_legend(nrow = 3))
+```
+
 :::
 
-::: {.column}
+:::
+
+::: {.column .fragment}
 
 ```{r}
 #| label: vote-educ-barplot
-#| fig-height: 6
-ggplot(subset(politics, president!="No Vote"), 
-       aes(x=president, y=..prop.., 
-           group=educ, fill=educ))+
+#| echo: false
+
+ggplot(subset(politics, president != "No Vote"), 
+       aes(x = president, y = after_stat(prop), 
+           group = educ, fill = educ))+
   geom_bar(position = "dodge")+
-  labs(title="presidential choice by education",
-       x=NULL,
-       y="percent of education group",
-       fill="education")+
-  scale_y_continuous(label=scales::percent)+
-  scale_fill_brewer(palette="YlGn") #<<
+  labs(x = NULL, y = "percent of education group", fill = "education")+
+  scale_y_continuous(label = scales::percent)+
+  scale_fill_brewer(palette = "YlGn")+
+  theme(legend.position = "bottom")+
+  guides(fill = guide_legend(nrow = 3))
 ```
 
 :::
@@ -384,23 +380,23 @@ ggplot(subset(politics, president!="No Vote"),
 
 :::: {.columns}
 
-::: {.column width="45%"}
+::: {.column}
 
 ```{r}
 #| label: three-way-comp-barplot1
 #| eval: false
+
 ggplot(subset(politics, president!="No Vote" &
                 gender!="Other"), 
-       aes(x=president, y=..prop.., 
-           group=educ, fill=educ))+
+       aes(x = president, y = after_stat(prop), 
+           group = educ, fill = educ))+
   geom_bar(position = "dodge")+
-  labs(title="presidential choice by education",
-       x=NULL,
-       y="percent of education group",
-       fill="education")+
-  scale_y_continuous(label=scales::percent)+
-  scale_fill_brewer(palette="YlGn")+
-  facet_wrap(~gender)
+  labs(x = NULL, y = "percent of education group", fill = "education")+
+  scale_y_continuous(label = scales::percent)+
+  scale_fill_brewer(palette = "YlGn")+
+  facet_wrap(~gender)+
+  theme(legend.position = "bottom")+
+  guides(fill = guide_legend(nrow = 3))
 ```
 
 ::: {.fragment data-code-focus="12"}
@@ -411,24 +407,23 @@ Just add a `facet_wrap` to see how education affected presidential voting differ
 
 :::
 
-::: {.column width="55%"}
+::: {.column}
 
 ```{r}
 #| label: three-way-comp-barplot2
 #| echo: false
-#| fig-height: 10
+
 ggplot(subset(politics, president!="No Vote" &
                 gender!="Other"), 
-       aes(x=president, y=..prop.., 
-           group=educ, fill=educ))+
+       aes(x = president, y = after_stat(prop), 
+           group = educ, fill = educ))+
   geom_bar(position = "dodge")+
-  labs(title="presidential choice by education",
-       x=NULL,
-       y="percent of education group",
-       fill="education")+
-  scale_y_continuous(label=scales::percent)+
-  scale_fill_brewer(palette="YlGn")+
-  facet_wrap(~gender) #<<
+  labs(x = NULL, y = "percent of education group", fill = "education")+
+  scale_y_continuous(label = scales::percent)+
+  scale_fill_brewer(palette = "YlGn")+
+  facet_wrap(~gender)+
+  theme(legend.position = "bottom")+
+  guides(fill = guide_legend(nrow = 3))
 ```
 
 :::
@@ -533,15 +528,14 @@ $$\frac{339*682}{161*127}=11.31$$
 ```{r}
 #| label: comp-boxplot
 #| echo: false
-#| fig-width: 24
-#| fig-height: 14
+#| fig-asp: 0.5625
+
 ggplot(earnings, aes(x=reorder(race, wages, median), 
                      y=wages))+
   geom_boxplot(fill="grey", outlier.color="red")+
   scale_y_continuous(label=scales::dollar)+
-  labs(x=NULL, y="hourly wages",
-       title="Comparative boxplots of wages by race",
-       caption="Source: CPS 2018")
+  labs(x=NULL, y="hourly wages", caption="Source: CPS 2018")+
+  theme_bw(base_size = 22)
 ```
 
 ---
@@ -556,13 +550,11 @@ ggplot(earnings, aes(x=reorder(race, wages, median),
 #| label: comp-boxplot-show1
 #| eval: false
 ggplot(earnings, 
-       aes(x=reorder(race, wages, median), #<<
-           y=wages))+
-  geom_boxplot(fill="grey", outlier.color="red")+
-  scale_y_continuous(label=scales::dollar)+
-  labs(x=NULL, y="hourly wages",
-       title="Comparative boxplots of wages by race",
-       caption="Source: CPS 2018")+
+       aes(x = reorder(race, wages, median),
+           y = wages))+
+  geom_boxplot(fill = "grey", outlier.color = "red")+
+  scale_y_continuous(label = scales::dollar)+
+  labs(x = NULL, y = "hourly wages")+
   theme_bw()
 ```
 
@@ -580,14 +572,11 @@ In this case, I have also used the `reorder` command to reorder my categories so
 #| label: comp-boxplot-show2
 #| echo: false
 ggplot(earnings, 
-       aes(x=reorder(race, wages, median),
-           y=wages))+
-  geom_boxplot(fill="grey", outlier.color="red")+
-  scale_y_continuous(label=scales::dollar)+
-  labs(x=NULL, y="hourly wages",
-       title="Comparative boxplots of wages by race",
-       caption="Source: CPS 2018")+
-  theme_bw()
+       aes(x = reorder(race, wages, median),
+           y = wages))+
+  geom_boxplot(fill = "grey", outlier.color = "red")+
+  scale_y_continuous(label = scales::dollar)+
+  labs(x = NULL, y = "hourly wages")
 ```
 
 :::
@@ -599,15 +588,13 @@ ggplot(earnings,
 ```{r}
 #| label: comp-boxplot-vote-income
 #| echo: false
-#| fig-width: 24
-#| fig-height: 14
+#| fig-asp: 0.5625
 ggplot(politics, aes(x=reorder(president, income, median), 
                      y=income*1000))+
   geom_boxplot(fill="grey", outlier.color = "red")+
   scale_y_continuous(label=scales::dollar)+
-  labs(y="household income",
-       x=NULL,
-       title="Distribution of household income by presidential choice")
+  labs(y="household income", x=NULL)+
+  theme_bw(base_size = 22)
 ```
 
 ## Calculating mean differences {.smaller}
@@ -644,29 +631,32 @@ Clinton voters had median household incomes $2000 **lower** than Trump voters. W
 
 :::: {.columns}
 
-::: {.column}
-
-The income distribution of Clinton supporters is more right-skewed than Trump supporters so it has a higher mean but lower median. However, the differences are relatively small regardless. 
-
-:::
-
-::: {.column}
+::: {.column width = "70%"}
 
 ```{r}
 #| label: income-dist-comp-vote
 #| echo: false
-#| fig-height: 6
+#| fig-asp: 0.65
+
 ggplot(subset(politics, president=="Clinton" | president=="Trump"),
               aes(x=income, y=..density.., fill=president))+
   geom_histogram(data=subset(politics, president=="Clinton"), alpha=0.6)+
   geom_histogram(data=subset(politics, president=="Trump"), alpha=0.6)+
   labs(x="household income in thousands of USD",
-       fill="presidential vote",
-       title="distribution of income by presidential vote")+
+       fill="presidential vote")+
+  theme_bw(base_size = 22)+
   theme(axis.title.y=element_blank(),
         axis.text.y=element_blank(),
-        axis.ticks.y=element_blank())
+        axis.ticks.y=element_blank(),
+        legend.position = "bottom")
 ```
+
+
+:::
+
+::: {.column width = "30%"}
+
+The income distribution of Clinton supporters is more right-skewed than Trump supporters so it has a higher mean but lower median. However, the differences are relatively small regardless. 
 
 :::
 
@@ -681,20 +671,20 @@ ggplot(subset(politics, president=="Clinton" | president=="Trump"),
 ```{r}
 #| label: construct-scatterplot1
 #| echo: false
-#| fig-width: 24
-#| fig-height: 14
-ggplot(crimes, aes(x=Unemployment, y=Property))+
+#| fig-asp: 0.5625
+ggplot(crimes, aes(x = unemploy_rate, y = property_rate))+
   xlim(2,9)+
   ylim(1500,5000)+
-  annotate("label", 3.85, 4500,
+  annotate("label", 3.4, 4500,
            label="We call the variable on the y-axis the dependent variable.\nThis is the outcome variable we want to predict.",
-           size=10)+
+           size=4)+
   annotate("label", 6.5, 1600,
            label="We call the variable on the x-axis the independent variable.\nThis is the variable we think predicts the outcome.",
-           size=10)+
+           size=4)+
   labs(x="unemployment rate",
        y="property crimes per 100,000 population",
-       title="Start by defining axes correctly")
+       title="Start by defining axes correctly")+
+  theme_bw(base_size = 20)
 ```
 
 ## Constructing a scatterplot
@@ -702,8 +692,7 @@ ggplot(crimes, aes(x=Unemployment, y=Property))+
 ```{r}
 #| label: construct-scatterplot2
 #| echo: false
-#| fig-width: 24
-#| fig-height: 14
+#| fig-asp: 0.5625
 xvalue <- subset(crimes, state=="Alaska")$unemploy_rate
 yvalue <- subset(crimes, state=="Alaska")$property_rate
 ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
@@ -711,16 +700,17 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   ylim(1500,5000)+
   geom_hline(yintercept = yvalue, linetype=3)+
   annotate("label", 3, yvalue*1, label="Alaska's property crime rate",
-           size=10)+
+           size=4)+
   geom_vline(xintercept = xvalue, linetype=3)+
   annotate("label", xvalue*1, 2000, label="Alaska's\nunemployment rate", 
-           size=10)+
-  geom_point(data=subset(crimes, state=="Alaska"), size=4)+
+           size=4)+
+  geom_point(data=subset(crimes, state=="Alaska"), size=3)+
   geom_text_repel(data=subset(crimes, state=="Alaska"), 
-                  aes(label=state), size=10)+
+                  aes(label=state), size=4)+
   labs(x="unemployment rate",
        y="property crimes per 100,000 population",
-       title="Adding the first point to the scatterplot")
+       title="Adding the first point to the scatterplot")+
+  theme_bw(base_size = 20)
 ```
 
 ## Constructing a scatterplot
@@ -728,15 +718,15 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
 ```{r}
 #| label: construct-scatterplot3
 #| echo: false
-#| fig-width: 24
-#| fig-height: 14
+#| fig-asp: 0.5625
 ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   xlim(2,9)+
   ylim(1500,5000)+
-  geom_point(size=3)+
+  geom_point(size=2)+
   labs(x="unemployment rate",
        y="property crimes per 100,000 population",
-       title="Adding all the points")
+       title="Adding all the points")+
+  theme_bw(base_size = 20)
 ```
 
 ## Code and output for scatterplot {.smaller}
@@ -748,11 +738,10 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
 ```{r}
 #| label: code-scatter1
 #| eval: false
-ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
+ggplot(crimes, aes(x = unemploy_rate, y = property_rate))+
   geom_point()+
-  labs(x="unemployment rate",
-       y="property crimes per 100,000 population",
-       title="Property crime rates by unemployment")
+  labs(x = "unemployment rate",
+       y = "property crimes per 100,000 population")
 ```
 
 ::: {.fragment data-code-focus="1"}
@@ -763,7 +752,7 @@ Define `x` and `y` variables in aesthetics.
 Use `geom_point` to draw the points.
 :::
 
-::: {.fragment data-code-focus="3-5"}
+::: {.fragment data-code-focus="3-4"}
 Use good labeling as always.
 :::
 
@@ -777,8 +766,7 @@ Use good labeling as always.
 ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   geom_point(size=2)+
   labs(x="unemployment rate",
-       y="property crimes per 100,000 population",
-       title="Property crime rates by unemployment")
+       y="property crimes per 100,000 population")
 ```
 
 :::
@@ -797,8 +785,7 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
 ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   geom_point(size=2)+
   labs(x="unemployment rate",
-       y="property crimes per 100,000 population",
-       title="Property crime rates by unemployment")
+       y="property crimes per 100,000 population")
 ```
 
 :::
@@ -845,8 +832,8 @@ ggplot(popularity, aes(x=pseudo_gpa, y=nominations))+
 ```{r}
 #| label: scatter-jitter-alpha
 #| echo: false
-ggplot(popularity, aes(x=pseudo_gpa, y=nominations))+
-  geom_jitter(alpha=0.2, width=0.3, height=0.4)+
+ggplot(popularity, aes(x = pseudo_gpa, y = nominations))+
+  geom_jitter(alpha = 0.2, width = 0.3, height = 0.4)+
   labs(x="student GPA",
        y="number of friend nominations",
        title="Jittering and semi-transparency help")
@@ -865,10 +852,9 @@ ggplot(popularity, aes(x=pseudo_gpa, y=nominations))+
 ```{r}
 #| label: overplot-commands1
 #| eval: false
-ggplot(earnings, aes(x=age, y=wages))+
-  geom_jitter(alpha=0.01, width=0.4)+
-  labs(x="worker age",
-       y="hourly wage")
+ggplot(earnings, aes(x = age, y = wages))+
+  geom_jitter(alpha = 0.005, width = 0.4)+
+  labs(x = "worker age", y = "hourly wage")
 ```
 
 ::: {.fragment data-code-focus="2"}
@@ -904,13 +890,15 @@ ggplot(earnings, aes(x=age, y=wages))+
 ```{r}
 #| label: scatter-color1
 #| eval: false
-ggplot(popularity, aes(x=nsports, y=nominations,
-                       color=gender))+
-  geom_jitter(alpha=0.4, width=0.5, height=0.4)+
-  scale_color_viridis_d(end = 0.75)+
-  labs(x="number of sports played",
-       y="number of friend nominations",
-       color="gender")
+ggplot(popularity, aes(x = nsports, y = nominations,
+                       color = gender))+
+  geom_jitter(alpha = 0.4, width = 0.5)+
+  scale_color_manual(values = c("navy", "tomato"))+
+  labs(x = "number of sports played",
+       y = "number of friend nominations",
+       color = "gender")+
+  theme_bw()+
+  theme(legend.position = "bottom")
 ```
 
 ::: {.fragment data-code-focus="2"}
@@ -921,7 +909,7 @@ I just add a third aesthetic to the `aes` command for `color`. This will color t
 
 ::: {.fragment data-code-focus="4"}
 
-I am using the viridis color scheme here, but you can adjust the palette if you like.
+use a color palette with good distinction.
 
 :::
 
@@ -932,13 +920,14 @@ I am using the viridis color scheme here, but you can adjust the palette if you 
 ```{r}
 #| label: scatter-color2
 #| echo: false
-ggplot(popularity, aes(x=nsports, y=nominations,
-                       color=gender))+
-  geom_jitter(alpha=0.4, width=0.5, height=0.4)+
-  scale_color_viridis_d(end = 0.75)+
-  labs(x="number of sports played",
-       y="number of friend nominations",
-       color="gender")
+ggplot(popularity, aes(x = nsports, y = nominations,
+                       color = gender))+
+  geom_jitter(alpha = 0.4, width = 0.5)+
+  scale_color_manual(values = c("navy", "tomato"))+
+  labs(x = "number of sports played",
+       y = "number of friend nominations",
+       color = "gender")+
+  theme(legend.position = "bottom")
 ```
 
 :::
@@ -986,24 +975,24 @@ crimes$y_sd <- crimes$y_dist/sd(crimes$property_rate)
 ```{r}
 #| label: scatter-evidence
 #| echo: false
-#| fig-width: 24
-#| fig-height: 14
+#| fig-asp: 0.5625
 crimes$evidence <- ifelse(crimes$x_sd*crimes$y_sd>0, "Positive", "Negative")
 ggplot(crimes, aes(x=x_sd, y=y_sd))+
-  geom_rect(xmin=-10, xmax=0, ymin=0, ymax=10, fill="red", alpha=0.2)+
-  geom_rect(xmin=0, xmax=10, ymin=0, ymax=-10, fill="red", alpha=0.2)+
-  geom_rect(xmin=-10, xmax=0, ymin=0, ymax=-10, fill="blue", alpha=0.2)+
-  geom_rect(xmin=0, xmax=10, ymin=0, ymax=10, fill="blue", alpha=0.2)+
+  geom_rect(xmin=-3.5, xmax=0, ymin=0, ymax=3.5, fill="tomato", alpha=0.2)+
+  geom_rect(xmin=0, xmax=3.5, ymin=0, ymax=-3.5, fill="tomato", alpha=0.2)+
+  geom_rect(xmin=-3.5, xmax=0, ymin=0, ymax=-3.5, fill="navy", alpha=0.2)+
+  geom_rect(xmin=0, xmax=3.5, ymin=0, ymax=3.5, fill="navy", alpha=0.2)+
   geom_hline(yintercept = 0, linetype=2)+
   geom_vline(xintercept = 0, linetype=2)+
-  annotate("label", -2, 2.5, label="negative", size=8)+
-  annotate("label", 2, -1.5, label="negative", size=8)+
-  annotate("label", 2, 2.5, label="positive", size=8)+
-  annotate("label", -2, -1.5, label="positive", size=8)+
-  geom_point(color="white", size=4)+
-  geom_point(color="black", size=3)+
+  geom_point(color="grey", size=2)+
+  #geom_point(color="black", size=3)+
+  annotate("label", -1.75, 1.75, label="negative", size=6)+
+  annotate("label", 1.75, -1.75, label="negative", size=6)+
+  annotate("label", 1.75, 1.75, label="positive", size=6)+
+  annotate("label", -1.75, -1.75, label="positive", size=6)+
   labs(x=expression((x[i]-bar(x)) / s[x]),
-       y=expression((y[i]-bar(y)) / s[y]))
+       y=expression((y[i]-bar(y)) / s[y]))+
+  theme_bw(base_size = 22)
 ```
 
 ## The correlation coefficient {.smaller}
@@ -1066,8 +1055,8 @@ cor(crimes$unemploy_rate, crimes$property_rate)
 ```{r}
 #| label: scatter-simulated
 #| echo: false
-#| fig-width: 24
-#| fig-height: 14
+#| fig-asp: 0.5625
+
 r_values <- seq(from=0.0, length=12, by=0.09)
 r <- lapply(r_values, function(x) {cbind(c(1,x),c(x,1))})
 temp <- lapply(r, function(x) {mvrnorm(300,c(0,0),Sigma=x)})
@@ -1079,10 +1068,10 @@ correlations <- as.data.frame(correlations)
 colnames(correlations) <- c("x","y")
 correlations$r <- rep(r_values, each=300)
 ggplot(correlations, aes(x=x, y=y))+
-  geom_point(alpha=0.5)+
+  geom_point(alpha=0.8, size = 1)+
   facet_wrap(~r)+
-  theme_bw()+
-  theme(axis.title = element_blank(), strip.text=element_text(size=30),
+  theme_bw(base_size = 22)+
+  theme(axis.title = element_blank(), 
         axis.text = element_blank(),
         axis.ticks = element_blank())
 ```

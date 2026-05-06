@@ -19,14 +19,15 @@ source(here("scripts", "preamble.R"))
 ```{r}
 #| label: scatter-straight-lines1
 #| echo: false
-#| fig-height: 14
-#| fig-width: 24
+#| fig-asp: 0.5625
 ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   geom_point(size=3)+
   labs(x="unemployment rate",
        y="property crimes (per 100,000)",
        title="What is the best line through these points?")+
-  lims(x=c(0,9), y=c(0,5000))
+  lims(x=c(0,9), y=c(0,5000))+
+  theme_bw(base_size = 20)
+  
 ```
 
 ---
@@ -36,15 +37,15 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
 ```{r}
 #| label: scatter-straight-lines2
 #| echo: false
-#| fig-height: 14
-#| fig-width: 24
+#| fig-asp: 0.5625
 ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   geom_point(size=3)+
   geom_smooth(method="lm", se=FALSE, fullrange=TRUE)+
   labs(x="unemployment rate",
        y="property crimes (per 100,000)",
        title="This is the best-fitting line")+
-  lims(x=c(0,9), y=c(0,5000))
+  lims(x=c(0,9), y=c(0,5000))+
+  theme_bw(base_size = 20)
 ```
 
 ---
@@ -54,15 +55,14 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
 ```{r}
 #| label: scatter-straight-lines3
 #| echo: false
-#| fig-height: 14
-#| fig-width: 24
+#| fig-asp: 0.5625
 model <- lm(property_rate~unemploy_rate, data=crimes)
 ypredict <- predict(model, newdata=data.frame(unemploy_rate=c(5,6)))
 ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   geom_point(size=3)+
   geom_smooth(method="lm", se=FALSE, fullrange=TRUE)+
   geom_point(x=0, y=coef(model)[1], color="red", size=3)+
-  annotate("label", x=1, coef(model)[1]*0.92, label=paste("y-intercept=", round(coef(model)[1], 2), sep=""), size=15)+
+  annotate("label", x=1.2, coef(model)[1]*0.92, label=paste("y-intercept=", round(coef(model)[1], 2), sep=""), size=5)+
   annotate("segment", x = 5, xend = 6, 
            y = ypredict[1], yend = ypredict[1], 
            color="red",
@@ -71,16 +71,17 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
            y = ypredict[1], yend = ypredict[2], 
            color="red",
            arrow=arrow(length=unit(0.1,"cm"), type = "closed"))+
-  annotate("label", x=5.5, y=ypredict[1]*0.92, label="run", size=15)+
-  annotate("label", x=6.3, y=mean(ypredict), label="rise", size=15)+
+  annotate("label", x=5.5, y=ypredict[1]*0.92, label="run", size=5)+
+  annotate("label", x=6.3, y=mean(ypredict), label="rise", size=5)+
   annotate("label", x=5.5, y=3000, 
            label=paste("slope=rise/run=",round(coef(model)[2],2), sep=""),
-           size=15)+
+           size=5)+
   geom_vline(xintercept = 0, linetype=2)+
   labs(x="unemployment rate",
        y="property crimes (per 100,000)",
        title="Slope and intercept")+
-  lims(x=c(0,9), y=c(0,5000))
+  lims(x=c(0,9), y=c(0,5000))+
+  theme_bw(base_size = 20)
 ```
 
 ---
@@ -97,7 +98,6 @@ $$y=a+bx$$
 
 * $a$ is the **y-intercept**: the value of $y$ when $x$ is zero.
 * $b$ is the **slope**: the change in $y$ for a one-unit increase in $x$ (the rise over the run).
-* The values of $a$ and $b$ are called **coefficients** -  a constant value that is multiplied by a variable.
 
 :::
 
@@ -252,7 +252,7 @@ summary(model)
 ```{r}
 #| label: scatter-best-fitting1
 #| eval: false
-#| fig-height: 9
+
 ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   geom_point()+
   geom_smooth(method="lm", se=FALSE)+
@@ -372,7 +372,7 @@ The model predicts that newborns will have sex 88.32 times per year, on average.
 ```{r}
 #| label: scope-problem
 #| echo: false
-#| fig-height: 8
+#| fig-asp: 0.9
 model <- lm(sexf~age, data=sex)
 ypred <- predict(model, newdata=data.frame(age=c(0,18)))
 ggplot(sex, aes(x=age, y=sexf))+
@@ -496,7 +496,8 @@ I pick a random observation from the dataset and ask you to guess the value of $
 ```{r}
 #| label: mean-best-fitting
 #| echo: false
-#| fig-height: 8
+#| fig-asp: 0.9
+
 ggplot(crimes, aes(x=reorder(state, property_rate, median), y=property_rate))+
   geom_point()+
   geom_hline(yintercept = mean(crimes$property_rate),
@@ -506,8 +507,8 @@ ggplot(crimes, aes(x=reorder(state, property_rate, median), y=property_rate))+
        title="The mean is the least wrong number")+
   coord_flip()+
   annotate("label", x=49, y=mean(crimes$property_rate), 
-           label="mean of property crime rate", color="red", size=8)+
-  theme(axis.text.y = element_text(size=7))
+           label="mean of property crime rate", color="red", size=5)+
+  theme_bw(base_size = 20)
 ```
 
 :::
@@ -534,7 +535,8 @@ I pick a random observation from the dataset and *tell you its value of $x$*, an
 ```{r}
 #| label: choose-predicted-value
 #| echo: false
-#| fig-height: 8
+#| fig-asp: 0.9
+
 ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   geom_point()+
   geom_smooth(method="lm", se=FALSE)+
@@ -543,8 +545,9 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   labs(x="Unemployment rate",
        y="property crimes (per 100,000)",
        title="Choose the number on the blue line")+
-  annotate("label", x=4, y=mean(crimes$property_rate), 
-           label="mean of property\ncrime rate", color="red")
+  annotate("label", x=4, y=mean(crimes$property_rate), size = 5, 
+           label="mean of property\ncrime rate", color="red")+
+  theme_bw(base_size = 20)
 ```
 
 :::
@@ -569,21 +572,20 @@ ggplot(crimes, aes(x=unemploy_rate, y=property_rate))+
   geom_segment(data=subset(crimes, state=="South Dakota"),
                aes(x=unemploy_rate-0.05, xend=unemploy_rate-0.05), 
                yend=mean(crimes$property_rate), 
-               color="red", size=1)+
+               color="red", size=2)+
   geom_segment(data=subset(crimes, state=="South Dakota"),
                aes(x=unemploy_rate+0.05, xend=unemploy_rate+0.05,
                    y=fitted), 
                yend=mean(crimes$property_rate), 
-               color="goldenrod", size=1)+
+               color="goldenrod", size=2)+
   geom_segment(data=subset(crimes, state=="South Dakota"),
                aes(x=unemploy_rate+0.05, xend=unemploy_rate+0.05,
                    y=property_rate, yend=fitted), 
-               color="darkgreen", size=1)+
+               color="darkgreen", size=2)+
   geom_point(alpha=0.2)+
-  geom_point(data=subset(crimes, state=="South Dakota"), size=2)+
-  annotate(geom="text", x=5, y=1750, label="South Dakota")+
-  labs(x="Unemployment rate", y="property crimes per 100,000 population")+
-  theme_bw()
+  geom_point(data=subset(crimes, state=="South Dakota"), size=3)+
+  geom_text_repel(data=subset(crimes, state=="South Dakota"), aes(label = state))+
+  labs(x="Unemployment rate", y="property crimes per 100,000 population")
 ```
 
 :::
@@ -680,19 +682,19 @@ Just look at a `summary` of the model! `r emo::ji("sunglasses")`
 ```{r}
 #| label: straight-lines-only
 #| echo: false
-#| fig-height: 14
-#| fig-width: 24
+#| fig-asp: 0.5625
 ggplot(subset(gapminder, year==2007), aes(x=gdpPercap, y=lifeExp))+
   geom_smooth(method="lm", se=FALSE)+
-  geom_point(alpha=0.5)+
+  geom_point(alpha=0.8)+
   labs(x="GDP per capita in US dollars", 
        y="life expectancy",
        caption="source: Gapminder, 2007")+
   ylim(30,90)+
-  annotate("label", x=10000, y=75, label="Underestimate", size=8)+
-  annotate("label", x=2000, y=50, label="Overestimate", size=8)+
-  annotate("label", x=45000, y=80, label="Overestimate", size=8)+
-  scale_x_continuous(labels = scales::dollar)
+  annotate("label", x=10000, y=75, label="Underestimate", size=4)+
+  annotate("label", x=2000, y=50, label="Overestimate", size=4)+
+  annotate("label", x=45000, y=80, label="Overestimate", size=4)+
+  scale_x_continuous(labels = scales::dollar)+
+  theme_bw(base_size = 20)
 ```
 
 ## `r emo::ji("warning")` Outliers can be influential
@@ -700,18 +702,18 @@ ggplot(subset(gapminder, year==2007), aes(x=gdpPercap, y=lifeExp))+
 ```{r}
 #| label: influential-points
 #| echo: false
-#| fig-height: 14
-#| fig-width: 24
+#| fig-asp: 0.5625
 ggplot(crimes, aes(x=median_age, y=property_rate))+
-  geom_point(size=3)+
+  geom_point(size=2)+
   geom_point(data=subset(crimes, state=="District of Columbia"), 
-             size=2.5, color="red")+
+             size=3, color="red")+
   geom_smooth(data=subset(crimes, state!="District of Columbia"),
-              method="lm", se=FALSE, color="red", linewidth=3)+
-  geom_smooth(method="lm", se=FALSE, linewidth=3)+
+              method="lm", se=FALSE, color="red", linewidth=2)+
+  geom_smooth(method="lm", se=FALSE, linewidth=2)+
   labs(x="median age in the state", 
        y="property crimes per 100,000 population",
-       caption="red line shows best fitting line without Washington, DC")
+       caption="red line shows best fitting line without Washington, DC")+
+  theme_bw(base_size = 20)
 ```
 
 ## `r emo::ji("warning")` Don't extrapolate beyond range of data
@@ -719,8 +721,7 @@ ggplot(crimes, aes(x=median_age, y=property_rate))+
 ```{r}
 #| label: dont-extrapolate
 #| echo: false
-#| fig-height: 14
-#| fig-width: 24
+#| fig-asp: 0.5625
 model <- lm(sexf~age, data=sex)
 ypred <- predict(model, newdata=data.frame(age=c(0,18)))
 ggplot(sex, aes(x=age, y=sexf))+
@@ -731,7 +732,8 @@ ggplot(sex, aes(x=age, y=sexf))+
                 arrow=arrow(length=unit(0.1, "inches"), ends = "both"), 
                 color="red", linewidth=2)+
   labs(x="age", y="sexual frequency (times per year)",
-       title="scope problem")
+       title="scope problem")+
+  theme_bw(base_size = 20)
 ```
 
 
@@ -782,14 +784,16 @@ cor(crimes$poverty_rate, crimes$percent_lhs)
 ```{r}
 #| label: causal-diagram
 #| echo: false
+#| fig-asp: 1.0
+
 par(mar=c(0,0,0,0))
 plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 rect(1,5,4,9, col="skyblue")
-text(2.5,7,"percent with\nno HS diploma", cex=1.2)
+text(2.5,7,"percent with\nno HS diploma", cex=2)
 rect(6,5,9,9, col="skyblue")
-text(7.5,7,"property crime\nrate", cex=1.2)
+text(7.5,7,"property crime\nrate", cex=2)
 arrows(4,7,6,7, length=0.1)
-text(5,7.5,"+", cex=1.2)
+text(5,7.5,"+", cex=2)
 ```
 
 :::
@@ -801,19 +805,21 @@ text(5,7.5,"+", cex=1.2)
 ```{r}
 #| label: spurious-diagram
 #| echo: false
+#| fig-asp: 1.0
+
 par(mar=c(0,0,0,0))
 plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 rect(1,5,4,9, col="skyblue")
-text(2.5,7,"percent with\nno HS diploma", cex=1.2)
+text(2.5,7,"percent with\nno HS diploma", cex=2)
 rect(6,5,9,9, col="skyblue")
 text(7.5,7,"property crime\nrate", cex=1.2)
 rect(3.5,0,6.5,4, col="red")
-text(5,2,"poverty rate", cex=1.2)
+text(5,2,"poverty rate", cex=2)
 #arrows(4,7,6,7)
 arrows(5.5,4,6,5, length=0.1)
-text(4.5,4.5,"+", cex=1.2)
+text(4.5,4.5,"+", cex=2)
 arrows(4.5,4,4,5, code=3, length=0.1)
-text(5.5,4.5,"+", cex=1.2)
+text(5.5,4.5,"+", cex=2)
 ```
 
 :::
@@ -837,8 +843,8 @@ $$\hat{\text{crime rate}}_i=b_0+b_1(\text{percent lhs}_i)+b_2(\text{poverty rate
 ```{r}
 #| label: 3d-plot
 #| echo: false
-#| fig-height: 6
-#| fig-width: 10
+#| fig-asp: 0.5625
+
 model <- lm(property_rate~percent_lhs+poverty_rate, data=crimes)
 temp <- expand.grid(percent_lhs=6:18, poverty_rate=5:16)
 fit <- predict(model, temp)
@@ -895,15 +901,15 @@ We can say this in different ways:
 ```{r}
 #| label: causal-diagram-w-numbers
 #| echo: false
-#| fig-height: 8
+#| fig-asp: 0.9
 par(mar=c(0,0,0,0))
 plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 rect(1,5,4,9, col="skyblue")
-text(2.5,7,"percent with\no HS diploma", cex=1.2)
+text(2.5,7,"percent with\no HS diploma", cex=2)
 rect(6,5,9,9, col="skyblue")
-text(7.5,7,"property crime\nrate", cex=1.2)
+text(7.5,7,"property crime\nrate", cex=2)
 arrows(4,7,6,7, length=0.1)
-text(5,7.5,"+71.4", cex=1.2)
+text(5,7.5,"+71.4", cex=2)
 ```
 
 :::
@@ -914,22 +920,22 @@ text(5,7.5,"+71.4", cex=1.2)
 ```{r}
 #| label: spurious-diagram-w-numbers
 #| echo: false
-#| fig-height: 8
+#| fig-asp: 0.9
 par(mar=c(0,0,0,0))
 plot(-2,-2, xlim=c(0,10), ylim=c(0,10), xaxt="n", yaxt="n", bty="n", xlab="", ylab="")
 rect(1,5,4,9, col="skyblue")
-text(2.5,7,"percent with\no HS diploma", cex=1.2)
+text(2.5,7,"percent with\no HS diploma", cex=2)
 rect(6,5,9,9, col="skyblue")
-text(7.5,7,"property crime\nrate", cex=1.2)
+text(7.5,7,"property crime\nrate", cex=2)
 rect(3.5,0,6.5,4, col="red")
-text(5,2,"poverty rate", cex=1.2)
+text(5,2,"poverty rate", cex=2)
 #arrows(4,7,6,7)
 arrows(5.5,4,6,5, length=0.1)
-text(4.5,4.5,"_", cex=1.2)
+text(4.5,4.5,"_", cex=2)
 arrows(4.5,4,4,5, code=3, length=0.1)
-text(5.5,4.5,"_", cex=1.2)
+text(5.5,4.5,"_", cex=2)
 arrows(4,7,6,7, length=0.1)
-text(5,7.5,"-79.4", cex=1.2)
+text(5,7.5,"-79.4", cex=2)
 ```
 
 :::
@@ -1033,17 +1039,16 @@ table(sex$gender, sex$female)
 ```{r}
 #| label: indicator-gender1
 #| echo: false
-#| fig-height: 14
-#| fig-width: 24
+#| fig-asp: 0.5625
 set.seed(1)
 ggplot(sex, 
        aes(x=female, y=sexf))+
-  geom_jitter(alpha=0.1, width=0.01,
+  geom_jitter(alpha=0.01, width=0.01,
               height=10)+
   geom_smooth(method="lm", se=FALSE)+
   labs(x="female indicator variable", 
-       y="sexual frequency (times/year)",
-       title="Scatterplot of sexual frequency by female indicator variable")
+       y="sexual frequency (times/year)")+
+  theme_bw(base_size= 20)
 ```
 
 ## Make a scatterplot with indicator
@@ -1051,21 +1056,20 @@ ggplot(sex,
 ```{r}
 #| label: indicator-gender2
 #| echo: false
-#| fig-height: 14
-#| fig-width: 24
+#| fig-asp: 0.5625
 set.seed(1)
 ggplot(sex, 
        aes(x=female, y=sexf))+
-  geom_jitter(alpha=0.1, width=0.01,
+  geom_jitter(alpha=0.01, width=0.01,
               height=10)+
   geom_smooth(method="lm", se=FALSE)+
   labs(x="female indicator variable", 
-       y="sexual frequency (times/year)",
-       title="Scatterplot of sexual frequency by female indicator variable")+
+       y="sexual frequency (times/year)")+
   geom_point(data=data.frame(female=c(0,1), 
                              sexf=tapply(sex$sexf, sex$female, mean)),
              color="red", size=5)+
-  annotate("label", 0.5, 60, label="best fitting line connects the dots between the two means", size=10)
+  annotate("label", 0.5, 60, label="best fitting line connects the dots between the two means", size=5)+
+  theme_bw(base_size= 20)
 ```
 
 ## Make a scatterplot with indicator
@@ -1073,21 +1077,20 @@ ggplot(sex,
 ```{r}
 #| label: indicator-gender3
 #| echo: false
-#| fig-height: 14
-#| fig-width: 24
+#| fig-asp: 0.5625
 set.seed(1)
 ggplot(sex, 
        aes(x=female, y=sexf))+
-  geom_jitter(alpha=0.1, width=0.01,
+  geom_jitter(alpha=0.01, width=0.01,
               height=10)+
   geom_smooth(method="lm", se=FALSE)+
   labs(x="female indicator variable", 
-       y="sexual frequency (times/year)",
-       title="Scatterplot of sexual frequency by female indicator variable")+
+       y="sexual frequency (times/year)")+
   geom_point(data=data.frame(female=c(0,1), 
                              sexf=tapply(sex$sexf, sex$female, mean)),
              color="red", size=5)+
-  annotate("label", 0.5, 60, label="The slope is equal to the mean difference of -2.17", size=10)
+  annotate("label", 0.5, 60, label="The slope is equal to the mean difference of -2.17", size=5)+
+  theme_bw(base_size= 20)
 ```
 
 ## `tapply` vs. `lm` {.smaller}
@@ -1260,6 +1263,11 @@ ggplot(earnings, aes(x=nchild, y=wages,
   labs(x="number of children",
        y="hourly wages in USD")
 ```
+
+::: {.fragment .current-only data-code-focus="2,5"}
+By adding a `color` aesthetic at the top, all of the `geoms` including `geom_smooth` will inherit the color distinction between groups.
+:::
+
 :::
 
 ::: {.column width="65%"}
@@ -1267,14 +1275,16 @@ ggplot(earnings, aes(x=nchild, y=wages,
 ```{r}
 #| label: interact-example2
 #| echo: false
-#| fig-height: 9
+#| fig-asp: 0.95
 ggplot(earnings, aes(x=nchild, y=wages, 
                      color=gender))+
   geom_jitter(alpha=0.1)+
   scale_color_viridis_d(end=0.75)+
   geom_smooth(method="lm", se=FALSE)+
   labs(x="number of children",
-       y="hourly wages in USD")
+       y="hourly wages in USD")+
+  theme(legend.position = "bottom")
+  
 ```
 
 :::
@@ -1338,7 +1348,8 @@ ggplot(earnings, aes(x=nchild, y=wages,
   geom_line(data=temp, size=2)+
   scale_color_viridis_d(end=0.75)+
   labs(x="number of children",
-       y="hourly wages in USD")
+       y="hourly wages in USD")+
+  theme(legend.position = "bottom")
 ```
 
 :::
@@ -1357,6 +1368,8 @@ $$\begin{eqnarray*}
 ::::
 
 ## We need a multiplicative model {.smaller}
+
+::: {style="font-size: 95%"}
 
 ```{r}
 model_mult <- lm(wages~nchild*gender, data=earnings)
@@ -1398,6 +1411,8 @@ $$\begin{eqnarray*}
 
 ::::
 
+:::
+
 ## Multiplicative models give non-parallel lines {.smaller}
 
 :::: {.columns}
@@ -1415,7 +1430,7 @@ ggplot(earnings, aes(x=nchild, y=wages,
   scale_color_viridis_d(end=0.75)+
   labs(x="number of children",
        y="hourly wages in USD")+
-  theme_bw()
+  theme(legend.position = "bottom")
 ```
 
 :::
@@ -1783,8 +1798,7 @@ round(coef(lm(wages~gender*education, data=earnings)), 2)
 ```{r}
 #| label: interact-categorical
 #| echo: false
-#| fig-height: 14
-#| fig-width: 24
+#| fig-asp: 0.5625
 model <- lm(wages~gender*education, data=earnings)
 temp <- expand.grid(gender=c("Male","Female"),
                     education=c("No HS Diploma",
@@ -1795,8 +1809,11 @@ temp <- expand.grid(gender=c("Male","Female"),
 temp$wages <- predict(model, newdata=temp)
 ggplot(earnings, aes(x=education, y=wages, color=gender))+
   geom_jitter(alpha=0.05)+
-  geom_point(data=temp, size=5)+
+  geom_point(data=temp, size=4, color = "white")+
+  geom_point(data=temp, size=3)+
   geom_line(data=temp, aes(group=gender))+
   labs(x="highest degree", y="hourly wages in USD")+
-  scale_x_discrete(labels=c("None","HS","AA","BA","Grad"))
+  scale_x_discrete(labels=c("None","HS","AA","BA","Grad"))+
+  scale_color_manual(values = c("navy", "tomato"))+
+  theme_bw(base_size = 20)
 ```

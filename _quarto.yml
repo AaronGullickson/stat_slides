@@ -14,11 +14,16 @@ execute:
   echo: true
   warning: false
   error: false
-  fig-height: 11
+  # the default size here is set up for half-width figures as most
+  # figures are in a column. For full-width figures change asp to
+  # 0.5625. For half-width figures with a title use asp of 1.1
+  out-width: "100%"
+  fig-asp: 1.2
   freeze: auto
 format:
   revealjs:
     theme: [default, custom.scss]
+    fig-format: svg
     chalkboard: true
     preview-links: true
     incremental: true
