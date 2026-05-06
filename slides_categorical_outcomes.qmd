@@ -1,0 +1,34 @@
+---
+title: "Modeling Categorical Outcomes"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(here)
+source(here("scripts","check_packages.R"))
+source(here("scripts","set_theme.R"))
+source(here("scripts","load_example_data.R"))
+source(here("scripts", "preamble.R"))
+load(here("data", "gss_relig.RData"))
+load(here("data", "births_nyc.RData"))
+load(here("data", "nyc_health_areas", "nyc.RData"))
+load(here("data", "pew.RData"))
+set.seed(666)
+```
+
+# Dichotomous Outcomes and The Binomial Distribution {.center background-color="black" background-image="images/riho-kroll-m4sGYaHYN5o-unsplash.jpg"}
+
+
+
+# The Linear Probability Model {.center background-color="black" background-image="images/rachel-ferriman-0_2sDFbiBp8-unsplash.jpg"}
+
+
+# Generalized Linear Models {.center background-color="black" background-image="images/jj-ying-PDxYfXVlK2M-unsplash.jpg"}
+
+
+# The Logit Model {.center background-color="black" background-image="images/robert-anasch-ZFYg5jTvB4A-unsplash.jpg"}
+
+
+# Models for Polytomous Outcomes {.center background-color="black" background-image="images/serena-repice-lentini-IgoMDFTKF-U-unsplash.jpg"}
+
