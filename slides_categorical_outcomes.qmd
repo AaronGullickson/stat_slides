@@ -1007,9 +1007,12 @@ beta.prev[,5]
 
 The logit model is used to predict dichotomous outcomes. It is a specific kind of GLM with a binomial error distribution and a logit link. Formally:
 
+::: {style="font-size: 0.7em;"}
 $$y_i \sim binom(1, \hat{p}_i)$$
 
 $$log(\frac{\hat{p}_i}{1-\hat{p}_i}) = \beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\ldots+\beta_px_{ip}$$
+:::
+
 
 - We are predicting the log-odds of "success" as a linear function of the independent variables.
 - In terms of the interpretation of results, we have to consider both the log transformation and the use of odds. The key concept is the **odds ratio**.
