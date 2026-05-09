@@ -325,7 +325,7 @@ coef(model_lpm)
 ::: {.column .fragment}
 
 ```{r}
-#| label: lpm-plot
+#| label: lpm-plot3ff
 #| echo: false
 
 ggplot(titanic, aes(x=fare, 
@@ -519,8 +519,1065 @@ We need a new kind of model and a new means of estimation.
 
 # Generalized Linear Models {.center background-color="black" background-image="images/jj-ying-PDxYfXVlK2M-unsplash.jpg"}
 
+## Models as a data-generating process
+
+Lets return to this particular set up of the linear model:
+
+$$y_i=\hat{y}_i+\epsilon_i$$
+$$\hat{y_i}=\beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\ldots+\beta_px_{ip}$$
+
+::: {.fragment}
+
+There are several key concepts to understand here:
+
+- The actual outcome $y_i$ is treated as a combination of a structural part $(\hat{y}_i)$ and a stochastic part $(\epsilon_i)$.
+- The structural part is predicted by a linear relationship of the independent variables to the dependent variable. 
+- The stochastic part comes from independent draws from some identical distribution.
+
+:::
+
+##  Reformulating the Data-Generating Process {.smaller}
+
+Lets assume that the error terms $\epsilon_i$ are drawn from a normal distribution with some standard deviation $\sigma$:
+
+$$\epsilon_i \sim N(0,\sigma)$$
+
+::: {.fragment}
+
+We can then rethink the data-generation process for $y_i$ as reaching into a distribution:
+
+$$y_i \sim N(\hat{y}_i,\sigma)$$
+
+:::
+
+::: {.fragment}
+
+To get the value of $y_i$ for any observation we reach into a normal distribution that is centered on the predicted value, but that always has the same standard deviation. The predicted value is given by a linear combination of the independent variables: 
+
+$$\hat{y_i}=\beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\ldots+\beta_px_{ip}$$
+
+:::
+
+##  GLM: link function and error distribution {.smaller}
+
+We now have the two basic components of a Generalized Linear Model (GLM):
+
+$$y_i \sim N(\hat{y}_i,\sigma)$$
+$$\hat{y_i}=\beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\ldots+\beta_px_{ip}$$
+
+::: {.columns}
+
+::: {.column .fragment}
+
+### Error distribution
+
+$$y_i \sim N(\hat{y}_i,\sigma)$$
+
+The **error distribution** defines how the distribution of the dependent variable is produced. 
+
+The error distribution in this case is normal, or (to be fancy) **gaussian**.
+
+:::
+
+::: {.column .fragment}
+
+### Link function
+
+$$\hat{y_i}=\beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\ldots+\beta_px_{ip}$$
+
+The **link function** defines how the key parameter of the error distribution (in this case, the center at $\hat{y_i}$) is related to the independent variables. 
+
+In this case, the link function is a direct linear relationship. In GLM-speak, this is called the **identity** link.
+
+:::
+
+::::
+
+
+##  Try out GLM
+
+First the good old `lm` command using OLS regression to estimate:
+
+```{r}
+summary(lm(violent_rate ~ median_age, data = crimes))$coef
+```
+
+::: {.fragment}
+
+The `glm` command with the `family` option will allow you to run a model and specify the error distribution and link function.
+
+
+```{r lm_glm_compare2}
+summary(glm(violent_rate ~ median_age, data = crimes,
+            family = gaussian(link = identity)))$coef
+```
+
+:::
+
+##  Things to consider about the GLM {.smaller}
+
+- Even though the results were identical, the `glm` command is using a different technique called maximum likelihood estimation (MLE) to estimate coefficients. We will discuss how this works later.
+- Because the estimation technique is different for `glm`, the summary statistics are different. The `glm` command, for example, will not give you $R^2$ by default. 
+- Even though our GLM formulation assumed a normal distribution to the errors, this is not necessary in the case of OLS regression to get unbiased and efficient estimates. 
+- The GLM approach provides no real improvement over linear models estimated by OLS regression, but by varying up the error distribution and link function the GLM can work for the case of dichotomous dependent variables, as well as other categorical outcomes. 
+
+## Creating our own disaster {.smaller}
+
+:::: {.columns}
+
+::: {.column width="25%"}
+
+![](images/shirley-temple.jpg)
+
+:::
+
+::: {.column width="75%"}
+
+In order to see how the GLM can be used to predict dichotomous outcomes, it will be useful to play god and create our own transatlantic ocean liner disaster. 
+
+We have 10000 brave souls on the **Good Ship Lollipop** which will sink on its maiden voyage due to ineptitude by the crew who were too busy eating candy to keep a look out for icebergs. We know the gender and the fare paid for all passengers.
+
+```{r}
+#| label: good-ship-lollipop-generate
+good_ship <- tibble(gender = factor(sample(c("Male","Female"), 10000, replace=TRUE)),
+                        fare = rgamma(10000, 1, 0.01))
+summary(good_ship)
+```
+
+:::
+
+::::
+
+## Determining who lives and dies {.smaller}
+
+::: {.columns}
+
+::: {.column .fragment}
+
+### Building the Model
+
+Since we are playing god, we can define the relationship between survival and the variables of fare and gender.
+
+To avoid problems of nonsensical probabilities, lets create a linear function of the log-odds of survival.
+
+$$\log(\frac{p_i}{1-p_i})=0.12-0.6(male_i)+0.007(fare_i)$$
+
+```{r} 
+#| label: modeling-survival
+good_ship$log_odds <- 0.12-0.6*(good_ship$gender=="Male")+
+  0.007*good_ship$fare
+good_ship$odds <- exp(good_ship$log_odds)
+good_ship$probs <- good_ship$odds/(1+good_ship$odds)
+```
+
+:::
+
+::: {.column .fragment}
+
+### Drawing Outcomes
+
+Each passenger gets a single bernoulli trial to see whether they live or die.
+
+```{r}
+#| label: sampling-deaths
+
+good_ship$survived <- rbinom(10000, 1, good_ship$probs)
+```
+
+
+```{r}
+#| label: play-god
+#| echo: false
+#| fig-asp: 0.6
+ggplot(good_ship, aes(x=fare, y=probs, color=gender))+
+  geom_line()+
+  geom_point(aes(y=survived), alpha=0.1)+
+  scale_color_manual(values = c("tomato", "navy"))+
+  labs(x="fare paid", y="probability of survival")+
+  theme(legend.position = "bottom")
+```
+
+:::
+
+::::
+
+##  The logit (logistic regression) model {.smaller}
+
+:::: {.columns}
+
+
+::: {.column .fragment}
+
+### The link function
+
+The survival variable $y_i$ is just a set of ones and zeros that can thought of as being produced by a **binomial distribution** like so:
+
+$$y_i \sim binom(1, p_i)$$
+
+### The error distribution
+
+The key parameter in this distribution is $p_i$ which we transform with a **logit link**, so that the independent variables are linearly related to the log of the odds of survival:
+
+$$logit(p_i)=\log(\frac{p_i}{1-p_i})=\beta_0+\beta_1(male_i)+\beta_2(fare_i)$$
+
+:::
+
+::: {.column .fragment}
+
+### Estimate in R
+
+use `binomial` with a `logit` link in the `family` argument.
+
+```{r good-ship-model}
+model.glm <- glm(survived~gender+fare, data=good_ship, 
+                 family=binomial(link=logit))
+round(summary(model.glm)$coef, 4)
+```
+
+The results are pretty close to what we specified. They differ a little due to sampling variability when we draw from the binomial.
+
+But where did the estimates come from?
+
+:::
+
+::::
+
+## How does the GLM estimate model parameters? {.smaller}
+
+It uses **Maximum Likelihood Estimation (MLE)**.
+
+::: {.fragment}
+
+### The logic of MLE
+
+1. We have some **data-generating process** that produces a set of observed data (e.g. $y_1,y_2,\ldots,y_n$) and is governed by some set of parameters $\theta$ (e.g. $\beta_0,\beta_1,\beta_2$).
+2. We ask what is the likelihood, given the process, that we observe the actual data that we have? This leads to the **likelihood function**, $L(\theta)$, which gives the likelihood of the data as a function of the set of parameters. 
+3. We have the data and want to estimate the parameters. Therefore, we choose a $\hat{\theta}$ that maximizes $L(\theta)$.
+
+:::
+
+::: {.fragment}
+
+In practice, it is generally easier to find the maximum of the log-likelihood function, $\log(L(\theta))$. The value of $\hat{\theta}$ that maximimizes the log-likelihood function will always maximize the likelihood function as well. 
+
+:::
+
+##  A Simple Example: Flipping Coins {.smaller}
+
+Lets say we flip a coin 50 times and observe 20 heads. 
+
+* The values of 50 trials and 20 heads are the **data**. 
+* The data-generating process is governed by the binomial distribution where the key **parameter** is $p$, the probability of a heads on each trial. 
+
+::: {.columns}
+
+::: {.column .fragment}
+
+### The likelihood function
+
+Because we know that the data-generating process is a binomial distribution, we also know that the likelihood function is for a given $p$:
+
+$$L(p)={50 \choose 20}p^{20}(1-p)^{30}$$
+
+This formula is identical to the binomial formula except that it is now a function of $p$ rather than $n$ and $k$.
+
+:::
+
+::: {.column .fragment}
+
+```{r}
+#| label: plot-mle-coins
+#| echo: false
+#| fig-asp: 0.9
+p <- seq(from=0,to=1,by=.01)
+likelihood <- choose(50,20)*p^20*(1-p)^30
+ggplot(data.frame(p,likelihood), 
+       aes(x=p, y=likelihood))+
+  geom_line()
+```
+
+:::
+
+::::
+
+##  Finding the maximum likelihood {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+First, transform the likelihood function into the log-likelihood function:
+
+$$
+\begin{aligned}
+\log L(p)&=\log({50 \choose 20}p^{20}(1-p)^{30})\\
+\log L(p)&=\log {50 \choose 20} + 20 \log(p) + 30\log(1-p)\\
+\end{aligned}
+$$
+
+Then, take the derivative:
+
+$$\frac{\partial \log L(p)}{\partial p}=\frac{20}{p}-\frac{30}{1-p}$$
+
+:::
+
+::: {.column .fragment}
+
+Set this equal to zero and solve for $p$ to find the maximum.
+
+$$
+\begin{aligned}
+0&=\frac{20}{p}-\frac{30}{1-p}\\
+\frac{30}{1-p}&=\frac{20}{p}\\
+30p&=20(1-p)\\
+30p&=20-20p\\
+50p&=20\\
+p&=20/50=0.4
+\end{aligned}
+$$
+
+:::
+
+::::
+
+::: {.notes}
+
+Congratulations, we have proved the obvious! The most likely value of $p$ for 50 trials with 20 successes is the proportion of successes, 20/50 or 40%. In general, we can show that the MLE of $p$ for any $k$ successes in $n$ trials is $k/n$.
+
+Technically we should also show that the second derivative is negative not positive here to demonstrate its a maximum and not a minimum, but we won't go through that here.
+
+:::
+
+##  MLE for the logit model
+
+
+- The data are the actual ones and zeros of $y_i$ for the dependent variable and the matrix $X$ of independent variables.
+- The parameters of interest are the regression slopes and intercept $(\beta)$ of the model predicting the log-odds of a success, which can be converted into the probability of success for each observation, $p_i$.
+- We want to choose the $\beta$ values that produce $p_i$ values that maximize the likelihood of actually observing the ones and zero for $y_i$ that we have. 
+- There is no closed-form solution for calculating the parameters of a GLM via MLE. Iterative techniques have to be used instead.
+
+## Likelihood formula for logit model {.smaller}
+
+We can write the predicted log-odds of an observation by vector multiplication as $\mathbf{x_i'\beta}$. This log odds can be converted into a probability as:
+
+$$\hat{p}_i=F(\mathbf{x_i'\beta})=\frac{e^{\mathbf{x_i'\beta}}}{1+e^{\mathbf{x_i'\beta}}}$$
+
+::: {.fragment}
+
+The likelihood of a particular observation $i$ being equal to $y_i$ (1 or 0) is given by the bernoulli distribution:
+
+$$L_i=\hat{p}_i^{y_i}(1-\hat{p}_i)^{1-y_i}=F(\mathbf{x_i'\beta})^{y_i}(1-F(\mathbf{x_i'\beta}))^{1-y_i}$$
+
+:::
+
+
+::: {.fragment}
+
+The log-likelihood is equal to:
+
+$$\log L_i=y_i\log F(\mathbf{x_i'\beta})+(1-y_i) \log (1-F(\mathbf{x_i'\beta}))$$
+
+:::
+
+::: {.fragment}
+
+The log-likelihood for all the observations is just the sum of these individual log-likelihoods:
+
+$$\log L= \sum_{i=1}^n \log L_i= \sum_{i=1}^n y_i\log F(\mathbf{x_i'\beta})+(1-y_i) \log (1-F(\mathbf{x_i'\beta}))$$
+
+:::
+
+## Maximize this!
+
+$$\log L = \sum_{i=1}^n y_i\log F(\mathbf{x_i'\beta})+(1-y_i) \log (1-F(\mathbf{x_i'\beta}))$$
+
+- We know $y_i$ and $x_i$. We just need to choose the $\beta$ vector that maximizes the log-likelihood. 
+- There is no closed-form solution to this problem. It can only be solved by iterative methods where we start with initial estimates and then iteratively adjust them until they no longer change. 
+- There are multiple algorithms that can do this, but the simplest is a form of iteratively-reweighted least squares (IRLS).
+
+## The IRLS Technique {.smaller}
+
+The IRLS technique calculates the next iteration $(t+1)$ of $\beta$ values from the current iteration $(t)$ as:
+ 
+$$\beta^{(t+1)}=\mathbf{(X'W^{(t)}X)^{-1}X'W^{(t)}z^{(t)}}$$
+
+::: {.fragment}
+
+Like, WLS this technique uses a weighting matrix $\mathbf{W}$. This weighting matrix only has elements along the diagonal that are equal to:
+
+$$w_i=\hat{p}_i(1-\hat{p}_i)$$
+
+Where $\hat{p}_i$ is the estimated probabilities from iteration $(t)$. 
+
+:::
+
+
+::: {.fragment}
+
+The $\mathbf{z}$ vector is a transformed vector of the dependent variable where each element is given by:
+
+$$z_i=\mathbf{x_i'\beta}+\frac{y_i-\hat{p}_i}{\hat{p}_i(1-\hat{p}_i)}$$
+
+:::
+
+##  Initialize values assuming null model
+
+Lets begin by setting up the X matrix and y values.
+
+```{r}
+#| label: irls-mle-initialize1
+X <- as.matrix(cbind(rep(1,nrow(titanic)), titanic[,"fare"]))
+y <- as.vector(as.numeric(titanic$survival=="Survived"))
+```
+
+::: {.fragment}
+
+I calculate the average log odds of survival by the survival proportion and use this for my initial model.
+
+```{r}
+#| label: irls_mle_initialize2
+
+lodds <- log(mean(y)/(1-mean(y)))
+beta <- c(lodds, 0) #the intercept is the log-odds and the slope is zero in the null model
+pred_lodds <- X%*%beta
+p <- exp(pred_lodds)/(1+exp(pred_lodds))
+```
+
+:::
+
+::: {.fragment}
+
+The $p$ vector repeats the same probability. I can use this to calculate the log-likelihood of the null model:
+
+```{r }
+#| label: irls-mle-initialize3
+logL <- sum(y*log(p)+(1-y)*log(1-p))
+logL
+```
+
+:::
+
+##  Iteratively estimate $\beta$ {.smaller}
+
+```{r}
+#| label: irls-mle-iterate
+beta.prev <- beta
+for(i in 1:6) {
+  w <- p*(1-p)
+  z <- pred_lodds + (y-p)/w
+  W <- matrix(0, nrow(X), nrow(X))
+  diag(W) <- w
+  beta <- solve(t(X)%*%W%*%X)%*%(t(X)%*%W%*%z)
+  beta.prev <- cbind(beta.prev, beta)
+  pred_lodds <- X%*%beta
+  p <- exp(pred_lodds)/(1+exp(pred_lodds))
+  logL <- c(logL, sum(y*log(p)+(1-y)*log(1-p)))
+}
+```
+
+::: {.fragment}
+
+```{r }
+#| label: irls-mle-report
+round(beta.prev,5)
+logL
+```
+
+:::
+
+
+## `glm` command does the same for you
+
+```{r}
+#| label: glm-command
+model.survival <- glm((survival == "Survived") ~ fare, data = titanic, 
+                      family = binomial(logit),
+                      control = glm.control(trace=TRUE))
+coef(model.survival)
+beta.prev[,5]
+```
 
 # The Logit Model {.center background-color="black" background-image="images/robert-anasch-ZFYg5jTvB4A-unsplash.jpg"}
+
+## The logit (logistic regression) model {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+The logit model is used to predict dichotomous outcomes. It is a specific kind of GLM with a binomial error distribution and a logit link. Formally:
+
+$$y_i \sim binom(1, \hat{p}_i)$$
+
+$$log(\frac{\hat{p}_i}{1-\hat{p}_i}) = \beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\ldots+\beta_px_{ip}$$
+
+- We are predicting the log-odds of "success" as a linear function of the independent variables.
+- In terms of the interpretation of results, we have to consider both the log transformation and the use of odds. The key concept is the **odds ratio**.
+
+:::
+
+::: {.column .fragment}
+
+We can fit the logit model with the `glm` command:
+
+```{r}
+#| label: try-logit
+model.fare <- glm((survival == "Survived") ~ fare, 
+                  data = titanic, 
+                  family = binomial(link = logit))
+round(summary(model.fare)$coef, 3)
+```
+
+- We specify the link and error distribution in the `family` argument. 
+- I can just put in `survival` directly as the dependent variable in my model but it will then predict whichever is the second category as my "success" category. Since I want to be sure to predict survival, I explicitly use a boolean statement.
+
+:::
+
+::::
+
+## Survival by gender, two ways {.smaller}
+
+::: {style="font-size: 90%;"}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+### Two-way table
+
+```{r}
+#| label: twoway-titanic
+table(titanic$sex, titanic$survival)
+```
+
+```{r}
+#| label: crossprod
+161/682
+339*682/(161*127)
+```
+0.24 men survived for every one that died. The odds of survival for women is 11.3 times higher.
+
+:::
+
+::: {.column .fragment}
+
+### Logit model
+
+```{r}
+#| label: logit-titanic-gender
+model.gender <- glm((survival == "Survived") ~ (sex == "Female"), 
+                    data = titanic, 
+                    family = binomial(logit))
+round(coef(model.gender), 4)
+```
+
+So we have the following model:
+
+$$log(\frac{\hat{p}_i}{1-\hat{p}_i}) = -1.444+2.425(female_i)$$
+
+:::
+
+::::
+
+::: {.fragment}
+
+**Are these approaches the same?**
+
+:::
+
+:::
+
+## From log-odds to odds {.smaller}
+
+$$log(\frac{\hat{p}_i}{1-\hat{p}_i}) = -1.444+2.425(female_i)$$
+
+The dependent variable is literally measured in the log-odds of survival, but this is not very intuitive. We can convert directly to odds by exponentiating both sides:
+
+::: {.fragment}
+
+$$e^{log(\frac{\hat{p}_i}{1-\hat{p}_i})} = e^{-1.444+2.425(female_i)}$$
+
+:::
+
+::: {.fragment}
+
+$$\frac{\hat{p}_i}{1-\hat{p}_i} = (e^{-1.444})(e^{2.425(female_i)})$$
+
+:::
+
+::: {.fragment}
+
+$$\frac{\hat{p}_i}{1-\hat{p}_i} = (0.24)(11.3)^{(female_i)}$$
+
+We now have a multiplicative model that describes the relationship between survival and sex. 
+
+:::
+
+## Predicting odds for men and women {.smaller}
+
+$$\frac{\hat{p}_i}{1-\hat{p}_i} = (0.24)(11.3)^{(female_i)}$$
+
+What are the odds of survival for men?
+
+::: {.fragment}
+
+$$\frac{\hat{p}_i}{1-\hat{p}_i} = (0.24)(11.3)^{0}=(0.24)(1)=0.24$$
+
+:::
+
+::: {.fragment}
+
+What are the odds of survival for women?
+
+:::
+
+::: {.fragment}
+
+$$\frac{\hat{p}_i}{1-\hat{p}_i} = (0.24)(11.3)^{1}=(0.24)(11.3)$$
+
+:::
+
+- This model reproduces exactly the results we derived directly from the two-way table of survival by sex.
+- The advantage of the linear model framework is that we can easily add in other variables, complex non-linear effects, interaction terms, etc. 
+
+## Gender and passenger class models
+
+```{r}
+#| label: titanic-gender-class
+
+titanic$survival <- relevel(titanic$survival, "Died")
+titanic$sex <- relevel(titanic$sex, "Male")
+model.gender <- glm(survival ~ sex, data = titanic, family = binomial(logit))
+model.genderclass <- update(model.gender, .~. + pclass)
+model.interact <- update(model.genderclass,.~. + sex * pclass)
+```
+
+I use the `relevel` function here to reset the reference category in order to simplify my model formulas. Then I run a bivariate model by gender, a model that controls for passenger class, and a model that interacts gender and passenger class. 
+
+
+## Gender and passenger class models {.smaller}
+
+::: {style="font-size: 90%;"}
+
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: tbl-gender-class-survival
+#| tbl-cap: Models predicting survival on the Titanic
+#| echo: false
+
+modelsummary(list(model.gender, model.genderclass, model.interact),
+             stars = TRUE,
+             output = "gt",
+             gof_map = c("nobs", "loglik", "deviance"))
+```
+
+:::
+
+::: {.column}
+
+- Holding constant passenger class, women were 12.4 $(e^{2.52})$ times more likely to survive than men. 
+- Holding constant gender, second class passengers were 59% $(1-e^{-.88})$ less likely than first class passengers to survive and third class passengers were 82% $(1-e^{-1.72})$ less likely than first class passengers to survive.
+- Women in first class were 53.5 $(e^{3.98})$ times (!) more likely to survive than first class men. Among second class passengers, the ratio in survival by gender was slightly smaller at 45.6 $(e^{3.98-.16})$, but in third class it was much smaller at 5.4 $(e^{3.98-2.3})$.
+- Men in second and third class were both about 65-67% $(1-e^{-1.06})$ or $(1-e^{-1.1})$ less likely to survive than first class men.
+
+:::
+
+::::
+
+:::
+
+## Interpreting quantitative independent variables {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+$$log(\frac{\hat{p}_i}{1-\hat{p}_i}) = -0.882+0.012(fare_i)$$
+
+How do we interpret?
+
+::: {.fragment}
+
+Lets exponentiate both sides again: 
+
+$$\frac{\hat{p}_i}{1-\hat{p}_i} = (e^{-0.882})(e^{0.012(fare_i)})$$
+
+$$\frac{\hat{p}_i}{1-\hat{p}_i} = (0.414)(1.012)^{fare_i}$$
+
+:::
+
+:::
+
+::: {.column .fragment}
+
+How do the odds of survival compare for someone who paid no fare, one pound, and two pounds?
+
+$$
+\begin{aligned}
+\frac{\hat{p}_i}{1-\hat{p}_i}& = (0.414)(1.012)^{0})=(0.414)\\
+& = (0.414)(1.012)^{1}=(0.414)(1.012)\\
+& = (0.414)(1.012)^{2}=(0.414)(1.012)(1.012)\\
+\end{aligned}
+$$
+
+Each one pound increase in fare is associated with a 1.2% increase in the odds of survival. 
+
+:::
+
+::::
+
+##  Predicted probabilities from logit model
+
+:::: {.columns}
+
+::: {.column}
+
+Lets use the model to predict odds and probabilities for the entire range of fare:
+
+```{r}
+#| label: convert-odds
+
+lodds <- predict(model.fare, 
+                 data.frame(fare=0:512))
+odds <- exp(lodds)
+prob <- odds/(1+odds)
+```
+
+:::
+
+::: {.column}
+
+```{r}
+#| label: lpm-plot
+#| echo: false
+
+model_lpm <- lm((survival=="Survived")~fare, data=titanic)
+y_lpm <- predict(model_lpm, data.frame(fare=0:512))
+predicted_df <- data.frame(fare=rep(0:512, 2),
+                           y=c(y_lpm, prob),
+                           model=c(rep("lpm",513),
+                                   rep("logit",513)))
+ggplot(titanic, aes(x=fare, 
+                    y=as.numeric(survival=="Survived")))+
+  annotate("rect",xmin=-Inf, xmax=Inf, ymin=1, ymax=Inf, alpha=0.2,
+           fill="red")+
+  annotate("text", x=250, y=1.2, label="Nonsense region")+
+  annotate("rect",xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=0, alpha=0.2,
+           fill="red")+
+  geom_hline(yintercept = c(0,1), linetype=2)+
+  geom_point(alpha=0.1)+
+  geom_line(data=predicted_df, aes(y=y, color=model),
+            size=1.5)+
+  scale_y_continuous(breaks = c(0,1), labels=c("0","1"))+
+  labs(x="fare paid in pounds", y="Titanic survival as numeric value")+
+  theme(legend.position = "bottom")
+```
+
+:::
+
+::::
+
+## A full example from Add Health
+
+```{r full_logit_example}
+#| label: full-logit-example
+
+model.full <- glm(smoker ~ grade + gender * honor_society + alcohol_use, 
+                  data = popularity, family = binomial)
+round(summary(model.full)$coef, 3)
+round(exp(model.full$coef), 3)
+```
+
+## Marginal effects in logit models
+
+- In a logit model, the slope $(\beta)$ gives the marginal effect of $x$ on the **log-odds** of success, not the **probability** of success.
+- Many people prefer to think of the marginal effects of logit models in terms of the probability and so when people talk about the marginal effect of an independent variable in a logit regression model they typically mean the marginal effect of $x$ on the probability.
+- Because of the logistic curve, the marginal effect on the probability is not constant, but depends on what value of $x$ you are currently at. As your predicted probability approaches one, the marginal effects will get smaller and smaller.  
+
+## Different marginal effects on probability
+
+```{r}
+#| label: plot-marginal
+#| echo: false
+#| fig-asp: 0.5625
+
+fare <- 0:512
+odds <- 0.414*(1.012)^fare
+prob <- odds/(1+odds)
+marginals <- prob*(1-prob)*log(1.012)
+intercepts <- prob-fare*marginals
+df <- data.frame(fare, odds, prob, marginals, intercepts)
+ggplot(df, aes(x=fare, y=prob))+
+  geom_line(size=1.5)+
+  geom_abline(data=subset(df, fare==50 | fare==200 | fare==500),
+              aes(intercept=intercepts, slope=marginals, color=as.factor(fare)),
+              alpha=1)+
+  geom_segment(data=subset(df, fare==50 | fare==200 | fare==500),
+               aes(x=fare, xend=fare, yend=prob, 
+                   color=as.factor(fare)), 
+               y=0, linetype=2)+
+  labs(x="fare paid in pounds", y="probability of survival",
+       color="fare in pounds")+
+  theme_bw(base_size = 20)+
+  theme(legend.position = "bottom")
+```
+
+## Estimating marginal effects on probability {.smaller}
+
+
+:::: {.columns}
+
+::: {.column}
+
+For a given vector of values of the independent variables given by $\mathbf{x}$ and a vector of regression coefficients $\mathbf{\beta}$, marginal effects can be estimated by first calculating the expected probability $\hat{p}$:
+
+$$\hat{p}=\frac{e^\mathbf{x'\beta}}{1+e^{\mathbf{x'\beta}}}$$
+The marginal effect of the $k$th independent variable in the model is then given by:
+
+$$\hat{p}(1-\hat{p})\beta_k$$
+:::
+
+::: {.column}
+
+```{r}
+#| label: marginal-effects
+#| 
+model <- glm(survival ~ fare + age, 
+             data = titanic, 
+             family = binomial(logit))
+#get predicted probabilty at mean fare and age
+df <- data.frame(fare = mean(titanic$fare),
+                 age = mean(titanic$age))
+lodds <- predict(model, df)
+p <- exp(lodds)/(1+exp(lodds))
+#get marginal effects
+p*(1-p)*coef(model)[c("fare","age")]
+```
+
+- The marginal effect of a one pound increase in fare **when fare and age are at the mean** is a 0.32% increase in the probability of survival. 
+- The marginal effect of a one year increase in age **when fare and age are at the mean** is a 0.35% decrease in the probability of survival.
+
+:::
+
+::::
+
+## Marginal effects for a categorical variable
+
+The marginal effects for categorical variables are different. Typically you will estimate the difference in probability of survival across the categories when at the mean on all other variables.
+
+```{r marginaleffect_categorical}
+#| label: marginal-effect-categorical
+
+model <- glm(survival ~ fare + age + sex, data = titanic, family = binomial(logit))
+df <- data.frame(fare = rep(mean(titanic$fare), 2), age = rep(mean(titanic$age), 2),
+                 sex = c("Male","Female"))
+lodds <- predict(model, df)
+p <- exp(lodds)/(1+exp(lodds))
+p
+diff(p)
+```
+
+When at the mean of age and fare, women's probability of survival is 52 percentage points higher than men's.
+
+## Assessing model fit with deviance {.smaller}
+
+There is no $R^2$ value for a generalized linear model. A model predicting categorical outcomes does not have residuals in the same sense as the linear model.
+
+Most measures of model fit for GLMs rely up on the **deviance** of the model, or $G^2$. The deviance is simply the log-likelihood of the model multiplied by negative 2:
+
+$$G^2=-2(logL)$$
+
+The smaller the deviance, the better the fit of the model, because the likelihood is getting higher. 
+
+Typically we are concerned with the deviance of three conceptual models:
+
+- The deviance of the null model, $G^2_0$ where we assign each observation the same probability $p_i$.
+- The deviance of the saturated model where the number of predictors is equal to the number of cases. This model would fit the data perfectly and therefore has a likelihood of one and a deviance of zero. 
+- The deviance of the current model $G^2$ that we are currently fitting with $p$ independent variables as predictors.
+
+## Two approaches {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+### Pseudo $R^2$
+We can calculate a measure that is similar to $R^2$ which measures the proportion of deviance from the null model that is accounted for in the current model. This measure is also called **McFadden's D**.
+
+$$D=\frac{G^2_0-G^2}{G^2_0}$$
+
+```{r}
+#| label: pseudorsq-example
+
+model.g <- glm(survival ~ sex, data = titanic, 
+                    family = binomial)
+(model.g$null.deviance - model.g$deviance)/
+  model.g$null.deviance
+```
+
+Adding age as a predictor reduced the deviance from the null model by 21.4%. 
+
+:::
+
+::: {.column .fragment}
+
+### Likelihood Ratio Test
+
+The Likelihood Ratio Test (LRT) is the analog to the F-test for GLMs. The test statistic for the LRT is the reduction in deviance in the more complex model. Assuming the null hypothesis that all of the additional terms in the second model have no predictive power, this observed difference should come from a $\chi^2$ distribution with degrees of freedom equal to the number of additional terms in the second model. 
+
+```{r lrt_example}
+#| label: lrt-example
+
+model.g$null.deviance - model.g$deviance
+1 - pchisq(373, 1)
+```
+
+:::
+
+::::
+
+## Using `anova` to do LRT {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+We can also use the `anova` command to do an LRT test if we add in the additional argument of `test = "LRT"`:
+
+```{r}
+#| label: lrt-anova-example
+
+anova(model.gender, test = "LRT")
+```
+:::
+
+::: {.column .fragment}
+
+You can also compare two non-null models by LRT
+
+```{r}
+#| label: lrt-anova-example2
+
+model.complex <- update(model.gender, .~. + pclass) 
+anova(model.gender, model.complex, test = "LRT")
+```
+
+:::
+
+::::
+
+## BIC for GLMs {.smaller}
+
+You can also calculate BIC for generalized linear models. The general formula to compare any two GLMs by BIC is:
+
+$$BIC=(G^2_2-G^2_1)+(p_2-p_1)\log n$$
+The first part is the difference in deviance between the two models which measures goodness of fit and the second part is the parsimony penalty. If BIC is negative, model 2 is preferred to model 1. If BIC is positive, model 1 is preferred to model 2.
+
+If you are comparing the current model to the null model, then BIC becomes:
+
+$$BIC'=(G^2-G^2_0)+(p)\log n$$
+
+You can use this value to compare any two models since the difference in BIC' between any two models is equivalent to the BIC between them. 
+
+---
+
+## BIC Example
+
+Write a function for BIC compared to the null: 
+
+```{r}
+#| label: bic-function
+
+BIC.null.glm <- function(model) {
+    n <- length(model$resid)
+    p <- length(model$coef) - 1
+    return((model$deviance - model$null.deviance) + p * log(n))
+}
+```
+
+```{r}
+#| label: use-bic
+
+BIC.null.glm(model.complex) - BIC.null.glm(model.gender)
+(model.complex$deviance - model.gender$deviance) + (3 - 1) * log(nrow(titanic))
+```
+
+Both approaches lead to the same BIC difference. We prefer the more complex model.
+
+## Model comparison {.smaller}
+
+```{r}
+#| label: tbl-model-choices-logit
+#| tbl-cap: Models predicting alcohol use, Add Health data
+#| echo: false
+
+model.basic <- glm(alcohol_use~grade+gender, data=popularity, family=binomial)
+model.achieve <- update(model.basic, .~.+pseudo_gpa+honor_society)
+model.activities <- update(model.achieve, .~.+bandchoir+nsports)
+model.popular <- update(model.activities, .~.+nominations)
+model.interact <- update(model.activities, .~.+nsports*gender)
+model.nonnested <- update(model.popular, .~. -nsports-honor_society-gender)
+
+
+modelsummary(list(model.basic, model.achieve, model.activities,
+                    model.popular, model.nonnested), 
+             fmt=3,
+             output = "gt",
+             stars = TRUE,
+             statistic = NULL,
+             gof_map = c("nobs", "logLik", "F", "r2.tjur", "bic"))
+```
+
+## Separation {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+Separation can occur in logit models when the dichotomous outcome completely or nearly completely separates the values of an independent variable. 
+
+To create a problem of separation, I have changed all the values in the popularity dataset of band/choir members as smokers to non-smokers.
+
+```{r}
+popularity.sep <- popularity |>
+  mutate(smoker = factor(if_else(bandchoir == "Yes", 
+                                 "Non-smoker", smoker)))
+table(popularity.sep$bandchoir,  popularity.sep$smoker)
+```
+
+Now, none of the band/choir participants are smokers, leading to a zero cell.
+
+::: 
+
+::: {.column .fragment}
+
+The consequence of this separation is that the coefficient and standard error for the variable will "explode" into ridiculously large numbers.
+
+```{r}
+model <- glm(smoker ~ bandchoir, data=popularity.sep, family=binomial)
+round(summary(model)$coef, 3)
+```
+
+The very large coefficient and SE are clear signs of separation. 
+
+:::
+
+::::
+
+## Fixing separation {.smaller}
+
+In this case, the band/choir variable is dichotomous, so it is not possible to collapse categories. This model can be estimated with adjustments for separation using a **penalized likelihood** model. These types of models apply a penalty to the maximum likelihood estimation for very large coefficients. They have multiple uses but were developed originally to deal precisely with the problem of separation. 
+
+The `logistf` package provides a penalized likelihood logistic model in R:
+
+```{r logistf}
+#| label: logistf
+library(logistf)
+logistf(smoker ~ bandchoir, data=popularity.sep)
+```
 
 
 # Models for Polytomous Outcomes {.center background-color="black" background-image="images/serena-repice-lentini-IgoMDFTKF-U-unsplash.jpg"}
