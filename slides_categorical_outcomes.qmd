@@ -14,6 +14,7 @@ load(here("data", "gss_relig.RData"))
 load(here("data", "births_nyc.RData"))
 load(here("data", "nyc_health_areas", "nyc.RData"))
 load(here("data", "pew.RData"))
+load(here("data", "wbreport.RData"))
 set.seed(666)
 ```
 
@@ -1585,3 +1586,727 @@ logistf(smoker ~ bandchoir, data=popularity.sep)
 
 # Models for Polytomous Outcomes {.center background-color="black" background-image="images/serena-repice-lentini-IgoMDFTKF-U-unsplash.jpg"}
 
+##  Predicting more than two categories {.smaller}
+
+When we try to predict more than two categories, we have to think carefully about what *kind* of categorical variable we have:
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+### Nominal
+
+![](images/gender-nominal.png)
+
+- If the categories of the dependent variable are unordered, we can use a **multinomial logit model**
+- One category of the dependent variable will need to serve as the reference
+- Model complexity increases rapidly with the number of categories
+
+:::
+
+::: {.column .fragment}
+
+### Ordinal
+
+![](images/pepper-scale.jpg)
+
+- If the categories of the dependent variable, are ordered we can use the **cumulative (ordered) logit model** or the **adjacent category logit model**
+- Model complexity also increases rapidly with the number of categories, but we can apply constraints/assumptions that limit the complexity
+
+:::
+
+::::
+
+## American Community Survey data example
+
+:::: {.columns}
+
+::: {.column}
+
+### Race Question
+
+![](images/census_race.png)
+
+:::
+
+::: {.column}
+
+### Ancestry Question
+
+![](images/census_ancestry.png)
+
+:::
+
+::::
+
+## Race reporting by white/black ancestry individuals {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+- We use a subset of data that includes all individuals who gave two ancestry responses that suggest both a white and black ancestry (e.g. "African American" and "Irish"). 
+- We will consider three race responses for these individuals: 
+    - white
+    - black
+    - white and black
+- How does the decision to identify racially vary by college completion?
+
+:::
+
+::: {.column .fragment}
+
+```{r}
+#| label: crosstab-race-report
+tab <- table(wbreport$racereport, 
+             wbreport$college)
+tab
+prop.table(tab, 2)
+```
+
+:::
+
+::::
+
+##  Odds Ratios by College Completion {.smaller}
+
+```{r}
+#| label: crosstab-odds-ratio
+#| echo: false
+
+tab[c(2:3,1),2:1]
+```
+
+- The odds of identifying as black rather than white and black are twice as high among college-educated individuals than among those without a college degree. $$\frac{3993*32899}{2781*23374}=2.02$$
+- The odds of identifying as white rather than white and black are 56% higher among college-educated individuals than among those without a college degree.$$\frac{1598*32899}{2781*12112}=1.56$$
+- The odds of identifying as black rather than white are 29.5% (1.56/2.02) higher among college-educated individuals than among those without a college degree.
+
+##  Two pairwise comparisons
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+### Black vs. Multi
+
+```{r}
+#| label: logistic-black
+model.b <- glm(
+  (racereport == "Black") ~ college, 
+  data = subset(wbreport, 
+                racereport != "White"),
+  family = binomial
+)
+coef(model.b)
+exp(coef(model.b))
+```
+
+The odds ratio of black vs. white/black identification is 2.02 $(e^{0.70355})$.
+
+:::
+
+::: {.column .fragment}
+
+### White vs. Multi
+
+```{r}
+#| label: logistic-white
+model.w <- glm(
+  (racereport == "White") ~ college, 
+  data = subset(wbreport, 
+                racereport != "Black"),
+  family = binomial
+)
+coef(model.w)
+exp(coef(model.w))
+```
+
+The odds ratio of white vs. white/black identification is 1.56 $(e^{0.44519})$.
+
+:::
+
+::::
+
+##  The multinomial logit model {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+- The multinomial logit model accomplishes the same result as two separate logit models, but estimates parameters using a single MLE procedure. This allows for a single measure of model log-likelihood and deviance. 
+- One of the categories of the dependent variable must serve as the reference category. In the example we are using, the white and black category served as the reference. The choice of reference is arbitrary. 
+- For a model with $J$ categories of the dependent variable, we will get $J-1$ coefficients for each independent variable. 
+- Multinomial logit models can be estimated in R with the `multinom` function in the `nnet` library. 
+
+:::
+
+::: {.column .fragment}
+
+```{r}
+#| label: multinom-example
+library(nnet)
+model <- multinom(racereport ~ college, 
+                  data = wbreport, 
+                  trace = FALSE)
+summary(model)
+```
+
+:::
+
+::::
+
+##  Formal multinomial model specification {.smaller}
+
+$$\log(p_{ij}/p_{i1})=\beta_{0j}+\beta_{1j}x_{i1}+\beta_{2j}x_{i2}+\ldots+\beta_{pj}x_{ip}$$
+
+- The model fits the log-odds of being in the $j$th outcome category relative to the reference outcome category as linear function of the independent variables.
+- Each independent variable will have $J-1$ coefficients rather than a single coefficient. 
+- Each $\beta_j$ gives the log odds ratio of being in the $j$th outcome category rather than the reference outcome category for a one unit change in the given independent variable. 
+- The intercepts $\beta_{0j}$ give the baseline odds of being in the $j$th outcome category rather than the reference outcome category when all the independent variables are zero. 
+
+##  Changing the reference category {.smaller}
+
+If we want to change the reference category for the dependent variable, we can recalculate the regression coefficients as follows:
+
+$$\beta_j-\beta_{j'}$$
+
+Where $j'$ is the new category that we want to set as the reference. 
+
+::: {.fragment}
+
+Lets try this out for our example, where we set the new reference to be identifying as black. 
+
+```{r}
+#| label: baseline-change
+
+coefs <- coef(model)
+coefs.new <- rbind(c(0,0)-coefs[1,], coefs[2,]-coefs[1,])
+rownames(coefs.new) <- c("White/Black", "White")
+coefs.new
+```
+
+The white/black effects are just the inverse of the black effects. 
+
+:::
+
+##  Estimating predicted probabilities {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+Because there are multiple categories to consider, its often helpful to try to predict how the distribution of the dependent variable will change across different values of the independent variable. For a given set of independent variables $X$, the probability $P_i$ of being in category $i$ is:
+
+$$P_i=\frac{exp(X\beta_i)}{\sum_Jexp(X\beta_j)}$$
+
+::: {.fragment}
+
+The trick here is to remember that the reference category will always have $X\beta$ of zero which exponentiates to one. Therefore, the denominator will always include a one in the sum. 
+
+:::
+
+:::
+
+::: {.column .fragment}
+
+```{r}
+#| label: calculate-probs-multinom
+temp <- rbind("White/Black" = c(0,0),
+              coef(model))
+temp
+#For non-college
+exp(temp[,1]) / sum(exp(temp[,1]))
+#for college
+exp(temp[,1] + temp[,2])/
+  sum(exp(temp[,1] + temp[,2]))
+```
+
+:::
+
+::::
+
+##  Using `predict` to estimate probabilities
+
+You can also do this in R with the `predict` command where you feed in a new data set to get predicted values.
+
+```{r}
+#| label: calculate-probs-predict
+
+predicted.probs <- predict(model, newdata = data.frame(college = c("No", "Yes")), 
+                           type = "probs")
+predicted.probs
+t(prop.table(tab, 2))
+```
+
+The results here are identical to the conditional distributions estimated by the two-way table. 
+
+##  A full multinomial logit model
+
+```{r}
+#| label: multinom-full
+
+model.full <- multinom(racereport ~ college + poor + agectr + agectrsq + 
+                         foreign + female, 
+                       data = wbreport, trace = FALSE)
+round(coef(model.full),5)
+```
+
+- The effects of college are very different with controls. College now seems more likely to push respondents away from both single-race identifications towards multiracial identification, although the effect is weaker for pushing away from black-alone identification than white-alone identification. 
+- How do we interpret the effects of age on racial identification? Age is centered on 22 years and a square is included, so its not easy to sort it out just from the coefficient values. 
+
+##  Estimating the effect of age {.smaller}
+
+Lets get predicted probabilities for the effect of age from 22 to 75. We will estimate probabilities for the reference categories of the other variables (non-college, non-poor, male, native-born).
+
+```{r}
+#| label: fit-age-multinom
+x <- 22:75
+fakedata <- data.frame(college = rep("No", length(x)), 
+                       poor = rep("No", length(x)), 
+                       foreign = rep("No", length(x)), 
+                       female = rep(0, length(x)),
+                       agectr = x - 22, 
+                       agectrsq = (x - 22)^2)
+predicted.probs <- predict(model.full, fakedata, type = "probs")
+head(predicted.probs)
+```
+
+
+## Some data wrangling of `predict` output
+
+
+```{r}
+#| label: data-wrangle-predict
+
+temp <- predicted.probs |> 
+  as_tibble() |>
+  bind_cols(fakedata) |>
+  pivot_longer(cols = c(`White/Black`, Black, White), names_to = "race",
+               values_to = "prob")
+temp
+```
+
+##  Two display techniques {.smaller}
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+```{r}
+#| label: separate-lines-fig
+#| fig-asp: 1
+
+set_theme(theme_bw(base_size = 28))
+
+ggplot(temp, aes(x = agectr + 22, y = prob, color = race))+
+  geom_line()+
+  scale_y_continuous(labels = scales::percent)+
+  labs(x = "age", y = "probability", 
+       color = "racial identification")+
+  theme(legend.position = "bottom")
+```
+
+:::
+
+::: {.column .fragment}
+
+```{r}
+#| label: stacked-ribbons-fig
+#| fig-asp: 1
+ggplot(temp, aes(x = agectr + 22, y = prob, fill = race))+
+  geom_area()+
+  scale_y_continuous(labels = scales::percent)+
+  labs(x = "age", y = "probability", 
+       fill = "racial identification")+
+  theme(legend.position = "bottom")
+
+set_theme(theme_bw(base_size = 32))
+```
+
+:::
+
+::::
+
+##  Dealing with ordinal outcomes
+
+Using the National Election Study data, lets look at attitudes toward gay marriage by whether a respondent completed a college degree. 
+
+```{r crosstab_politics}
+#| label: crosstab-politics
+
+politics$college <- as.numeric(politics$educ) > 3
+tab <- table(politics$gaymarriage, politics$college)
+tab
+prop.table(tab, 2)
+```
+
+##  Two kinds of odds ratios {.smaller}
+
+```{r}
+#| echo: false
+tab
+```
+
+:::: {.columns}
+
+::: {.column .fragment}
+
+### Static reference
+
+- Those with college education are 72% more likely to support civil unions rather than **no legal recognition**.
+$$\frac{366*579}{618*204}=1.68$$
+- Those with college education are 128% more likely to support gay marriage rather than **no legal recognition**.
+$$\frac{1085*579}{1385*204}=2.22$$
+
+:::
+
+::: {.column .fragment}
+
+### Adjacent categories
+- Those with college education are 72% more likely to support civil unions rather than **no legal recognition**.
+$$\frac{366*579}{618*204}=1.68$$
+- Those with college education are 33% more likely to support gay marriage rather than **civil unions**.
+$$\frac{1085*618}{1385*366}=1.32$$
+
+:::
+
+::::
+
+##  Naive multinomial model
+
+We could just estimate this model as a multinomial model and ignore the ordinal nature of the dependent variable. 
+
+```{r}
+#| label: multinom-politics
+model.multin <- multinom(gaymarriage ~ college, data = politics, trace = FALSE)
+coef(model.multin)
+exp(coef(model.multin))
+```
+
+The multinomial model gives us the static reference results.
+
+##  Adjacent category logit model {.smaller}
+
+The Adjacent Category Logit (ACL) Model estimates the log-odds ratio of being in the higher category $j$ for each pair of adjacent categories $j$ and $j-1$:
+
+$$\log(p_{ij}/p_{i(j-1)})=\beta_{0j}+\beta_{1j}x_{i1}+\beta_{2j}x_{i2}+\dots+\beta_{pj}x_{ip}$$
+
+- The ACL takes advantage of the ordinal structure of the dependent variable to get the odds ratio between each adjacent set of categories on the ordinal scale. 
+- In general, we can estimate the parameters for an adjacent category logit model from multinomial model results by coding the lowest category as the reference and taking: $$\beta_j-\beta_{j-1}$$ for all coefficients.
+- In terms of model fit, the ACL is identical to the multinomial model. It just gives a more intuitive interpretation for ordinal responses.
+- The multinomial model is sometimes called the Baseline Category Logit (BCL) model to more clearly distinguish it from the ACL.
+
+##  Getting ACL from multinomial logit model
+
+```{r}
+#| label: acl-from-bcl
+
+coef(model.multin)
+convert_acl <- function(model_m) {
+  coefs <- rbind(c(0,0), coef(model_m))
+  return(diff(coefs))
+}
+acl_coef <- convert_acl(model.multin)
+acl_coef
+exp(acl_coef)
+```
+
+---
+
+##  Same results from two logit models
+
+```{r}
+#| label: acl-from-logit
+acl_coef
+coef(glm((gaymarriage == "Civil unions") ~ college, family = binomial,
+            data = subset(politics, gaymarriage != "Support gay marriage")))
+coef(glm((gaymarriage == "Support gay marriage") ~ college, family = binomial,
+            data = subset(politics, gaymarriage != "No legal recognition")))
+```
+
+
+##  The Cumulative Probability
+
+Another way to think about differences in the distribution of an ordinal variable is by comparing the cumulative probability of being in a given category or higher. 
+
+```{r cumprob}
+p <- prop.table(tab,2)
+p
+cump <- apply(p[3:1,],2,cumsum)[3:1,]
+cump
+```
+
+
+##  The Cumulative Odds {.smaller}
+
+We can convert these cumulative probabilities into cumulative odds:
+
+```{r cumodds}
+cumodds <- cump/(1-cump)
+cumodds
+```
+
+
+- The odds for the first category are irrelevant because everyone is at least in the lowest category. 
+- Among those without a college degree the odds of supporting civil unions **or more** is 3.46 to one, whereas among the college-educated the same cumulative odds is 7.11. The odds ratio is about 2.05 (7.11/3.46).
+- The odds of supporting gay marriage among those without a college degree is 1.16 to one. Among the college-educated the same odds is 1.90 to one. The odds ratio is about 1.64 (1.90/1.164).
+
+##  Cumulative/Ordered Logit Model {.smaller}
+
+$$log(P(y_i>=j)/P(y_i<j))=\alpha_j+\beta_{1j}x_{i1}+\beta_{2j}x_{i2}+\dots+\beta_{pj}x_{ip}$$
+
+- The dependent variable is the cumulative log odds of being in the $j$th category or higher. 
+- The coefficients tell us how the the cumulative log odds of being in the $j$th or higher category change due to a one unit increase in $x$.
+- The $\alpha_j$ are intercepts but they are often called the *cut points*. They define the cumulative distribution of ordinal responses when all the $x$'s are zero. 
+- Because this model allows the effect of each independent variable to be different at each cut-point, it has the same model fit as the multinomial model, but a different parameterization.
+- Think of the model as testing all possible dichotomous collapsings of your dependent variable simultaneously.
+
+##  Estimating the cumulative logit model
+
+```{r}
+#| label: log-cumodds
+lcumodds <- log(cumodds[-1,])
+lcumodds
+```
+
+The first column gives the **cut points** for the model of 0.85 and -0.49. These define the cumulative log odds among the non-college educated. The log-odds ratios for the college educated are given by the difference in log-odds.
+
+```{r}
+#| label: cumlogit-model
+model.cumlogit <- data.frame(cut=lcumodds[,1],
+                             college=lcumodds[,2]-lcumodds[,1])
+model.cumlogit
+```
+
+##  Interpreting terms in cumulative logit model
+
+```{r}
+#| label: cumlogit-model-exp
+
+exp(model.cumlogit)
+```
+
+- Among the non-college educated, the odds of supporting civil unions **or more** are 3.46 to one, and the odds of supporting gay marriage fully are 1.16 to one. 
+- The odds of supporting civil unions **or more** are approximately double (2.06) for the college educated than the non-college educated.
+- The odds of supporting gay marriage are 65% higher (1.65) for the college educated than the non-college educated.
+
+##  Same results from logit models
+
+```{r}
+#| label: compare-logit-cumlogit
+model.cumlogit
+coef(glm((gaymarriage == "Support gay marriage" | gaymarriage == "Civil unions") ~ college, 
+         data = politics, family = binomial))
+coef(glm((gaymarriage == "Support gay marriage") ~ college, 
+         data = politics, family = binomial))
+```
+
+##  Estimating polytmous models with `vglm` {.smaller}
+
+The `VGAM` library includes a function called `vglm` for estimating "vector generalized linear models." This package can be used to estimate a variety of nominal and ordinal response models. 
+
+::: {.fragment}
+
+### Multinomial logit (Baseline category logit) model:
+
+```{r}
+#| label: vglm-multinom
+model.multinom <- vglm(gaymarriage ~ college, family = multinomial(refLevel = 1), 
+                       data = politics)
+```
+
+:::
+
+::: {.fragment}
+
+### Adjacent category logit model: 
+```{r}
+#| label: vglm-acl
+
+model.acl <- vglm(ordered(gaymarriage) ~ college, family = acat(parallel=FALSE),
+                  data = politics)
+```
+
+:::
+
+::: {.fragment}
+
+### Cumulative logit model:
+```{r}
+#| label: vglm-cumlogit
+
+model.cumlogit <- vglm(ordered(gaymarriage) ~ college, 
+                       family = cumulative(parallel = FALSE, reverse = TRUE), 
+                       data = politics)
+```
+
+:::
+
+## `vglm` model output
+
+```{r}
+#| label: vglm-results
+coef(model.multinom)
+coef(model.acl)
+coef(model.cumlogit)
+```
+
+
+::: {.fragment}
+
+Deviance is the same because they are the same model differently parameterized.
+
+```{r}
+#| label: vglm-deviance
+
+sapply(list(model.multinom,model.acl,model.cumlogit), deviance)
+```
+
+:::
+
+## Constraints in ordinal models {.smaller}
+
+
+- For the ACL and cumulative logit model, it is possible to apply a simple constraint that the effect of college education is the same at each cut point.  This is the assumption of **proportional odds**.
+- The ACL and cumulative logit models estimated under this constraint are no longer identical in terms of fit and neither will fit the table exactly.
+- This constrained model has the advantage of being more parsimonious and having less coefficients to interpret
+- This constrained model has the disadvantage of making an assumption. In our case, the assumption seems problematic because we can see substantial differences in the effect of college education at different cut points.
+
+##  Constrained models with `vglm`
+
+Constrained models can be estimating by changing the `parallel` option for family to `TRUE`:
+
+```{r}
+#| label: vglm-constrained
+
+model.acl.c      <-  vglm(ordered(gaymarriage) ~ college,
+                          family = acat(parallel = TRUE), data = politics)
+model.cumlogit.c <-  vglm(ordered(gaymarriage) ~ college, 
+                          family = cumulative(parallel = TRUE, reverse = TRUE), 
+                          data = politics)
+coef(model.acl.c)
+coef(model.cumlogit.c)
+sapply(list(model.acl,model.cumlogit, model.acl.c, model.cumlogit.c), deviance)
+```
+
+##  Predicted probabilities across models
+
+```{r}
+#| label: predict-probs-college
+#| fig-asp: 0.5625
+#| echo: false
+
+predictprobs.acl <- function(model, fakedata) {
+  temp <- cbind(rep(0,nrow(fakedata)),predict(model, fakedata))
+  #get back to multinomial logit interpretation and apply multinomial logit method
+  temp[,2:ncol(temp)] <- temp[,2:ncol(temp)]+temp[,1:(ncol(temp)-1)]
+  temp <- exp(temp)
+  p <- temp/apply(temp,1,sum)
+  colnames(p) <- colnames(model@fitted.values)
+  ncat <- ncol(p)
+  p <- as.data.frame.table(p)[,2:3]
+  colnames(p) <- c("outcome","p")
+  return(cbind(fakedata, p))
+}
+
+predictprobs.cumlogit <- function(model, fakedata) {
+  cumodds <- exp(predict(model, fakedata))
+  cumprob <- cbind(rep(1,nrow(fakedata)),cumodds/(1+cumodds))
+  p <- t(rbind(cumprob[,ncol(cumprob)],diff(t(cumprob[,ncol(cumprob):1])))[ncol(cumprob):1,])
+  colnames(p) <- colnames(model@fitted.values)
+  ncat <- ncol(p)
+  p <- as.data.frame.table(p)[,2:3]
+  colnames(p) <- c("outcome","p")
+  return(cbind(fakedata, p))
+}
+
+test <- data.frame(college=c(FALSE, TRUE))
+predp <- predictprobs.acl(model.acl, test)
+predp$estimation <- "actual"
+temp <- predictprobs.acl(model.acl.c, test)
+temp$estimation <- "acl, constrained"
+predp <- rbind(predp, temp)
+temp <- predictprobs.cumlogit(model.cumlogit.c, test)
+temp$estimation <- "cum. logit, constrained"
+predp <- rbind(predp, temp)
+predp$estimation <- factor(predp$estimation,
+                           levels=c("actual","acl, constrained",
+                                    "cum. logit, constrained"))
+
+ggplot(predp, aes(x=college, y=p, fill=estimation))+
+  geom_col(position = "dodge")+
+  facet_wrap(~outcome)+
+  scale_y_continuous(labels=scales::percent)+
+  labs(x="college completion", y="percent",
+       fill="model type")+
+  theme_bw(base_size = 20)+
+  theme(legend.position = "bottom")
+```
+
+##  Fuller models {.smaller}
+
+```{r}
+#| label: estimate-ordinal-full-models
+#| echo: false
+
+model.full.cumlogit <- vglm(ordered(gaymarriage) ~ college + relig +
+                              I(age - 40) + I((age - 40)^2), 
+                       family = cumulative(parallel = FALSE, reverse = TRUE), 
+                       data = politics)
+model.full.cumlogit.c <- update(model.full.cumlogit,
+                                family = cumulative(parallel = TRUE,
+                                                    reverse = TRUE))
+model.full.acl <- update(model.full.cumlogit, family=acat(parallel=FALSE))
+model.full.acl.c <- update(model.full.acl, family=acat(parallel=TRUE))
+temp <- temp2 <- rep(NA, length(coef(model.full.cumlogit)))
+temp[c(1:2,seq(from=3,to=(length(coef(model.full.cumlogit))-1),by=2))] <- coef(model.full.cumlogit.c)
+temp2[c(1:2,seq(from=3,to=(length(coef(model.full.cumlogit))-1),by=2))] <- coef(model.full.acl.c)
+```
+
+:::: {.columns}
+
+::: {.column}
+
+```{r}
+#| label: tbl-model-unconstrained
+#| tbl-cap: Unconstrained cumulative logit and ACL models predicting support for gay marriage
+#| echo: false
+
+temp <- modelsummary(list("Cum. Logit" = model.full.cumlogit, "ACL" = model.full.acl),
+                     output = "modelsummary_list")
+             
+temp <- map(temp, function(x) {
+  group <- str_split_i(x$tidy$term, ":", 2)
+  x$tidy$term <- str_split_i(x$tidy$term, ":", 1)
+  group <- case_when(
+    group == "1" ~ "Civil Union vs. No",
+    group == "2" ~ "Support vs. Civil Union"
+  )
+  group <- factor(group, 
+                  levels = c("Civil Union vs. No", "Support vs. Civil Union"))
+  x$tidy$response <- group
+  return(x)
+})
+
+modelsummary(temp,
+             shape = term ~ model + response,
+             statistic = NULL, stars = TRUE, output = "gt",
+             gof_map = c("nobs", "bic"))
+```
+
+:::
+
+:::{.column}
+
+```{r}
+#| label: tbl-model-constrained
+#| tbl-cap: Constrained cumulative logit and ACL models predicting support for gay marriage
+#| echo: false
+
+modelsummary(list("Cum. Logit" = model.full.cumlogit.c, "ACL" = model.full.acl.c),
+             statistic = NULL, stars = TRUE, output = "gt",
+             gof_map = c("nobs", "bic"))
+```
+:::
+
+::::
