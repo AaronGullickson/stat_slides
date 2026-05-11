@@ -6,10 +6,10 @@
 <script src="slides_making_inferences_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="slides_making_inferences_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="slides_making_inferences_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="slides_making_inferences_files/libs/quarto-html/quarto-syntax-highlighting-9e1f2a4632985dffc2c80318c992baf5.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="slides_making_inferences_files/libs/quarto-html/quarto-syntax-highlighting-8c37e94934072dbafab1ae8ca0ced594.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <link href="slides_making_inferences_files/libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="slides_making_inferences_files/libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.6.40">
+  <meta name="generator" content="quarto-1.9.35">
 
   <meta name="author" content="Aaron Gullickson">
   <title>Making Inferences</title>
@@ -19,6 +19,9 @@
   <link rel="stylesheet" href="slides_making_inferences_files/libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="slides_making_inferences_files/libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -31,8 +34,9 @@
       vertical-align: middle;
     }
     /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -43,7 +47,7 @@
     }
     @media print {
     pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
     }
     pre.numberSource code
       { counter-reset: source-line 0; }
@@ -94,7 +98,7 @@
     code span.vs { color: #4e9a06; } /* VerbatimString */
     code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="slides_making_inferences_files/libs/revealjs/dist/theme/quarto-4911d2f5eb786d6d95cb091d6b3cdfd5.css">
+  <link rel="stylesheet" href="slides_making_inferences_files/libs/revealjs/dist/theme/quarto-73dc258faef0fe62096febe6bc026116.css">
   <link href="slides_making_inferences_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="slides_making_inferences_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="slides_making_inferences_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -217,7 +221,7 @@ Aaron Gullickson
 <div class="fragment">
 <p>We can look at the results from our politics dataset:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dv">100</span><span class="sc">*</span><span class="fu">round</span>(<span class="fu">prop.table</span>(<span class="fu">table</span>(politics<span class="sc">$</span>brcitizen)),<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dv">100</span><span class="sc">*</span><span class="fu">round</span>(<span class="fu">prop.table</span>(<span class="fu">table</span>(politics<span class="sc">$</span>brcitizen)),<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  Oppose Neither   Favor 
@@ -233,15 +237,15 @@ Aaron Gullickson
 <section id="drawing-a-statistical-inference" class="slide level2">
 <h2>Drawing a statistical inference</h2>
 
-<img data-src="slides_making_inferences_files/figure-revealjs/inference1-1.png" width="2304" class="r-stretch"></section>
+<img data-src="slides_making_inferences_files/figure-revealjs/inference1-1.svg" class="r-stretch"></section>
 <section id="drawing-a-statistical-inference-1" class="slide level2">
 <h2>Drawing a statistical inference</h2>
 
-<img data-src="slides_making_inferences_files/figure-revealjs/inference2-1.png" width="2304" class="r-stretch"></section>
+<img data-src="slides_making_inferences_files/figure-revealjs/inference2-1.svg" class="r-stretch"></section>
 <section id="drawing-a-statistical-inference-2" class="slide level2">
 <h2>Drawing a statistical inference</h2>
 
-<img data-src="slides_making_inferences_files/figure-revealjs/inference3-1.png" width="2304" class="r-stretch"></section>
+<img data-src="slides_making_inferences_files/figure-revealjs/inference3-1.svg" class="r-stretch"></section>
 <section id="parameters-and-statistics" class="slide level2 smaller">
 <h2>Parameters and statistics</h2>
 <div class="columns">
@@ -370,7 +374,7 @@ Aaron Gullickson
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_making_inferences_files/figure-revealjs/student-height-pop-hist-1.png" width="960"></p>
+<p><img data-src="slides_making_inferences_files/figure-revealjs/student-height-pop-hist-1.svg"></p>
 </figure>
 </div>
 </div>
@@ -392,11 +396,11 @@ Aaron Gullickson
 <section id="the-sampling-distribution-1" class="slide level2">
 <h2>The sampling distribution</h2>
 
-<img data-src="slides_making_inferences_files/figure-revealjs/class-height-sampling-dist2-1.png" width="2304" class="r-stretch"></section>
+<img data-src="slides_making_inferences_files/figure-revealjs/class-height-sampling-dist2-1.svg" class="r-stretch"></section>
 <section id="sampling-distributions-for-different-n" class="slide level2">
 <h2>Sampling distributions for different <span class="math inline">\(n\)</span></h2>
 
-<img data-src="slides_making_inferences_files/figure-revealjs/class-height-sampling-dist-compare-1.png" width="2304" class="r-stretch"></section>
+<img data-src="slides_making_inferences_files/figure-revealjs/class-height-sampling-dist-compare-1.svg" class="r-stretch"></section>
 <section id="what-is-the-mean-of-the-sampling-distributions" class="slide level2">
 <h2>What is the mean of the sampling distributions?</h2>
 <div class="cell">
@@ -446,19 +450,19 @@ Aaron Gullickson
 </section>
 <section id="its-the-central-limit-theorem" class="slide level2 smaller">
 <h2>Its the Central Limit Theorem!</h2>
-<p>As the sample size increases, the sampling distribution of a sample mean becomes a <strong>normal</strong> distribution.</p>
 <div class="columns">
 <div class="column">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_making_inferences_files/figure-revealjs/clt-normal-1.png" width="960"></p>
+<p><img data-src="slides_making_inferences_files/figure-revealjs/clt-normal-1.svg"></p>
 </figure>
 </div>
 </div>
 </div>
 </div><div class="column">
+<p>As the sample size increases, the sampling distribution of a sample mean becomes a <strong>normal</strong> distribution.</p>
 <ul>
 <li class="fragment">The normal distribution is a bell-shaped curve with two characteristics: center and spread.</li>
 <li class="fragment">Centered on <span class="math inline">\(\mu\)</span>, which is the true value in the population.</li>
@@ -511,7 +515,7 @@ Aaron Gullickson
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_making_inferences_files/figure-revealjs/reach-in-1.png" width="960"></p>
+<p><img data-src="slides_making_inferences_files/figure-revealjs/reach-in-1.svg"></p>
 </figure>
 </div>
 </div>
@@ -535,13 +539,13 @@ Aaron Gullickson
 </ul>
 <div class="columns">
 <div class="column fragment">
-<h3 id="first-fix">First Fix <i class="fa-solid fa-wrench" aria-label="wrench"></i></h3>
+<h3 id="first-fix-b58fc729-690b-4000-b19f-365a4093b2ff7b7b3c206661207772656e6368203e7d7d">First Fix <i class="fa-solid fa-wrench" aria-label="wrench"></i></h3>
 <ul>
 <li class="fragment">We can substitute the sample standard deviation <span class="math inline">\(s\)</span> from our sample for the population standard deviation <span class="math inline">\(\sigma\)</span>.</li>
 <li class="fragment">This has consequences. Because we are using a sample value which can also be subject to random bias, this substitution creates greater uncertainty in our estimate which we will address later.</li>
 </ul>
 </div><div class="column fragment">
-<h3 id="second-fix">Second Fix <i class="fa-solid fa-wrench" aria-label="wrench"></i></h3>
+<h3 id="second-fix-b58fc729-690b-4000-b19f-365a4093b2ff7b7b3c206661207772656e6368203e7d7d">Second Fix <i class="fa-solid fa-wrench" aria-label="wrench"></i></h3>
 <ul>
 <li class="fragment"><strong>Confidence Intervals</strong>: Provide a range of values within which you feel confident that the true population mean resides.</li>
 <li class="fragment"><strong>Hypothesis tests</strong>: Play a game of make believe. If the true population mean was a given value, what is the probability that I would get the sample mean value that I actually did?</li>
@@ -561,7 +565,7 @@ Aaron Gullickson
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_making_inferences_files/figure-revealjs/norm-confidence-1.png" width="960"></p>
+<p><img data-src="slides_making_inferences_files/figure-revealjs/norm-confidence-1.svg"></p>
 </figure>
 </div>
 </div>
@@ -575,7 +579,7 @@ Aaron Gullickson
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_making_inferences_files/figure-revealjs/conf-bar-1.png" width="960"></p>
+<p><img data-src="slides_making_inferences_files/figure-revealjs/conf-bar-1.svg"></p>
 </figure>
 </div>
 </div>
@@ -599,7 +603,7 @@ Aaron Gullickson
 <p>If this seems confusing, you are normal.</p>
 </div></div>
 </section>
-<section id="calculating-the-confidence-interval" class="slide level2 smaller">
+<section id="b58fc729-690b-4000-b19f-365a4093b2ff7b7b3c2066612063616c63756c61746f72203e7d7d-calculating-the-confidence-interval" class="slide level2 smaller">
 <h2><i class="fa-solid fa-calculator" aria-label="calculator"></i> Calculating the confidence interval</h2>
 <p>The confidence interval is given by <span class="math inline">\(\bar{x}\pm1.96*\sigma/\sqrt{n}\)</span>.</p>
 <p>But we don’t know <span class="math inline">\(\sigma\)</span> because this is the population standard deviation. What can we do?</p>
@@ -615,7 +619,7 @@ Aaron Gullickson
 <p>where <span class="math inline">\(t\)</span> is the <strong>t-statistic</strong> and will be a number somewhat larger than 1.96.</p>
 </div>
 </section>
-<section id="calculating-the-t-statistic" class="slide level2 smaller">
+<section id="b58fc729-690b-4000-b19f-365a4093b2ff7b7b3c2066612063616c63756c61746f72203e7d7d-calculating-the-t-statistic" class="slide level2 smaller">
 <h2><i class="fa-solid fa-calculator" aria-label="calculator"></i> Calculating the t-statistic</h2>
 <p>The t-statistic you get depends on two characteristics:</p>
 <ul>
@@ -625,7 +629,7 @@ Aaron Gullickson
 <div class="fragment">
 <p>In <em>R</em>, you can calculate the t-statistic with the <code>qt</code> command. Lets say we wanted the t-statistic for our crime data with 51 observations:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(.<span class="dv">975</span>, <span class="dv">51-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(.<span class="dv">975</span>, <span class="dv">51-1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.008559</code></pre>
 </div>
@@ -642,15 +646,15 @@ Aaron Gullickson
 <div class="column fragment">
 <p>First we need to calculate all the statistics we need:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(crimes<span class="sc">$</span>property_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(crimes<span class="sc">$</span>property_rate)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2462.758</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(crimes<span class="sc">$</span>property_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(crimes<span class="sc">$</span>property_rate)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 656.6521</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(crimes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(crimes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 51</code></pre>
 </div>
@@ -658,21 +662,21 @@ Aaron Gullickson
 <div class="fragment">
 <p>Now we can calculate the t-statistic and standard error:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a>tstat <span class="ot">&lt;-</span> <span class="fu">qt</span>(.<span class="dv">975</span>, <span class="dv">51-1</span>)</span>
-<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fl">656.6521</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">51</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a>tstat <span class="ot">&lt;-</span> <span class="fu">qt</span>(.<span class="dv">975</span>, <span class="dv">51-1</span>)</span>
+<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fl">656.6521</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">51</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div><div class="column fragment">
 <p>The upper limit is given by:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fl">2462.758</span><span class="sc">+</span>tstat<span class="sc">*</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fl">2462.758</span><span class="sc">+</span>tstat<span class="sc">*</span>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2647.444</code></pre>
 </div>
 </div>
 <p>The lower limit is given by:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fl">2462.758</span><span class="sc">-</span>tstat<span class="sc">*</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fl">2462.758</span><span class="sc">-</span>tstat<span class="sc">*</span>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2278.072</code></pre>
 </div>
@@ -700,23 +704,19 @@ Aaron Gullickson
 <div class="columns">
 <div class="column fragment">
 <h4 id="proper-sample">Proper sample</h4>
-<div>
 <ul>
 <li>Popularity data (Add Health)</li>
 <li>Politics data (ANES)</li>
 <li>Sexual frequency data (GSS)</li>
 <li>Earnings data (CPS)</li>
 </ul>
-</div>
 </div><div class="column fragment">
 <h4 id="not-a-sample">Not a sample</h4>
-<div>
 <ul>
 <li>Titanic</li>
 <li>Crimes</li>
 <li>Movies</li>
 </ul>
-</div>
 </div></div>
 </section>
 <section id="example-sexual-frequency" class="slide level2 smaller">
@@ -725,11 +725,11 @@ Aaron Gullickson
 <div class="column fragment">
 <p>Calculate numbers that we need for later:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(sex<span class="sc">$</span>sexf)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(sex<span class="sc">$</span>sexf)</span>
 <span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sd</span>(sex<span class="sc">$</span>sexf)</span>
 <span id="cb16-3"><a href="" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(sex)</span>
 <span id="cb16-4"><a href="" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> s<span class="sc">/</span><span class="fu">sqrt</span>(n)</span>
-<span id="cb16-5"><a href="" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">qt</span>(.<span class="dv">975</span>, n<span class="dv">-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-5"><a href="" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">qt</span>(.<span class="dv">975</span>, n<span class="dv">-1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -768,11 +768,11 @@ Aaron Gullickson
 </div><div class="column fragment">
 <p>Now calculate the interval:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a>xbar<span class="sc">+</span>t<span class="sc">*</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a>xbar<span class="sc">+</span>t<span class="sc">*</span>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 47.71364</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a>xbar<span class="sc">-</span>t<span class="sc">*</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a>xbar<span class="sc">-</span>t<span class="sc">*</span>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 46.10359</code></pre>
 </div>
@@ -849,30 +849,30 @@ Aaron Gullickson
 <div class="column fragment">
 <p>Use <code>prop.table</code> to get the sample proportion:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(politics<span class="sc">$</span>brcitizen))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(politics<span class="sc">$</span>brcitizen))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
    Oppose   Neither     Favor 
 0.3957989 0.2860515 0.3181496 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fl">0.3181496</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fl">0.3181496</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
 <p>Calculate values:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(politics)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(politics)</span>
 <span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(p<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p)<span class="sc">/</span>n)</span>
-<span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, n<span class="dv">-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, n<span class="dv">-1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div><div class="column fragment">
 <p>Get confidence intervals:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="sc">+</span>t<span class="sc">*</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="sc">+</span>t<span class="sc">*</span>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.3321778</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="sc">-</span>t<span class="sc">*</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a>p<span class="sc">-</span>t<span class="sc">*</span>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.3041214</code></pre>
 </div>
@@ -888,25 +888,25 @@ Aaron Gullickson
 <div class="fragment">
 <p>Use <code>tapply</code> to get means by groups and then calculate the difference you want:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(sex<span class="sc">$</span>sexf, sex<span class="sc">$</span>marital, mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(sex<span class="sc">$</span>sexf, sex<span class="sc">$</span>marital, mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Never married       Married      Divorced       Widowed 
      53.45574      46.44548      47.87926      25.88266 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a>diff <span class="ot">&lt;-</span> <span class="fl">46.44548-53.45574</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a>diff <span class="ot">&lt;-</span> <span class="fl">46.44548-53.45574</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="fragment">
 <p>Use <code>tapply</code> again to calculate standard deviations by group for the SE calculation:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#use tapply again to get sd by group</span></span>
-<span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(sex<span class="sc">$</span>sexf, sex<span class="sc">$</span>marital, sd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#use tapply again to get sd by group</span></span>
+<span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(sex<span class="sc">$</span>sexf, sex<span class="sc">$</span>marital, sd)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Never married       Married      Divorced       Widowed 
      48.06519      42.42236      46.42971      31.71475 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a>sd1 <span class="ot">&lt;-</span> <span class="fl">42.42236</span></span>
-<span id="cb34-2"><a href="" aria-hidden="true" tabindex="-1"></a>sd2 <span class="ot">&lt;-</span> <span class="fl">48.06519</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a>sd1 <span class="ot">&lt;-</span> <span class="fl">42.42236</span></span>
+<span id="cb34-2"><a href="" aria-hidden="true" tabindex="-1"></a>sd2 <span class="ot">&lt;-</span> <span class="fl">48.06519</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -915,26 +915,26 @@ Aaron Gullickson
 <div class="fragment">
 <p>Use <code>table</code> to get sample size by group:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(sex<span class="sc">$</span>marital)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(sex<span class="sc">$</span>marital)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Never married       Married      Divorced       Widowed 
          3129          5374          2319           963 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> <span class="dv">5374</span></span>
-<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a>n2 <span class="ot">&lt;-</span> <span class="dv">3129</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> <span class="dv">5374</span></span>
+<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a>n2 <span class="ot">&lt;-</span> <span class="dv">3129</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="fragment">
 <p>Calculate standard error, t-statistic, and confidence intervals:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(sd1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n1<span class="sc">+</span>sd2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n2)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(sd1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n1<span class="sc">+</span>sd2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n2)</span>
 <span id="cb38-2"><a href="" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>,n2<span class="dv">-1</span>)</span>
-<span id="cb38-3"><a href="" aria-hidden="true" tabindex="-1"></a>diff<span class="sc">+</span>t<span class="sc">*</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb38-3"><a href="" aria-hidden="true" tabindex="-1"></a>diff<span class="sc">+</span>t<span class="sc">*</span>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -4.979022</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="" aria-hidden="true" tabindex="-1"></a>diff<span class="sc">-</span>t<span class="sc">*</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="" aria-hidden="true" tabindex="-1"></a>diff<span class="sc">-</span>t<span class="sc">*</span>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -9.041498</code></pre>
 </div>
@@ -950,8 +950,8 @@ Never married       Married      Divorced       Widowed
 <div class="fragment">
 <p>Use <code>prop.table</code> to calculate proportions for each group:</p>
 <div class="cell" data-highlight.output="5">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(politics<span class="sc">$</span>brcitizen, </span>
-<span id="cb42-2"><a href="" aria-hidden="true" tabindex="-1"></a>                 politics<span class="sc">$</span>military), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(politics<span class="sc">$</span>brcitizen, </span>
+<span id="cb42-2"><a href="" aria-hidden="true" tabindex="-1"></a>                 politics<span class="sc">$</span>military), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         
                  No       Yes
@@ -959,22 +959,22 @@ Never married       Married      Divorced       Widowed
   Neither 0.2893065 0.2592593
   Favor   0.3041292 0.4335512</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fl">0.3041292</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fl">0.3041292</span></span>
 <span id="cb44-2"><a href="" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fl">0.4335512</span></span>
-<span id="cb44-3"><a href="" aria-hidden="true" tabindex="-1"></a>diff <span class="ot">&lt;-</span> p2<span class="sc">-</span>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb44-3"><a href="" aria-hidden="true" tabindex="-1"></a>diff <span class="ot">&lt;-</span> p2<span class="sc">-</span>p1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="fragment">
 <p>Use <code>table</code> to get sample sizes by group:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(politics<span class="sc">$</span>military)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(politics<span class="sc">$</span>military)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   No  Yes 
 3778  459 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> <span class="dv">3778</span></span>
-<span id="cb47-2"><a href="" aria-hidden="true" tabindex="-1"></a>n2 <span class="ot">&lt;-</span> <span class="dv">459</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> <span class="dv">3778</span></span>
+<span id="cb47-2"><a href="" aria-hidden="true" tabindex="-1"></a>n2 <span class="ot">&lt;-</span> <span class="dv">459</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -983,18 +983,18 @@ Never married       Married      Divorced       Widowed
 <div class="{fragment}">
 <p>Calculate standard error and t-statistic:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(p1<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p1)<span class="sc">/</span>n1<span class="sc">+</span>p2<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p2)<span class="sc">/</span>n2)</span>
-<span id="cb48-2"><a href="" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, n2<span class="dv">-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(p1<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p1)<span class="sc">/</span>n1<span class="sc">+</span>p2<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p2)<span class="sc">/</span>n2)</span>
+<span id="cb48-2"><a href="" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, n2<span class="dv">-1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="{fragment}">
 <p>Calculate confidence intervals:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="" aria-hidden="true" tabindex="-1"></a>diff<span class="sc">-</span>t<span class="sc">*</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="" aria-hidden="true" tabindex="-1"></a>diff<span class="sc">-</span>t<span class="sc">*</span>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.08164563</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="" aria-hidden="true" tabindex="-1"></a>diff<span class="sc">+</span>t<span class="sc">*</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="" aria-hidden="true" tabindex="-1"></a>diff<span class="sc">+</span>t<span class="sc">*</span>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1771984</code></pre>
 </div>
@@ -1010,25 +1010,25 @@ Never married       Married      Divorced       Widowed
 <div class="fragment">
 <p>Use <code>cor</code> command to get the sample correlation coefficient:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">cor</span>(earnings<span class="sc">$</span>age, earnings<span class="sc">$</span>wages)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">cor</span>(earnings<span class="sc">$</span>age, earnings<span class="sc">$</span>wages)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="fragment">
 <p>Use <code>nrow</code> to get sample size and then calculate standard error and t-statistic.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(earnings)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(earnings)</span>
 <span id="cb54-2"><a href="" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>((<span class="dv">1</span><span class="sc">-</span>r<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(n<span class="dv">-2</span>))</span>
-<span id="cb54-3"><a href="" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, n<span class="dv">-2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb54-3"><a href="" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, n<span class="dv">-2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="fragment">
 <p>Calculate confidence intervals:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="" aria-hidden="true" tabindex="-1"></a>r <span class="sc">-</span> t<span class="sc">*</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="" aria-hidden="true" tabindex="-1"></a>r <span class="sc">-</span> t<span class="sc">*</span>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2135195</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="" aria-hidden="true" tabindex="-1"></a>r <span class="sc">+</span> t<span class="sc">*</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="" aria-hidden="true" tabindex="-1"></a>r <span class="sc">+</span> t<span class="sc">*</span>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2235427</code></pre>
 </div>
@@ -1084,85 +1084,89 @@ Never married       Married      Divorced       Widowed
 <p>I use the Greek <span class="math inline">\(\rho\)</span> to indicate the population proportion of winners. I will use <span class="math inline">\(\hat{p}\)</span> later to represent the proportion observed in my sample.</p>
 </div>
 </section>
-<section id="assuming-h_0-is-true-what-is-the-sampling-distribution-of-my-sample-proportion" class="slide level2 smaller">
-<h2>Assuming <span class="math inline">\(H_0\)</span> is true, what is the sampling distribution of my sample proportion?</h2>
+<section id="coca-cola-hypothesis-test" class="slide level2 smaller">
+<h2>Coca-Cola Hypothesis Test</h2>
 <div class="columns">
-<div class="column" style="width:50%;">
+<div class="column">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-36-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>]</p>
-</div></div>
-</section>
-<section id="assuming-h_0-is-true-what-is-the-sampling-distribution-of-my-sample-proportion-1" class="slide level2 smaller">
-<h2>Assuming <span class="math inline">\(H_0\)</span> is true, what is the sampling distribution of my sample proportion?</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-37-1.png" width="960"></p>
+<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-25-1.svg"></p>
 </figure>
 </div>
 </div>
 </div>
 </div><div class="column">
+<h4 id="assuming-h_0-is-true-what-is-the-sampling-distribution-of-my-sample-proportion">Assuming <span class="math inline">\(H_0\)</span> is true, what is the sampling distribution of my sample proportion?</h4>
+</div></div>
+</section>
+<section id="coca-cola-hypothesis-test-1" class="slide level2 smaller">
+<h2>Coca-Cola Hypothesis Test</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-26-1.svg"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<h4 class="smaller" id="assuming-h_0-is-true-what-is-the-sampling-distribution-of-my-sample-proportion-1">Assuming <span class="math inline">\(H_0\)</span> is true, what is the sampling distribution of my sample proportion?</h4>
 <p>With a sample size of 100, it should be normally distributed.</p>
 </div></div>
 </section>
-<section id="assuming-h_0-is-true-what-is-the-sampling-distribution-of-my-sample-proportion-2" class="slide level2 smaller">
-<h2>Assuming <span class="math inline">\(H_0\)</span> is true, what is the sampling distribution of my sample proportion?</h2>
+<section id="coca-cola-hypothesis-test-2" class="slide level2 smaller">
+<h2>Coca-Cola Hypothesis Test</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-38-1.png" width="960"></p>
+<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-27-1.svg"></p>
 </figure>
 </div>
 </div>
 </div>
 </div><div class="column">
+<h4 id="assuming-h_0-is-true-what-is-the-sampling-distribution-of-my-sample-proportion-2">Assuming <span class="math inline">\(H_0\)</span> is true, what is the sampling distribution of my sample proportion?</h4>
 <p>With a sample size of 100, it should be normally distributed.</p>
 <p>The center of the distribution is the true population parameter assuming <span class="math inline">\(H_0\)</span> is true. In this case, that is 0.083.</p>
 </div></div>
 </section>
-<section id="assuming-h_0-is-true-what-is-the-sampling-distribution-of-my-sample-proportion-3" class="slide level2 smaller">
-<h2>Assuming <span class="math inline">\(H_0\)</span> is true, what is the sampling distribution of my sample proportion?</h2>
+<section id="coca-cola-hypothesis-test-3" class="slide level2 smaller">
+<h2>Coca-Cola Hypothesis Test</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-39-1.png" width="960"></p>
+<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-28-1.svg"></p>
 </figure>
 </div>
 </div>
 </div>
 </div><div class="column">
+<h4 id="assuming-h_0-is-true-what-is-the-sampling-distribution-of-my-sample-proportion-3">Assuming <span class="math inline">\(H_0\)</span> is true, what is the sampling distribution of my sample proportion?</h4>
 <p>With a sample size of 100, it should be normally distributed.</p>
 <p>The center of the distribution is the true population parameter assuming <span class="math inline">\(H_0\)</span> is true. In this case, that is 0.083.</p>
 <p>As we learned in the previous section, the standard error is given by: <span class="math display">\[\sqrt\frac{0.083*(1-0.083)}{100}=0.0276\]</span></p>
 </div></div>
 </section>
-<section id="is-the-actual-sample-proportion-unusual" class="slide level2">
-<h2>Is the actual sample proportion unusual?</h2>
+<section id="coca-cola-hypothesis-test-4" class="slide level2 smaller">
+<h2>Coca-Cola Hypothesis Test</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-40-1.png" width="960"></p>
+<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-29-1.svg"></p>
 </figure>
 </div>
 </div>
@@ -1175,77 +1179,81 @@ Never married       Married      Divorced       Widowed
 </ul>
 </div></div>
 </section>
-<section id="how-far-is-far-enough" class="slide level2 smaller">
-<h2>How far is far enough?</h2>
+<section id="coca-cola-hypothesis-test-5" class="slide level2 smaller">
+<h2>Coca-Cola Hypothesis Test</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-41-1.png" width="960"></p>
+<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-30-1.svg"></p>
 </figure>
 </div>
 </div>
 </div>
 </div><div class="column">
+<h4 id="how-far-is-far-enough">How far is far enough?</h4>
 <p>We determine how far our sample proportion is from the center in terms of the number of standard errors.</p>
 <p><span class="math display">\[\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18\]</span></p>
 </div></div>
 </section>
-<section id="how-far-is-far-enough-1" class="slide level2 smaller">
-<h2>How far is far enough?</h2>
+<section id="coca-cola-hypothesi-test" class="slide level2 smaller">
+<h2>Coca-Cola Hypothesi Test</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-42-1.png" width="960"></p>
+<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-31-1.svg"></p>
 </figure>
 </div>
 </div>
 </div>
 </div><div class="column">
+<h4 id="how-far-is-far-enough-1">How far is far enough?</h4>
 <p>We determine how far our sample proportion is from the center in terms of the number of standard errors.</p>
 <p><span class="math display">\[\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18\]</span></p>
 <p>What proportion of sample proportions are this low or lower?</p>
 </div></div>
 </section>
-<section id="how-far-is-far-enough-2" class="slide level2 smaller">
-<h2>How far is far enough?</h2>
+<section id="coca-cola-hypothesis-test-6" class="slide level2 smaller">
+<h2>Coca-Cola Hypothesis Test</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-43-1.png" width="960"></p>
+<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-32-1.svg"></p>
 </figure>
 </div>
 </div>
 </div>
 </div><div class="column">
+<h4 id="how-far-is-far-enough-2">How far is far enough?</h4>
 <p>We determine how far our sample proportion is from the center in terms of the number of standard errors.</p>
 <p><span class="math display">\[\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18\]</span></p>
 <p>What proportion of sample proportions are this low or lower?</p>
 <p>We also need to take account of sample proportions this far away in the opposite direction. This is called a <strong>two-tailed test</strong>.</p>
 </div></div>
 </section>
-<section id="how-far-is-far-enough-3" class="slide level2 smaller">
-<h2>How far is far enough?</h2>
+<section id="coca-cola-hypothesis-test-7" class="slide level2 smaller">
+<h2>Coca-Cola Hypothesis Test</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-44-1.png" width="960"></p>
+<p><img data-src="slides_making_inferences_files/figure-revealjs/unnamed-chunk-33-1.svg"></p>
 </figure>
 </div>
 </div>
 </div>
 </div><div class="column">
+<h4 id="how-far-is-far-enough-3">How far is far enough?</h4>
 <p>We determine how far our sample proportion is from the center in terms of the number of standard errors.</p>
 <p><span class="math display">\[\frac{\hat{p}-\rho}{SE}=\frac{0.05-0.083}{0.028}=-1.18\]</span></p>
 <p>What proportion of sample proportions are this low or lower?</p>
@@ -1266,10 +1274,10 @@ Never married       Married      Divorced       Widowed
 </blockquote>
 </div>
 </div><div class="column fragment">
-<h3 id="calculation"><i class="fa-solid fa-calculator" aria-label="calculator"></i> Calculation</h3>
+<h3 id="b58fc729-690b-4000-b19f-365a4093b2ff7b7b3c2066612063616c63756c61746f72203e7d7d-calculation"><i class="fa-solid fa-calculator" aria-label="calculator"></i> Calculation</h3>
 <p>We use the <code>pt</code> command to get the area in the lower tail and multiply by two to get both tails:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fl">1.18</span>,<span class="dv">99</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fl">1.18</span>,<span class="dv">99</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2408278</code></pre>
 </div>
@@ -1335,13 +1343,13 @@ Never married       Married      Divorced       Widowed
 <div class="columns">
 <div class="column fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(sex<span class="sc">$</span>sexf, sex<span class="sc">$</span>marital, mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(sex<span class="sc">$</span>sexf, sex<span class="sc">$</span>marital, mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Never married       Married      Divorced       Widowed 
      53.45574      46.44548      47.87926      25.88266 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="" aria-hidden="true" tabindex="-1"></a>diff <span class="ot">&lt;-</span> <span class="fl">46.44548-47.87926</span></span>
-<span id="cb63-2"><a href="" aria-hidden="true" tabindex="-1"></a>diff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="" aria-hidden="true" tabindex="-1"></a>diff <span class="ot">&lt;-</span> <span class="fl">46.44548-47.87926</span></span>
+<span id="cb63-2"><a href="" aria-hidden="true" tabindex="-1"></a>diff</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -1.43378</code></pre>
 </div>
@@ -1352,22 +1360,22 @@ Never married       Married      Divorced       Widowed
 </div><div class="column fragment">
 <p>I gather terms to calculate the standard error.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(sex<span class="sc">$</span>sexf, sex<span class="sc">$</span>marital, sd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(sex<span class="sc">$</span>sexf, sex<span class="sc">$</span>marital, sd)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Never married       Married      Divorced       Widowed 
      48.06519      42.42236      46.42971      31.71475 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="" aria-hidden="true" tabindex="-1"></a>sd1 <span class="ot">&lt;-</span> <span class="fl">42.42236</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="" aria-hidden="true" tabindex="-1"></a>sd1 <span class="ot">&lt;-</span> <span class="fl">42.42236</span></span>
 <span id="cb67-2"><a href="" aria-hidden="true" tabindex="-1"></a>sd2 <span class="ot">&lt;-</span> <span class="fl">46.42971</span></span>
-<span id="cb67-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(sex<span class="sc">$</span>marital)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb67-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(sex<span class="sc">$</span>marital)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Never married       Married      Divorced       Widowed 
          3129          5374          2319           963 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> <span class="dv">5374</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> <span class="dv">5374</span></span>
 <span id="cb69-2"><a href="" aria-hidden="true" tabindex="-1"></a>n2 <span class="ot">&lt;-</span> <span class="dv">2319</span></span>
-<span id="cb69-3"><a href="" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(sd1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n1<span class="sc">+</span>sd2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb69-3"><a href="" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(sd1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n1<span class="sc">+</span>sd2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div></div>
 </section>
@@ -1376,7 +1384,7 @@ Never married       Married      Divorced       Widowed
 <div class="fragment">
 <p>I can now calculate how many standard errors my sample mean difference is from zero:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="" aria-hidden="true" tabindex="-1"></a>diff<span class="sc">/</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="" aria-hidden="true" tabindex="-1"></a>diff<span class="sc">/</span>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -1.275052</code></pre>
 </div>
@@ -1385,7 +1393,7 @@ Never married       Married      Divorced       Widowed
 <div class="fragment">
 <p>I then feed the negative version of this number into the <code>pt</code> formula and multiply by two to get my p-value:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fl">1.275052</span>, n2<span class="dv">-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fl">1.275052</span>, n2<span class="dv">-1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2024186</code></pre>
 </div>
@@ -1403,8 +1411,8 @@ Never married       Married      Divorced       Widowed
 <div class="columns">
 <div class="column fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(politics<span class="sc">$</span>brcitizen, </span>
-<span id="cb74-2"><a href="" aria-hidden="true" tabindex="-1"></a>                 politics<span class="sc">$</span>military), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(politics<span class="sc">$</span>brcitizen, </span>
+<span id="cb74-2"><a href="" aria-hidden="true" tabindex="-1"></a>                 politics<span class="sc">$</span>military), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         
                  No       Yes
@@ -1412,32 +1420,32 @@ Never married       Married      Divorced       Widowed
   Neither 0.2893065 0.2592593
   Favor   0.3041292 0.4335512</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fl">0.304</span></span>
-<span id="cb76-2"><a href="" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fl">0.434</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fl">0.304</span></span>
+<span id="cb76-2"><a href="" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fl">0.434</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="" aria-hidden="true" tabindex="-1"></a>diff <span class="ot">&lt;-</span> p2<span class="sc">-</span>p1</span>
-<span id="cb77-2"><a href="" aria-hidden="true" tabindex="-1"></a>diff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="" aria-hidden="true" tabindex="-1"></a>diff <span class="ot">&lt;-</span> p2<span class="sc">-</span>p1</span>
+<span id="cb77-2"><a href="" aria-hidden="true" tabindex="-1"></a>diff</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.13</code></pre>
 </div>
 </div>
 </div><div class="column fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(politics<span class="sc">$</span>military)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(politics<span class="sc">$</span>military)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   No  Yes 
 3778  459 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> <span class="dv">3778</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> <span class="dv">3778</span></span>
 <span id="cb81-2"><a href="" aria-hidden="true" tabindex="-1"></a>n2 <span class="ot">&lt;-</span> <span class="dv">459</span></span>
 <span id="cb81-3"><a href="" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(p1<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p1)<span class="sc">/</span>n1<span class="sc">+</span>p2<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p2)<span class="sc">/</span>n2)</span>
-<span id="cb81-4"><a href="" aria-hidden="true" tabindex="-1"></a>diff<span class="sc">/</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb81-4"><a href="" aria-hidden="true" tabindex="-1"></a>diff<span class="sc">/</span>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5.346688</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fl">5.346688</span>, n2<span class="dv">-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fl">5.346688</span>, n2<span class="dv">-1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.416426e-07</code></pre>
 </div>
@@ -1463,18 +1471,18 @@ Never married       Married      Divorced       Widowed
 <div class="columns">
 <div class="column fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">cor</span>(earnings<span class="sc">$</span>age, earnings<span class="sc">$</span>wages)</span>
-<span id="cb85-2"><a href="" aria-hidden="true" tabindex="-1"></a>r</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">cor</span>(earnings<span class="sc">$</span>age, earnings<span class="sc">$</span>wages)</span>
+<span id="cb85-2"><a href="" aria-hidden="true" tabindex="-1"></a>r</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2185311</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(earnings)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(earnings)</span>
 <span id="cb87-2"><a href="" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>((<span class="dv">1</span><span class="sc">-</span>r<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(n<span class="dv">-2</span>))</span>
-<span id="cb87-3"><a href="" aria-hidden="true" tabindex="-1"></a>r<span class="sc">/</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb87-3"><a href="" aria-hidden="true" tabindex="-1"></a>r<span class="sc">/</span>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 85.46473</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fl">85.46473</span>, n<span class="dv">-2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fl">85.46473</span>, n<span class="dv">-2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
 </div>
@@ -1743,190 +1751,173 @@ Never married       Married      Divorced       Widowed
     </script>
 
     <script id="quarto-html-after-body" type="application/javascript">
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
-        }
-      }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
-      }
-      toggleBodyColorPrimary();  
-      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-      tabsets.forEach(function(tabset) {
-        const tabby = new Tabby('#' + tabset.id);
-      });
-      const isCodeAnnotation = (el) => {
-        for (const clz of el.classList) {
-          if (clz.startsWith('code-annotation-')) {                     
-            return true;
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
           }
+          return false;
         }
-        return false;
-      }
-      const onCopySuccess = function(e) {
-        // button target
-        const button = e.trigger;
-        // don't keep focus
-        button.blur();
-        // flash "checked"
-        button.classList.add('code-copy-button-checked');
-        var currentTitle = button.getAttribute("title");
-        button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
-        setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
           }
-          button.setAttribute("title", currentTitle);
-          button.classList.remove('code-copy-button-checked');
-        }, 1000);
-        // clear code selection
-        e.clearSelection();
-      }
-      const getTextToCopy = function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
           for (const childEl of codeEl.children) {
             if (isCodeAnnotation(childEl)) {
               childEl.remove();
             }
           }
           return codeEl.innerText;
-      }
-      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-        text: getTextToCopy
-      });
-      clipboard.on('success', onCopySuccess);
-      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-          text: getTextToCopy,
-          container: window.document.getElementById('quarto-embedded-source-code-modal')
-        });
-        clipboardModal.on('success', onCopySuccess);
-      }
-        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-        var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
-        var isInternal = (href) => {
-            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
         }
-        // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-        for (var i=0; i<links.length; i++) {
-          const link = links[i];
-          if (!isInternal(link.href)) {
-            // undo the damage that might have been done by quarto-nav.js in the case of
-            // links that we want to consider external
-            if (link.dataset.originalHref !== undefined) {
-              link.href = link.dataset.originalHref;
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
             }
           }
-        }
-      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-        const config = {
-          allowHTML: true,
-          maxWidth: 500,
-          delay: 100,
-          arrow: false,
-          appendTo: function(el) {
-              return el.closest('section.slide') || el.parentElement;
-          },
-          interactive: true,
-          interactiveBorder: 10,
-          theme: 'light-border',
-          placement: 'bottom-start',
-        };
-        if (contentFn) {
-          config.content = contentFn;
-        }
-        if (onTriggerFn) {
-          config.onTrigger = onTriggerFn;
-        }
-        if (onUntriggerFn) {
-          config.onUntrigger = onUntriggerFn;
-        }
-          config['offset'] = [0,0];
-          config['maxWidth'] = 700;
-        window.tippy(el, config); 
-      }
-      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-      for (var i=0; i<noterefs.length; i++) {
-        const ref = noterefs[i];
-        tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-          try { href = new URL(href).hash; } catch {}
-          const id = href.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note) {
-            return note.innerHTML;
-          } else {
-            return "";
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
           }
-        });
-      }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
           }
-        } else {
-          return undefined;
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
         }
-      };
-      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-      for (var i=0; i<bibliorefs.length; i++) {
-        const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
-              }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
           });
         }
-      }
-    });
-    </script>
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
     
 
 </body></html>

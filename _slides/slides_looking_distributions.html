@@ -6,10 +6,10 @@
 <script src="slides_looking_distributions_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="slides_looking_distributions_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="slides_looking_distributions_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="slides_looking_distributions_files/libs/quarto-html/quarto-syntax-highlighting-9e1f2a4632985dffc2c80318c992baf5.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="slides_looking_distributions_files/libs/quarto-html/quarto-syntax-highlighting-8c37e94934072dbafab1ae8ca0ced594.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <link href="slides_looking_distributions_files/libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="slides_looking_distributions_files/libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.6.40">
+  <meta name="generator" content="quarto-1.9.35">
 
   <meta name="author" content="Aaron Gullickson">
   <title>Looking at Distributions</title>
@@ -19,6 +19,9 @@
   <link rel="stylesheet" href="slides_looking_distributions_files/libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="slides_looking_distributions_files/libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -31,8 +34,9 @@
       vertical-align: middle;
     }
     /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -43,7 +47,7 @@
     }
     @media print {
     pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
     }
     pre.numberSource code
       { counter-reset: source-line 0; }
@@ -94,7 +98,7 @@
     code span.vs { color: #4e9a06; } /* VerbatimString */
     code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="slides_looking_distributions_files/libs/revealjs/dist/theme/quarto-4911d2f5eb786d6d95cb091d6b3cdfd5.css">
+  <link rel="stylesheet" href="slides_looking_distributions_files/libs/revealjs/dist/theme/quarto-73dc258faef0fe62096febe6bc026116.css">
   <link href="slides_looking_distributions_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="slides_looking_distributions_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="slides_looking_distributions_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -218,7 +222,7 @@ Aaron Gullickson
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="fragment">
-<h3 id="look-at-it"><i class="fa-solid fa-binoculars" aria-label="binoculars"></i> Look at it</h3>
+<h3 id="b58fc729-690b-4000-b19f-365a4093b2ff7b7b3c2066612062696e6f63756c617273203e7d7d-look-at-it"><i class="fa-solid fa-binoculars" aria-label="binoculars"></i> Look at it</h3>
 <ul>
 <li class="fragment">We can make a plot that shows the distribution.</li>
 <li class="fragment">We make different kinds of plots for categorical and quantitative variables.
@@ -230,7 +234,7 @@ Aaron Gullickson
 </div>
 </div><div class="column" style="width:50%;">
 <div class="fragment">
-<h3 id="measure-it"><i class="fa-solid fa-square-root-variable" aria-label="square-root-variable"></i> Measure it</h3>
+<h3 id="b58fc729-690b-4000-b19f-365a4093b2ff7b7b3c206661207371756172652d726f6f742d7661726961626c65203e7d7d-measure-it"><i class="fa-solid fa-square-root-variable" aria-label="square-root-variable"></i> Measure it</h3>
 <ul>
 <li class="fragment">We can calculate summary measures of the <strong>center</strong> and <strong>spread</strong> of the distribution.</li>
 <li class="fragment">We an only calculate summary measures for quantitative variables.</li>
@@ -242,7 +246,7 @@ Aaron Gullickson
 <h2>Calculating frequencies</h2>
 <p>In order to display the distribution of a <strong>categorical variable</strong>, we first need to calculate the <strong>frequency</strong> which is the number of observations that belong to each possible category. We can do this easily in <em>R</em> with the <code>table</code> command:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(politics<span class="sc">$</span>party)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(politics<span class="sc">$</span>party)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
    Democrat  Republican Independent       Other 
@@ -252,8 +256,8 @@ Aaron Gullickson
 <div class="fragment">
 <p>Lets convert these frequencies into <strong>proportions</strong> by dividing through by the total number of observations. We can also do this easily in <em>R</em> by adding the <code>sum</code> command to the previous command:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>prop <span class="ot">&lt;-</span> <span class="fu">table</span>(politics<span class="sc">$</span>party)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">table</span>(politics<span class="sc">$</span>party))</span>
-<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>prop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>prop <span class="ot">&lt;-</span> <span class="fu">table</span>(politics<span class="sc">$</span>party)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">table</span>(politics<span class="sc">$</span>party))</span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>prop</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
    Democrat  Republican Independent       Other 
@@ -266,7 +270,7 @@ Aaron Gullickson
 <h2>Proportions and percents</h2>
 <p><em>R</em> also has a built-in function called <code>prop.table</code> that will calculate proportions automatically. We just need to feed the output of the <code>table</code> command into it.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(politics<span class="sc">$</span>party))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(politics<span class="sc">$</span>party))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
    Democrat  Republican Independent       Other 
@@ -276,8 +280,8 @@ Aaron Gullickson
 <div class="fragment">
 <p>We can employ this “wrapping” feature of <em>R</em> to do some more tidying up. In this case, I want to <code>round</code> the number of digits and multiply by 100 to turn my proportions into percents. I also use the <code>sort</code> command to sort values from highest to lowest.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>percent <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">round</span>(<span class="dv">100</span><span class="sc">*</span><span class="fu">prop.table</span>(<span class="fu">table</span>(politics<span class="sc">$</span>party)),<span class="dv">1</span>), <span class="at">decreasing=</span><span class="cn">TRUE</span>)</span>
-<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a>percent</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>percent <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">round</span>(<span class="dv">100</span><span class="sc">*</span><span class="fu">prop.table</span>(<span class="fu">table</span>(politics<span class="sc">$</span>party)),<span class="dv">1</span>), <span class="at">decreasing=</span><span class="cn">TRUE</span>)</span>
+<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a>percent</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
    Democrat Independent  Republican       Other 
@@ -289,29 +293,25 @@ Aaron Gullickson
 <section id="how-can-we-plot-the-percent" class="slide level2">
 <h2>How can we plot the percent?</h2>
 <div class="columns">
-<div class="column" style="width:50%;">
-<div class="fragment">
-<h3 id="dont-use-a-piechart"><i class="fa-solid fa-xmark" aria-label="xmark"></i> Don’t use a piechart</h3>
+<div class="column fragment">
+<h3 id="b58fc729-690b-4000-b19f-365a4093b2ff7b7b3c20666120786d61726b203e7d7d-dont-use-a-piechart"><i class="fa-solid fa-xmark" aria-label="xmark"></i> Don’t use a piechart</h3>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_looking_distributions_files/figure-revealjs/no-piechart-1.png" width="960"></p>
+<p><img data-src="slides_looking_distributions_files/figure-revealjs/no-piechart-1.svg"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="fragment">
-<h3 id="use-a-barplot"><i class="fa-solid fa-check" aria-label="check"></i> Use a barplot</h3>
+</div><div class="column fragment">
+<h3 id="b58fc729-690b-4000-b19f-365a4093b2ff7b7b3c20666120636865636b203e7d7d-use-a-barplot"><i class="fa-solid fa-check" aria-label="check"></i> Use a barplot</h3>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_looking_distributions_files/figure-revealjs/use-barplot-1.png" width="960"></p>
+<p><img data-src="slides_looking_distributions_files/figure-revealjs/use-barplot-1.svg"></p>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -322,11 +322,11 @@ Aaron Gullickson
 <p>We will use <code>ggplot</code> to construct graphs.</p>
 <p>In a <code>ggplot</code>, multiple commands are linked together with <code>+</code> signs.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(politics, <span class="fu">aes</span>(<span class="at">x=</span>party, <span class="at">y=</span><span class="fu">after_stat</span>(prop), <span class="at">group=</span><span class="dv">1</span>))<span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(politics, <span class="fu">aes</span>(<span class="at">x=</span>party, <span class="at">y=</span><span class="fu">after_stat</span>(prop), <span class="at">group=</span><span class="dv">1</span>))<span class="sc">+</span></span>
 <span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()<span class="sc">+</span>                                                 </span>
 <span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label=</span>scales<span class="sc">::</span>percent)<span class="sc">+</span>.                 </span>
 <span id="cb9-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"party affiliation"</span>, <span class="at">y=</span><span class="cn">NULL</span>)<span class="sc">+</span>                        </span>
-<span id="cb9-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()                                                  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()                                                  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment current-only" data-code-focus="1">
 <p>The first command of <code>ggplot</code> takes two arguments. The first argument is the data we want to use (in this case, the politics dataset). The second argument is the <code>aes</code> command that defines <em>aesthetics</em> for the full plot.</p>
@@ -349,18 +349,18 @@ Aaron Gullickson
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(politics, <span class="fu">aes</span>(<span class="at">x=</span>party, <span class="at">y=</span><span class="fu">after_stat</span>(prop), <span class="at">group=</span><span class="dv">1</span>))<span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(politics, <span class="fu">aes</span>(<span class="at">x=</span>party, <span class="at">y=</span><span class="fu">after_stat</span>(prop), <span class="at">group=</span><span class="dv">1</span>))<span class="sc">+</span></span>
 <span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()<span class="sc">+</span></span>
 <span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">label=</span>scales<span class="sc">::</span>percent)<span class="sc">+</span></span>
 <span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"party affiliation"</span>, <span class="at">y=</span><span class="cn">NULL</span>)<span class="sc">+</span></span>
-<span id="cb10-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_looking_distributions_files/figure-revealjs/barplot-example-run-1.png" width="960"></p>
+<p><img data-src="slides_looking_distributions_files/figure-revealjs/barplot-example-run-1.svg"></p>
 </figure>
 </div>
 </div>
@@ -370,7 +370,7 @@ Aaron Gullickson
 <section id="visualize-quantitative-variables-with-a-histogram" class="slide level2">
 <h2>Visualize quantitative variables with a histogram</h2>
 
-<img data-src="slides_looking_distributions_files/figure-revealjs/histogram-stretch-1.png" width="2304" class="r-stretch"></section>
+<img data-src="slides_looking_distributions_files/figure-revealjs/histogram-stretch-1.svg" class="r-stretch"></section>
 <section id="how-a-histogram-is-created" class="slide level2">
 <h2>How a histogram is created</h2>
 <ol type="1">
@@ -384,10 +384,10 @@ Aaron Gullickson
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(movies, <span class="fu">aes</span>(<span class="at">x=</span>runtime))<span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(movies, <span class="fu">aes</span>(<span class="at">x=</span>runtime))<span class="sc">+</span></span>
 <span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="dv">5</span>,</span>
 <span id="cb11-3"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill=</span><span class="st">"skyblue"</span>, <span class="at">color=</span><span class="st">"black"</span>)<span class="sc">+</span></span>
-<span id="cb11-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"runtime in minutes"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"runtime in minutes"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment" data-code-focus="1">
 <p>Assign your variable to the <code>x</code> aesthetic.</p>
@@ -403,7 +403,7 @@ Aaron Gullickson
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_looking_distributions_files/figure-revealjs/histogram-run-1.png" width="960"></p>
+<p><img data-src="slides_looking_distributions_files/figure-revealjs/histogram-run-1.svg"></p>
 </figure>
 </div>
 </div>
@@ -437,7 +437,7 @@ Are there any observations that have relatively very high or low values?
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_looking_distributions_files/figure-revealjs/histogram-run-again-1.png" width="960"></p>
+<p><img data-src="slides_looking_distributions_files/figure-revealjs/histogram-run-again-1.svg"></p>
 </figure>
 </div>
 </div>
@@ -454,17 +454,17 @@ Are there any observations that have relatively very high or low values?
 <div class="columns">
 <div class="column" style="width:33%;">
 <div class="fragment">
-<h3 id="mean">Mean <i class="fa-solid fa-scale-balanced" aria-label="scale-balanced"></i></h3>
+<h3 id="mean-b58fc729-690b-4000-b19f-365a4093b2ff7b7b3c206661207363616c652d62616c616e636564203e7d7d">Mean <i class="fa-solid fa-scale-balanced" aria-label="scale-balanced"></i></h3>
 <p>The mean is the <strong>balancing point</strong> of a distribution. Imagine trying to put a column underneath a histogram so that it does not tip one direction or the other. This balancing point is the mean.</p>
 </div>
 </div><div class="column" style="width:33%;">
 <div class="fragment">
-<h3 id="median">Median <i class="fa-solid fa-circle-half-stroke" aria-label="circle-half-stroke"></i></h3>
+<h3 id="median-b58fc729-690b-4000-b19f-365a4093b2ff7b7b3c20666120636972636c652d68616c662d7374726f6b65203e7d7d">Median <i class="fa-solid fa-circle-half-stroke" aria-label="circle-half-stroke"></i></h3>
 <p>The median is the <strong>midpoint</strong> of the distribution. At this point, 50% of the observations have lower values, and 50% have higher values.</p>
 </div>
 </div><div class="column" style="width:33%;">
 <div class="fragment">
-<h3 id="mode">Mode <i class="fa-solid fa-mountain" aria-label="mountain"></i></h3>
+<h3 id="mode-b58fc729-690b-4000-b19f-365a4093b2ff7b7b3c206661206d6f756e7461696e203e7d7d">Mode <i class="fa-solid fa-mountain" aria-label="mountain"></i></h3>
 <p>The mode is the <strong>high point</strong> of the distribution, or the peak. It is typically much less useful than the other two measures.</p>
 </div>
 </div></div>
@@ -487,7 +487,7 @@ Are there any observations that have relatively very high or low values?
 <p><span class="math display">\[\bar{x}=\frac{\sum_{i=1}^n x_i}{n}\]</span></p>
 <p>To calculate the mean we just sum up all the values of <span class="math inline">\(x\)</span> and divide by the number of observations. The <code>sum</code> command will sum up a variable and the <code>nrow</code> command will give us the number of observations, so:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(movies<span class="sc">$</span>runtime)<span class="sc">/</span><span class="fu">nrow</span>(movies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(movies<span class="sc">$</span>runtime)<span class="sc">/</span><span class="fu">nrow</span>(movies)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 106.8222</code></pre>
 </div>
@@ -496,7 +496,7 @@ Are there any observations that have relatively very high or low values?
 <div class="fragment">
 <p>Alternatively, we could just use the <code>mean</code> command in R: 😎</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(movies<span class="sc">$</span>runtime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(movies<span class="sc">$</span>runtime)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 106.8222</code></pre>
 </div>
@@ -515,14 +515,14 @@ Are there any observations that have relatively very high or low values?
 </div><div class="column" style="width:50%;">
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(movies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(movies)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4343</code></pre>
 </div>
 </div>
 <p>With an odd number of 4343 movies, the exact midpoint is the 2172nd movie. We can use the <code>sort</code> command to sort and then extract the 2172nd movie by using square brackets:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(movies<span class="sc">$</span>runtime)[<span class="dv">2172</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(movies<span class="sc">$</span>runtime)[<span class="dv">2172</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 104</code></pre>
 </div>
@@ -531,7 +531,7 @@ Are there any observations that have relatively very high or low values?
 <div class="fragment">
 <p>Alternatively, we can use the <code>median</code> command:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(movies<span class="sc">$</span>runtime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(movies<span class="sc">$</span>runtime)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 104</code></pre>
 </div>
@@ -547,7 +547,7 @@ Are there any observations that have relatively very high or low values?
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_looking_distributions_files/figure-revealjs/hist-mean-median-runtime-1.png" width="960"></p>
+<p><img data-src="slides_looking_distributions_files/figure-revealjs/hist-mean-median-runtime-1.svg"></p>
 </figure>
 </div>
 </div>
@@ -562,7 +562,7 @@ Are there any observations that have relatively very high or low values?
 <section id="skewness-can-create-large-differences" class="slide level2">
 <h2>Skewness can create large differences</h2>
 
-<img data-src="slides_looking_distributions_files/figure-revealjs/hist-mean-median-boxoffice-1.png" width="2304" class="r-stretch"></section>
+<img data-src="slides_looking_distributions_files/figure-revealjs/hist-mean-median-boxoffice-1.svg" class="r-stretch"></section>
 <section id="modal-categories" class="slide level2">
 <h2>Modal Categories</h2>
 <div class="columns">
@@ -577,7 +577,7 @@ Are there any observations that have relatively very high or low values?
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_looking_distributions_files/figure-revealjs/modal-category-1.png" width="960"></p>
+<p><img data-src="slides_looking_distributions_files/figure-revealjs/modal-category-1.svg"></p>
 </figure>
 </div>
 </div>
@@ -604,7 +604,7 @@ Are there any observations that have relatively very high or low values?
 <p>The <code>quantile</code> command in R will calculate a given percentile.</p>
 <p>To calculate the percentile with this command, we need to add a second argument called <code>probs</code> where we feed in a list of proportions. So if we wanted to calculate the 13th and 76th percentile of movie runtime:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(movies<span class="sc">$</span>runtime, <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.13</span>, <span class="fl">0.76</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(movies<span class="sc">$</span>runtime, <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.13</span>, <span class="fl">0.76</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>13% 76% 
  90 116 </code></pre>
@@ -620,7 +620,7 @@ Are there any observations that have relatively very high or low values?
 <div class="column" style="width:50%;">
 <p>If I run the <code>quantile</code> command without the <code>probs</code> argument, I get:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(movies<span class="sc">$</span>runtime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(movies<span class="sc">$</span>runtime)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  0%  25%  50%  75% 100% 
   80   95  104  116  201 </code></pre>
@@ -636,7 +636,7 @@ Are there any observations that have relatively very high or low values?
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_looking_distributions_files/figure-revealjs/boxplot-1.png" width="960"></p>
+<p><img data-src="slides_looking_distributions_files/figure-revealjs/boxplot-1.svg"></p>
 </figure>
 </div>
 </div>
@@ -647,16 +647,16 @@ Are there any observations that have relatively very high or low values?
 <section id="anatomy-of-the-boxplot" class="slide level2">
 <h2>Anatomy of the boxplot</h2>
 
-<img data-src="slides_looking_distributions_files/figure-revealjs/boxplot-anatomy-1.png" width="2304" class="r-stretch"></section>
+<img data-src="slides_looking_distributions_files/figure-revealjs/boxplot-anatomy-1.svg" class="r-stretch"></section>
 <section id="code-and-output-for-boxplot" class="slide level2 smaller">
 <h2>Code and output for boxplot</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(movies, <span class="fu">aes</span>(<span class="at">x=</span><span class="st">""</span>, <span class="at">y=</span>runtime))<span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(movies, <span class="fu">aes</span>(<span class="at">x=</span><span class="st">""</span>, <span class="at">y=</span>runtime))<span class="sc">+</span></span>
 <span id="cb26-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill=</span><span class="st">"grey"</span>, <span class="at">outlier.color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
 <span id="cb26-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>, <span class="at">y=</span><span class="st">"runtime in minutes"</span>)<span class="sc">+</span></span>
-<span id="cb26-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment" data-code-focus="1">
 <p>The <code>x=""</code> in the aesthetics is not necessary but does create a nicer looking x axis. Your variable is assigned to <code>y</code>.</p>
@@ -669,7 +669,7 @@ Are there any observations that have relatively very high or low values?
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="slides_looking_distributions_files/figure-revealjs/boxplot-run-1.png" width="960"></p>
+<p><img data-src="slides_looking_distributions_files/figure-revealjs/boxplot-run-1.svg"></p>
 </figure>
 </div>
 </div>
@@ -684,14 +684,14 @@ Are there any observations that have relatively very high or low values?
 <section id="distributions-can-vary-in-their-spread" class="slide level2">
 <h2>Distributions can vary in their spread</h2>
 
-<img data-src="slides_looking_distributions_files/figure-revealjs/spread-example-1.png" width="2304" class="r-stretch"></section>
+<img data-src="slides_looking_distributions_files/figure-revealjs/spread-example-1.svg" class="r-stretch"></section>
 <section id="measures-of-spread" class="slide level2 smaller">
 <h2>Measures of spread</h2>
 <div class="fragment">
 <h3 id="interquartile-range">Interquartile Range</h3>
 <p>The <strong>Interquartile Range</strong> (IQR) is the distance between the 25th and 75th percentile. It can be calculated by the <code>IQR</code> command in <em>R</em>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">IQR</span>(movies<span class="sc">$</span>runtime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">IQR</span>(movies<span class="sc">$</span>runtime)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 21</code></pre>
 </div>
@@ -714,13 +714,13 @@ Are there any observations that have relatively very high or low values?
 <div class="fragment">
 <p><span class="math inline">\((x_i-\bar{x})\)</span>: The distance between each observation’s value and the mean. Some of these values are positive and some are negative. If we summed these values up across all observations, the sum would equal zero by definition.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a>distance <span class="ot">&lt;-</span> movies<span class="sc">$</span>runtime<span class="sc">-</span><span class="fu">mean</span>(movies<span class="sc">$</span>runtime) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a>distance <span class="ot">&lt;-</span> movies<span class="sc">$</span>runtime<span class="sc">-</span><span class="fu">mean</span>(movies<span class="sc">$</span>runtime) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="fragment">
 <p><span class="math inline">\((x_i-\bar{x})^2\)</span>: We square this distance to get rid of the negative values.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a>distance_sq <span class="ot">&lt;-</span> distance<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a>distance_sq <span class="ot">&lt;-</span> distance<span class="sc">^</span><span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -729,20 +729,20 @@ Are there any observations that have relatively very high or low values?
 <div class="fragment">
 <p><span class="math inline">\(\sum_{i=1}^n(x_i-\bar{x})^2\)</span>: The sum of the squared distance, sometimes abbreviated <em>SSX</em>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a>ssx <span class="ot">&lt;-</span> <span class="fu">sum</span>(distance_sq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a>ssx <span class="ot">&lt;-</span> <span class="fu">sum</span>(distance_sq)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="fragment">
 <p><span class="math inline">\(\sum_{i=1}^n(x_i-\bar{x})^2/(n-1)\)</span>: Dividing through by the number of observations gives us the “average” squared distance from the mean. This number is the <strong>variance</strong>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a>variance <span class="ot">&lt;-</span> ssx<span class="sc">/</span>(<span class="fu">nrow</span>(movies)<span class="sc">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a>variance <span class="ot">&lt;-</span> ssx<span class="sc">/</span>(<span class="fu">nrow</span>(movies)<span class="sc">-</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="fragment">
 <p><span class="math inline">\(\sqrt{\sum_{i=1}^n(x_i-\bar{x})^2/(n-1)}\)</span>: We square root to get back to distance.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(variance)</span>
-<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a>sd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(variance)</span>
+<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a>sd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 16.3027</code></pre>
 </div>
@@ -752,7 +752,7 @@ Are there any observations that have relatively very high or low values?
 <div class="fragment">
 <p>We can also just use the <code>sd</code> command: 😎</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(movies<span class="sc">$</span>runtime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(movies<span class="sc">$</span>runtime)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 16.3027</code></pre>
 </div>
@@ -1017,190 +1017,173 @@ Are there any observations that have relatively very high or low values?
     </script>
 
     <script id="quarto-html-after-body" type="application/javascript">
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
-        }
-      }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
-      }
-      toggleBodyColorPrimary();  
-      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-      tabsets.forEach(function(tabset) {
-        const tabby = new Tabby('#' + tabset.id);
-      });
-      const isCodeAnnotation = (el) => {
-        for (const clz of el.classList) {
-          if (clz.startsWith('code-annotation-')) {                     
-            return true;
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
           }
+          return false;
         }
-        return false;
-      }
-      const onCopySuccess = function(e) {
-        // button target
-        const button = e.trigger;
-        // don't keep focus
-        button.blur();
-        // flash "checked"
-        button.classList.add('code-copy-button-checked');
-        var currentTitle = button.getAttribute("title");
-        button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
-        setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
           }
-          button.setAttribute("title", currentTitle);
-          button.classList.remove('code-copy-button-checked');
-        }, 1000);
-        // clear code selection
-        e.clearSelection();
-      }
-      const getTextToCopy = function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
           for (const childEl of codeEl.children) {
             if (isCodeAnnotation(childEl)) {
               childEl.remove();
             }
           }
           return codeEl.innerText;
-      }
-      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-        text: getTextToCopy
-      });
-      clipboard.on('success', onCopySuccess);
-      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-          text: getTextToCopy,
-          container: window.document.getElementById('quarto-embedded-source-code-modal')
-        });
-        clipboardModal.on('success', onCopySuccess);
-      }
-        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-        var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
-        var isInternal = (href) => {
-            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
         }
-        // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-        for (var i=0; i<links.length; i++) {
-          const link = links[i];
-          if (!isInternal(link.href)) {
-            // undo the damage that might have been done by quarto-nav.js in the case of
-            // links that we want to consider external
-            if (link.dataset.originalHref !== undefined) {
-              link.href = link.dataset.originalHref;
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
             }
           }
-        }
-      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-        const config = {
-          allowHTML: true,
-          maxWidth: 500,
-          delay: 100,
-          arrow: false,
-          appendTo: function(el) {
-              return el.closest('section.slide') || el.parentElement;
-          },
-          interactive: true,
-          interactiveBorder: 10,
-          theme: 'light-border',
-          placement: 'bottom-start',
-        };
-        if (contentFn) {
-          config.content = contentFn;
-        }
-        if (onTriggerFn) {
-          config.onTrigger = onTriggerFn;
-        }
-        if (onUntriggerFn) {
-          config.onUntrigger = onUntriggerFn;
-        }
-          config['offset'] = [0,0];
-          config['maxWidth'] = 700;
-        window.tippy(el, config); 
-      }
-      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-      for (var i=0; i<noterefs.length; i++) {
-        const ref = noterefs[i];
-        tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-          try { href = new URL(href).hash; } catch {}
-          const id = href.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note) {
-            return note.innerHTML;
-          } else {
-            return "";
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
           }
-        });
-      }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
           }
-        } else {
-          return undefined;
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
         }
-      };
-      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-      for (var i=0; i<bibliorefs.length; i++) {
-        const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
-              }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
           });
         }
-      }
-    });
-    </script>
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
     
 
 </body></html>
