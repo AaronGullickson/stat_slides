@@ -3412,7 +3412,7 @@ The loadings themselves show the correlation coefficient between each observed v
 ```{r}
 #| label: factor-loading-fig
 
-fa.diagram(factor_nyc, cex = 2f)
+fa.diagram(factor_nyc, cex = 2)
 ```
 
 :::
