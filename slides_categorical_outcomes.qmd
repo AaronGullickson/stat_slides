@@ -126,15 +126,18 @@ That is because it is! This is only the probability of rolling any particular se
 
 SSFFF, SFSFF, SFFSF, SFFFS, FSSFF, FSFSF, FSFFS, FFSSF, FFSFS, FFFSS
 
+:::
+
+::: {.fragment}
+
 There are ten possible ways to combine two successes and three failures. Therefore, the total probability of rolling exactly two sixes in five dice rolls is:
 
 $$10*(1/6)^2(5/6)^3=0.161$$
-
 :::
 
 :::
 
-::: {.column}
+::: {.column .fragment}
 
 The ${n \choose k}$ formula provides a mathematical way to determine how many ways $k$ successes can be distributed in $n$ trials. The full formula is:
 
@@ -214,6 +217,11 @@ ggplot(data.frame(k, prob), aes(x = k, y = prob))+
 #| echo: false
 #| fig-asp: 0.5625
 
+k <- 0:20
+p <- 1/6
+n <- 20
+prob <- choose(n,k) * p^k * (1 - p)^(n - k)
+
 ggplot(data.frame(k,prob), aes(x=k, y=prob))+
   geom_col()+
   scale_y_continuous(labels=scales::percent)+
@@ -239,7 +247,8 @@ ggplot(data.frame(k,prob), aes(x=k, y=prob))+
   geom_vline(xintercept = 20/6, color="red", size=2)+
   annotate("text", x=4.5, y=0.25, label="E(X)=20/6=3.333", size = 7)+
   labs(x="number of sixes in twenty dice rolls",
-       y="probability")
+       y="probability")+
+  theme_bw(base_size = 26)
 ```
 
 The mean (or *expected value*) of the binomial distribution is always given by $(np)$.
@@ -260,7 +269,7 @@ ggplot(data.frame(p,v), aes(x=p, y=sqrt(v)))+
   annotate("text", x=0.3, y=1.66, label="For p=1/6,\nthe SD is 1.66", size = 7)+
   labs(x="probability of success",
        y="standard deviation in number of successes for n=20")+
-  theme_bw(base_size = 28)
+  theme_bw(base_size = 26)
 ```
 
 The variance of the binomial distribution is given by: $(n)(p)(1-p)$
@@ -503,7 +512,7 @@ ggplot(data.frame(g,p),
 
 ## Using the logit transformation
 
-If we predict the logit of the probability of survival rather than the probability of survival, then all of the predicted probabilities will be between zero and one when reverse-transformed.
+If we predict the logit of survival rather than the probability of survival, then all of the predicted probabilities will be between zero and one when reverse-transformed.
 
 $$\log(\frac{p_i}{1-p_i})=\beta_0+\beta_1(fare_i)$$
 
@@ -661,7 +670,10 @@ Since we are playing god, we can define the relationship between survival and th
 
 To avoid problems of nonsensical probabilities, lets create a linear function of the log-odds of survival.
 
+::: {style="font-size: 0.8em;"}
+
 $$\log(\frac{p_i}{1-p_i})=0.12-0.6(male_i)+0.007(fare_i)$$
+:::
 
 ```{r} 
 #| label: modeling-survival
@@ -689,7 +701,7 @@ good_ship$survived <- rbinom(10000, 1, good_ship$probs)
 ```{r}
 #| label: play-god
 #| echo: false
-#| fig-asp: 0.6
+#| fig-asp: 0.7
 ggplot(good_ship, aes(x=fare, y=probs, color=gender))+
   geom_line()+
   geom_point(aes(y=survived), alpha=0.1)+
@@ -1893,10 +1905,14 @@ temp
 ::: {.column .fragment}
 
 ```{r}
-#| label: separate-lines-fig
-#| fig-asp: 1
+#| include: false
 
 set_theme(theme_bw(base_size = 28))
+```
+
+```{r}
+#| label: separate-lines-fig
+#| fig-asp: 1
 
 ggplot(temp, aes(x = agectr + 22, y = prob, color = race))+
   geom_line()+
@@ -1919,7 +1935,10 @@ ggplot(temp, aes(x = agectr + 22, y = prob, fill = race))+
   labs(x = "age", y = "probability", 
        fill = "racial identification")+
   theme(legend.position = "bottom")
+```
 
+```{r}
+#| include: false
 set_theme(theme_bw(base_size = 32))
 ```
 

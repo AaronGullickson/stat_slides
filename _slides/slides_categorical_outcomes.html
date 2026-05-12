@@ -281,10 +281,12 @@ Aaron Gullickson
 <div class="fragment">
 <p>That is because it is! This is only the probability of rolling any particular sequence of successes and failures. However, its possible to roll two successes and three failures in multiple permutations:</p>
 <p>SSFFF, SFSFF, SFFSF, SFFFS, FSSFF, FSFSF, FSFFS, FFSSF, FFSFS, FFFSS</p>
+</div>
+<div class="fragment">
 <p>There are ten possible ways to combine two successes and three failures. Therefore, the total probability of rolling exactly two sixes in five dice rolls is:</p>
 <p><span class="math display">\[10*(1/6)^2(5/6)^3=0.161\]</span></p>
 </div>
-</div><div class="column">
+</div><div class="column fragment">
 <p>The <span class="math inline">\({n \choose k}\)</span> formula provides a mathematical way to determine how many ways <span class="math inline">\(k\)</span> successes can be distributed in <span class="math inline">\(n\)</span> trials. The full formula is:</p>
 <p><span class="math display">\[{n \choose k}=\frac{n!}{k!(n-k)!}\]</span></p>
 <div class="fragment">
@@ -512,7 +514,7 @@ fare        0.0023 0.0019 0.0021 0.0020 0.0021 0.0020 0.0020 0.0020 0.0020</code
 <img data-src="slides_categorical_outcomes_files/figure-revealjs/logit-plot-1.svg" class="r-stretch"></section>
 <section id="using-the-logit-transformation" class="slide level2">
 <h2>Using the logit transformation</h2>
-<p>If we predict the logit of the probability of survival rather than the probability of survival, then all of the predicted probabilities will be between zero and one when reverse-transformed.</p>
+<p>If we predict the logit of survival rather than the probability of survival, then all of the predicted probabilities will be between zero and one when reverse-transformed.</p>
 <p><span class="math display">\[\log(\frac{p_i}{1-p_i})=\beta_0+\beta_1(fare_i)\]</span></p>
 <div class="fragment">
 <h3 id="the-catch">The Catch</h3>
@@ -632,7 +634,9 @@ median_age   -27.56435   9.631534 -2.861886 0.006177354</code></pre>
 <h3 id="building-the-model">Building the Model</h3>
 <p>Since we are playing god, we can define the relationship between survival and the variables of fare and gender.</p>
 <p>To avoid problems of nonsensical probabilities, lets create a linear function of the log-odds of survival.</p>
+<div style="font-size: 0.8em;">
 <p><span class="math display">\[\log(\frac{p_i}{1-p_i})=0.12-0.6(male_i)+0.007(fare_i)\]</span></p>
+</div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a>good_ship<span class="sc">$</span>log_odds <span class="ot">&lt;-</span> <span class="fl">0.12-0.6</span><span class="sc">*</span>(good_ship<span class="sc">$</span>gender<span class="sc">==</span><span class="st">"Male"</span>)<span class="sc">+</span></span>
 <span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fl">0.007</span><span class="sc">*</span>good_ship<span class="sc">$</span>fare</span>
@@ -2836,14 +2840,12 @@ White    -0.70266   -0.60671 -0.18088 0.05360   -7e-05    0.03437 -0.00989</code
 <div class="columns">
 <div class="column fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set_theme</span>(<span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">28</span>))</span>
-<span id="cb109-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb109-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(temp, <span class="fu">aes</span>(<span class="at">x =</span> agectr <span class="sc">+</span> <span class="dv">22</span>, <span class="at">y =</span> prob, <span class="at">color =</span> race))<span class="sc">+</span></span>
-<span id="cb109-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
-<span id="cb109-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent)<span class="sc">+</span></span>
-<span id="cb109-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"age"</span>, <span class="at">y =</span> <span class="st">"probability"</span>, </span>
-<span id="cb109-7"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"racial identification"</span>)<span class="sc">+</span></span>
-<span id="cb109-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(temp, <span class="fu">aes</span>(<span class="at">x =</span> agectr <span class="sc">+</span> <span class="dv">22</span>, <span class="at">y =</span> prob, <span class="at">color =</span> race))<span class="sc">+</span></span>
+<span id="cb109-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
+<span id="cb109-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent)<span class="sc">+</span></span>
+<span id="cb109-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"age"</span>, <span class="at">y =</span> <span class="st">"probability"</span>, </span>
+<span id="cb109-5"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"racial identification"</span>)<span class="sc">+</span></span>
+<span id="cb109-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -2867,7 +2869,6 @@ White    -0.70266   -0.60671 -0.18088 0.05360   -7e-05    0.03437 -0.00989</code
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set_theme</span>(<span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">32</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div></div>
 </section>
@@ -2875,9 +2876,9 @@ White    -0.70266   -0.60671 -0.18088 0.05360   -7e-05    0.03437 -0.00989</code
 <h2>Dealing with ordinal outcomes</h2>
 <p>Using the National Election Study data, lets look at attitudes toward gay marriage by whether a respondent completed a college degree.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="" aria-hidden="true" tabindex="-1"></a>politics<span class="sc">$</span>college <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(politics<span class="sc">$</span>educ) <span class="sc">&gt;</span> <span class="dv">3</span></span>
-<span id="cb112-2"><a href="" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(politics<span class="sc">$</span>gaymarriage, politics<span class="sc">$</span>college)</span>
-<span id="cb112-3"><a href="" aria-hidden="true" tabindex="-1"></a>tab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="" aria-hidden="true" tabindex="-1"></a>politics<span class="sc">$</span>college <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(politics<span class="sc">$</span>educ) <span class="sc">&gt;</span> <span class="dv">3</span></span>
+<span id="cb111-2"><a href="" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(politics<span class="sc">$</span>gaymarriage, politics<span class="sc">$</span>college)</span>
+<span id="cb111-3"><a href="" aria-hidden="true" tabindex="-1"></a>tab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                      
                        FALSE TRUE
@@ -2885,7 +2886,7 @@ White    -0.70266   -0.60671 -0.18088 0.05360   -7e-05    0.03437 -0.00989</code
   Civil unions           618  366
   Support gay marriage  1385 1085</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(tab, <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(tab, <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                      
                            FALSE      TRUE
@@ -2925,14 +2926,14 @@ White    -0.70266   -0.60671 -0.18088 0.05360   -7e-05    0.03437 -0.00989</code
 <h2>Naive multinomial model</h2>
 <p>We could just estimate this model as a multinomial model and ignore the ordinal nature of the dependent variable.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="" aria-hidden="true" tabindex="-1"></a>model.multin <span class="ot">&lt;-</span> <span class="fu">multinom</span>(gaymarriage <span class="sc">~</span> college, <span class="at">data =</span> politics, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb117-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model.multin)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="" aria-hidden="true" tabindex="-1"></a>model.multin <span class="ot">&lt;-</span> <span class="fu">multinom</span>(gaymarriage <span class="sc">~</span> college, <span class="at">data =</span> politics, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb116-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model.multin)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                     (Intercept) collegeTRUE
 Civil unions          0.06511159   0.5194163
 Support gay marriage  0.87210753   0.7991421</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(model.multin))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(model.multin))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                     (Intercept) collegeTRUE
 Civil unions            1.067278    1.681046
@@ -2955,24 +2956,24 @@ Support gay marriage    2.391947    2.223633</code></pre>
 <section id="getting-acl-from-multinomial-logit-model" class="slide level2">
 <h2>Getting ACL from multinomial logit model</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model.multin)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model.multin)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                     (Intercept) collegeTRUE
 Civil unions          0.06511159   0.5194163
 Support gay marriage  0.87210753   0.7991421</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="" aria-hidden="true" tabindex="-1"></a>convert_acl <span class="ot">&lt;-</span> <span class="cf">function</span>(model_m) {</span>
-<span id="cb123-2"><a href="" aria-hidden="true" tabindex="-1"></a>  coefs <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="fu">coef</span>(model_m))</span>
-<span id="cb123-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">diff</span>(coefs))</span>
-<span id="cb123-4"><a href="" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb123-5"><a href="" aria-hidden="true" tabindex="-1"></a>acl_coef <span class="ot">&lt;-</span> <span class="fu">convert_acl</span>(model.multin)</span>
-<span id="cb123-6"><a href="" aria-hidden="true" tabindex="-1"></a>acl_coef</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="" aria-hidden="true" tabindex="-1"></a>convert_acl <span class="ot">&lt;-</span> <span class="cf">function</span>(model_m) {</span>
+<span id="cb122-2"><a href="" aria-hidden="true" tabindex="-1"></a>  coefs <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="fu">coef</span>(model_m))</span>
+<span id="cb122-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">diff</span>(coefs))</span>
+<span id="cb122-4"><a href="" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb122-5"><a href="" aria-hidden="true" tabindex="-1"></a>acl_coef <span class="ot">&lt;-</span> <span class="fu">convert_acl</span>(model.multin)</span>
+<span id="cb122-6"><a href="" aria-hidden="true" tabindex="-1"></a>acl_coef</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                     (Intercept) collegeTRUE
 Civil unions          0.06511159   0.5194163
 Support gay marriage  0.80699594   0.2797259</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(acl_coef)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(acl_coef)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                     (Intercept) collegeTRUE
 Civil unions            1.067278    1.681046
@@ -2983,20 +2984,20 @@ Support gay marriage    2.241165    1.322767</code></pre>
 <section id="same-results-from-two-logit-models" class="slide level2">
 <h2>Same results from two logit models</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="" aria-hidden="true" tabindex="-1"></a>acl_coef</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="" aria-hidden="true" tabindex="-1"></a>acl_coef</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                     (Intercept) collegeTRUE
 Civil unions          0.06511159   0.5194163
 Support gay marriage  0.80699594   0.2797259</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb129"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">glm</span>((gaymarriage <span class="sc">==</span> <span class="st">"Civil unions"</span>) <span class="sc">~</span> college, <span class="at">family =</span> binomial,</span>
-<span id="cb129-2"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> <span class="fu">subset</span>(politics, gaymarriage <span class="sc">!=</span> <span class="st">"Support gay marriage"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb128"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">glm</span>((gaymarriage <span class="sc">==</span> <span class="st">"Civil unions"</span>) <span class="sc">~</span> college, <span class="at">family =</span> binomial,</span>
+<span id="cb128-2"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> <span class="fu">subset</span>(politics, gaymarriage <span class="sc">!=</span> <span class="st">"Support gay marriage"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept) collegeTRUE 
  0.06518598  0.51932736 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb131"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb131-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">glm</span>((gaymarriage <span class="sc">==</span> <span class="st">"Support gay marriage"</span>) <span class="sc">~</span> college, <span class="at">family =</span> binomial,</span>
-<span id="cb131-2"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> <span class="fu">subset</span>(politics, gaymarriage <span class="sc">!=</span> <span class="st">"No legal recognition"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb130"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb130-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">glm</span>((gaymarriage <span class="sc">==</span> <span class="st">"Support gay marriage"</span>) <span class="sc">~</span> college, <span class="at">family =</span> binomial,</span>
+<span id="cb130-2"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> <span class="fu">subset</span>(politics, gaymarriage <span class="sc">!=</span> <span class="st">"No legal recognition"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept) collegeTRUE 
    0.806967    0.279735 </code></pre>
@@ -3007,8 +3008,8 @@ Support gay marriage  0.80699594   0.2797259</code></pre>
 <h2>The Cumulative Probability</h2>
 <p>Another way to think about differences in the distribution of an ordinal variable is by comparing the cumulative probability of being in a given category or higher.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb133"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb133-1"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(tab,<span class="dv">2</span>)</span>
-<span id="cb133-2"><a href="" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb132"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb132-1"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(tab,<span class="dv">2</span>)</span>
+<span id="cb132-2"><a href="" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                      
                            FALSE      TRUE
@@ -3016,8 +3017,8 @@ Support gay marriage  0.80699594   0.2797259</code></pre>
   Civil unions         0.2393493 0.2211480
   Support gay marriage 0.5364059 0.6555891</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb135"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb135-1"><a href="" aria-hidden="true" tabindex="-1"></a>cump <span class="ot">&lt;-</span> <span class="fu">apply</span>(p[<span class="dv">3</span><span class="sc">:</span><span class="dv">1</span>,],<span class="dv">2</span>,cumsum)[<span class="dv">3</span><span class="sc">:</span><span class="dv">1</span>,]</span>
-<span id="cb135-2"><a href="" aria-hidden="true" tabindex="-1"></a>cump</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="" aria-hidden="true" tabindex="-1"></a>cump <span class="ot">&lt;-</span> <span class="fu">apply</span>(p[<span class="dv">3</span><span class="sc">:</span><span class="dv">1</span>,],<span class="dv">2</span>,cumsum)[<span class="dv">3</span><span class="sc">:</span><span class="dv">1</span>,]</span>
+<span id="cb134-2"><a href="" aria-hidden="true" tabindex="-1"></a>cump</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                      
                            FALSE      TRUE
@@ -3031,8 +3032,8 @@ Support gay marriage  0.80699594   0.2797259</code></pre>
 <h2>The Cumulative Odds</h2>
 <p>We can convert these cumulative probabilities into cumulative odds:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb137"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb137-1"><a href="" aria-hidden="true" tabindex="-1"></a>cumodds <span class="ot">&lt;-</span> cump<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>cump)</span>
-<span id="cb137-2"><a href="" aria-hidden="true" tabindex="-1"></a>cumodds</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb136"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb136-1"><a href="" aria-hidden="true" tabindex="-1"></a>cumodds <span class="ot">&lt;-</span> cump<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>cump)</span>
+<span id="cb136-2"><a href="" aria-hidden="true" tabindex="-1"></a>cumodds</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                      
                           FALSE     TRUE
@@ -3061,8 +3062,8 @@ Support gay marriage  0.80699594   0.2797259</code></pre>
 <section id="estimating-the-cumulative-logit-model" class="slide level2">
 <h2>Estimating the cumulative logit model</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb139"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb139-1"><a href="" aria-hidden="true" tabindex="-1"></a>lcumodds <span class="ot">&lt;-</span> <span class="fu">log</span>(cumodds[<span class="sc">-</span><span class="dv">1</span>,])</span>
-<span id="cb139-2"><a href="" aria-hidden="true" tabindex="-1"></a>lcumodds</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="" aria-hidden="true" tabindex="-1"></a>lcumodds <span class="ot">&lt;-</span> <span class="fu">log</span>(cumodds[<span class="sc">-</span><span class="dv">1</span>,])</span>
+<span id="cb138-2"><a href="" aria-hidden="true" tabindex="-1"></a>lcumodds</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                      
                            FALSE      TRUE
@@ -3072,9 +3073,9 @@ Support gay marriage  0.80699594   0.2797259</code></pre>
 </div>
 <p>The first column gives the <strong>cut points</strong> for the model of 0.85 and -0.49. These define the cumulative log odds among the non-college educated. The log-odds ratios for the college educated are given by the difference in log-odds.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb141"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb141-1"><a href="" aria-hidden="true" tabindex="-1"></a>model.cumlogit <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">cut=</span>lcumodds[,<span class="dv">1</span>],</span>
-<span id="cb141-2"><a href="" aria-hidden="true" tabindex="-1"></a>                             <span class="at">college=</span>lcumodds[,<span class="dv">2</span>]<span class="sc">-</span>lcumodds[,<span class="dv">1</span>])</span>
-<span id="cb141-3"><a href="" aria-hidden="true" tabindex="-1"></a>model.cumlogit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb140"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="" aria-hidden="true" tabindex="-1"></a>model.cumlogit <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">cut=</span>lcumodds[,<span class="dv">1</span>],</span>
+<span id="cb140-2"><a href="" aria-hidden="true" tabindex="-1"></a>                             <span class="at">college=</span>lcumodds[,<span class="dv">2</span>]<span class="sc">-</span>lcumodds[,<span class="dv">1</span>])</span>
+<span id="cb140-3"><a href="" aria-hidden="true" tabindex="-1"></a>model.cumlogit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                           cut   college
 Civil unions         1.2410989 0.7207894
@@ -3085,7 +3086,7 @@ Support gay marriage 0.1458817 0.4978172</code></pre>
 <section id="interpreting-terms-in-cumulative-logit-model" class="slide level2">
 <h2>Interpreting terms in cumulative logit model</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb143"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb143-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(model.cumlogit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb142"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(model.cumlogit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                          cut  college
 Civil unions         3.459413 2.056056
@@ -3101,20 +3102,20 @@ Support gay marriage 1.157059 1.645126</code></pre>
 <section id="same-results-from-logit-models" class="slide level2">
 <h2>Same results from logit models</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb145"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb145-1"><a href="" aria-hidden="true" tabindex="-1"></a>model.cumlogit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb144"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="" aria-hidden="true" tabindex="-1"></a>model.cumlogit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                           cut   college
 Civil unions         1.2410989 0.7207894
 Support gay marriage 0.1458817 0.4978172</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb147"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb147-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">glm</span>((gaymarriage <span class="sc">==</span> <span class="st">"Support gay marriage"</span> <span class="sc">|</span> gaymarriage <span class="sc">==</span> <span class="st">"Civil unions"</span>) <span class="sc">~</span> college, </span>
-<span id="cb147-2"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">data =</span> politics, <span class="at">family =</span> binomial))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">glm</span>((gaymarriage <span class="sc">==</span> <span class="st">"Support gay marriage"</span> <span class="sc">|</span> gaymarriage <span class="sc">==</span> <span class="st">"Civil unions"</span>) <span class="sc">~</span> college, </span>
+<span id="cb146-2"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">data =</span> politics, <span class="at">family =</span> binomial))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept) collegeTRUE 
   1.2410989   0.7207894 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb149"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb149-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">glm</span>((gaymarriage <span class="sc">==</span> <span class="st">"Support gay marriage"</span>) <span class="sc">~</span> college, </span>
-<span id="cb149-2"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">data =</span> politics, <span class="at">family =</span> binomial))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb148"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb148-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">glm</span>((gaymarriage <span class="sc">==</span> <span class="st">"Support gay marriage"</span>) <span class="sc">~</span> college, </span>
+<span id="cb148-2"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">data =</span> politics, <span class="at">family =</span> binomial))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept) collegeTRUE 
   0.1458817   0.4978172 </code></pre>
@@ -3127,40 +3128,40 @@ Support gay marriage 0.1458817 0.4978172</code></pre>
 <div class="fragment">
 <h3 id="multinomial-logit-baseline-category-logit-model">Multinomial logit (Baseline category logit) model:</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb151"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb151-1"><a href="" aria-hidden="true" tabindex="-1"></a>model.multinom <span class="ot">&lt;-</span> <span class="fu">vglm</span>(gaymarriage <span class="sc">~</span> college, <span class="at">family =</span> <span class="fu">multinomial</span>(<span class="at">refLevel =</span> <span class="dv">1</span>), </span>
-<span id="cb151-2"><a href="" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> politics)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="" aria-hidden="true" tabindex="-1"></a>model.multinom <span class="ot">&lt;-</span> <span class="fu">vglm</span>(gaymarriage <span class="sc">~</span> college, <span class="at">family =</span> <span class="fu">multinomial</span>(<span class="at">refLevel =</span> <span class="dv">1</span>), </span>
+<span id="cb150-2"><a href="" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> politics)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="fragment">
 <h3 id="adjacent-category-logit-model-1">Adjacent category logit model:</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="" aria-hidden="true" tabindex="-1"></a>model.acl <span class="ot">&lt;-</span> <span class="fu">vglm</span>(<span class="fu">ordered</span>(gaymarriage) <span class="sc">~</span> college, <span class="at">family =</span> <span class="fu">acat</span>(<span class="at">parallel=</span><span class="cn">FALSE</span>),</span>
-<span id="cb152-2"><a href="" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> politics)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb151"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb151-1"><a href="" aria-hidden="true" tabindex="-1"></a>model.acl <span class="ot">&lt;-</span> <span class="fu">vglm</span>(<span class="fu">ordered</span>(gaymarriage) <span class="sc">~</span> college, <span class="at">family =</span> <span class="fu">acat</span>(<span class="at">parallel=</span><span class="cn">FALSE</span>),</span>
+<span id="cb151-2"><a href="" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> politics)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="fragment">
 <h3 id="cumulative-logit-model">Cumulative logit model:</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb153"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb153-1"><a href="" aria-hidden="true" tabindex="-1"></a>model.cumlogit <span class="ot">&lt;-</span> <span class="fu">vglm</span>(<span class="fu">ordered</span>(gaymarriage) <span class="sc">~</span> college, </span>
-<span id="cb153-2"><a href="" aria-hidden="true" tabindex="-1"></a>                       <span class="at">family =</span> <span class="fu">cumulative</span>(<span class="at">parallel =</span> <span class="cn">FALSE</span>, <span class="at">reverse =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb153-3"><a href="" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> politics)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="" aria-hidden="true" tabindex="-1"></a>model.cumlogit <span class="ot">&lt;-</span> <span class="fu">vglm</span>(<span class="fu">ordered</span>(gaymarriage) <span class="sc">~</span> college, </span>
+<span id="cb152-2"><a href="" aria-hidden="true" tabindex="-1"></a>                       <span class="at">family =</span> <span class="fu">cumulative</span>(<span class="at">parallel =</span> <span class="cn">FALSE</span>, <span class="at">reverse =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb152-3"><a href="" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> politics)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
 <section id="vglm-model-output" class="slide level2">
 <h2><code>vglm</code> model output</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb154"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb154-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model.multinom)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb153"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb153-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model.multinom)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept):1 (Intercept):2 collegeTRUE:1 collegeTRUE:2 
    0.06518598    0.87215294    0.51932736    0.79906233 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb156"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb156-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model.acl)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb155"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb155-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model.acl)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept):1 (Intercept):2 collegeTRUE:1 collegeTRUE:2 
    0.06518598    0.80696696    0.51932736    0.27973497 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb158"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb158-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model.cumlogit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb157"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb157-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model.cumlogit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept):1 (Intercept):2 collegeTRUE:1 collegeTRUE:2 
     1.2410989     0.1458817     0.7207894     0.4978172 </code></pre>
@@ -3169,7 +3170,7 @@ Support gay marriage 0.1458817 0.4978172</code></pre>
 <div class="fragment">
 <p>Deviance is the same because they are the same model differently parameterized.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb160"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb160-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">list</span>(model.multinom,model.acl,model.cumlogit), deviance)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb159"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb159-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">list</span>(model.multinom,model.acl,model.cumlogit), deviance)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 8098.708 8098.708 8098.708</code></pre>
 </div>
@@ -3189,22 +3190,22 @@ Support gay marriage 0.1458817 0.4978172</code></pre>
 <h2>Constrained models with <code>vglm</code></h2>
 <p>Constrained models can be estimating by changing the <code>parallel</code> option for family to <code>TRUE</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb162"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb162-1"><a href="" aria-hidden="true" tabindex="-1"></a>model.acl.c      <span class="ot">&lt;-</span>  <span class="fu">vglm</span>(<span class="fu">ordered</span>(gaymarriage) <span class="sc">~</span> college,</span>
-<span id="cb162-2"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">family =</span> <span class="fu">acat</span>(<span class="at">parallel =</span> <span class="cn">TRUE</span>), <span class="at">data =</span> politics)</span>
-<span id="cb162-3"><a href="" aria-hidden="true" tabindex="-1"></a>model.cumlogit.c <span class="ot">&lt;-</span>  <span class="fu">vglm</span>(<span class="fu">ordered</span>(gaymarriage) <span class="sc">~</span> college, </span>
-<span id="cb162-4"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">family =</span> <span class="fu">cumulative</span>(<span class="at">parallel =</span> <span class="cn">TRUE</span>, <span class="at">reverse =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb162-5"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">data =</span> politics)</span>
-<span id="cb162-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model.acl.c)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb161"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb161-1"><a href="" aria-hidden="true" tabindex="-1"></a>model.acl.c      <span class="ot">&lt;-</span>  <span class="fu">vglm</span>(<span class="fu">ordered</span>(gaymarriage) <span class="sc">~</span> college,</span>
+<span id="cb161-2"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">family =</span> <span class="fu">acat</span>(<span class="at">parallel =</span> <span class="cn">TRUE</span>), <span class="at">data =</span> politics)</span>
+<span id="cb161-3"><a href="" aria-hidden="true" tabindex="-1"></a>model.cumlogit.c <span class="ot">&lt;-</span>  <span class="fu">vglm</span>(<span class="fu">ordered</span>(gaymarriage) <span class="sc">~</span> college, </span>
+<span id="cb161-4"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">family =</span> <span class="fu">cumulative</span>(<span class="at">parallel =</span> <span class="cn">TRUE</span>, <span class="at">reverse =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb161-5"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">data =</span> politics)</span>
+<span id="cb161-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model.acl.c)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept):1 (Intercept):2   collegeTRUE 
     0.1110181     0.7705871     0.3767878 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb164"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb164-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model.cumlogit.c)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb163"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb163-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model.cumlogit.c)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept):1 (Intercept):2   collegeTRUE 
     1.2904057     0.1255639     0.5434850 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb166"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb166-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">list</span>(model.acl,model.cumlogit, model.acl.c, model.cumlogit.c), deviance)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb165"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb165-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">list</span>(model.acl,model.cumlogit, model.acl.c, model.cumlogit.c), deviance)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 8098.708 8098.708 8100.939 8107.540</code></pre>
 </div>
